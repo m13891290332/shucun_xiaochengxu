@@ -1,0 +1,201 @@
+/**index.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20rpx 20rpx 20rpx; /* Adjusted padding */
+  box-sizing: border-box;
+  background-color: #f4f4f4; /* Added a light background for the page */
+}
+
+.header {
+  display: flex;
+  flex-direction: column; /* Changed to column for better alignment */
+  align-items: center;
+  width: 100%;
+  padding: 30rpx 0; /* Increased padding */
+  background-color: #fff; /* Added background to header */
+  margin-bottom: 0; /* Removed margin-bottom to connect with banner or content */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Added subtle shadow */
+}
+
+.logo {
+  width: 120rpx; /* Adjusted size */
+  height: 120rpx;
+  margin-bottom: 15rpx; /* Adjusted margin */
+}
+
+.title {
+  font-size: 36rpx; /* Adjusted size */
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/* Banner Swiper Styles */
+.banner-swiper {
+  width: 100%;
+  height: 400rpx; /* Adjust height as needed */
+  margin-bottom: 30rpx;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* Section Styles */
+.section {
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 30rpx;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.section-title-icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 15rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Tab Navigation Styles */
+.tab-nav {
+  display: flex;
+  margin-bottom: 25rpx;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab-item {
+  flex: 1;
+  padding: 20rpx 10rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #555;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  color: #0a2463; /* Theme color */
+  border-bottom: 3px solid #0a2463; /* Theme color */
+  font-weight: bold;
+}
+
+/* Tab Content Styles */
+.tab-content {
+  min-height: 200rpx; /* Ensure content area has some height */
+}
+
+.tab-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-pane-image {
+  width: 100%;
+  max-width: 600rpx;
+  height: auto;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tab-pane-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Service Platform Styles */
+.service-platform-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service-platform-image {
+  width: 100%;
+  max-width: 650rpx;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.service-platform-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-top: 20rpx; /* Added margin top */
+  margin-bottom: 20rpx;
+  color: #333; /* Darker color */
+  width: 100%;
+  text-align: center; /* Centered title */
+  padding: 20rpx 0;
+  background-color: #fff;
+  border-radius: 15rpx;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.nav-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  padding: 10rpx; /* Added padding around grid */
+  background-color: #fff; /* Background for the grid container */
+  border-radius: 15rpx;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.nav-item {
+  width: 45%; /* Adjust width for better spacing */
+  background-color: #0a2463; /* Main theme color */
+  color: white;
+  padding: 25rpx; /* Increased padding */
+  margin: 10rpx; /* Consistent margin */
+  border-radius: 10rpx;
+  text-align: center;
+  font-size: 28rpx;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.nav-item:hover {
+  background-color: #1e3d7b; /* Darker shade on hover */
+}
+
+/* Remove old styles if not used */
+.usermotto {
+  /* margin-top: 200rpx; */ /* Removed or adjust if still needed elsewhere */
+  /* text-align: center; */
+}
+
+.user-motto {
+  /* color: #aaa; */ /* Removed or adjust */
+}

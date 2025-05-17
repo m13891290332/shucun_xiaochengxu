@@ -1,0 +1,138 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+}
+
+/* 图标字体支持 */
+@font-face {
+  font-family: 'iconfont';
+  /* 需要将实际的iconfont字体文件放到项目中并调整路径 */
+  src: url('data:application/x-font-woff2;charset=utf-8;base64,d09G...'); /* 这里是Base64编码的字体文件 */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 32rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 定义各种图标 */
+.icon-check-circle:before {
+  content: "\e64c";
+}
+
+.icon-filter:before {
+  content: "\e60f";
+}
+
+.icon-sync-alt:before {
+  content: "\e628";
+}
+
+.icon-info-circle:before {
+  content: "\e646";
+}
+
+.icon-arrow-right:before {
+  content: "\e665";
+}
+
+.icon-arrow-left:before {
+  content: "\e664";
+}
+
+.icon-upload:before {
+  content: "\e668";
+}
+
+.icon-id-card:before {
+  content: "\e674";
+}
+
+.icon-file-contract:before {
+  content: "\e678";
+}
+
+.icon-file-invoice-dollar:before {
+  content: "\e647";
+}
+
+.icon-file-alt:before {
+  content: "\e649";
+}
+
+.icon-check-circle:before {
+  content: "\e64c";
+}
+
+.icon-bolt:before {
+  content: "\e657";
+}
+
+.icon-percentage:before {
+  content: "\e60e";
+}
+
+.icon-shield-alt:before {
+  content: "\e639";
+}
+
+.icon-phone-alt:before {
+  content: "\e648";
+}
+
+.icon-envelope:before {
+  content: "\e63a";
+}
+
+.icon-map-marker-alt:before {
+  content: "\e64f";
+}
+
+.icon-weixin:before {
+  content: "\e637";
+}
+
+.icon-weibo:before {
+  content: "\e64d";
+}
+
+.icon-seedling:before {
+  content: "\e63c";
+}
+
+.icon-kiwi-bird:before {
+  content: "\e654";
+}
+
+.icon-tractor:before {
+  content: "\e652";
+}
+
+.icon-mobile-alt:before {
+  content: "\e631";
+}
+
+.icon-umbrella:before {
+  content: "\e635";
+}
+
+.icon-solar-panel:before {
+  content: "\e636";
+}
+
+.icon-store:before {
+  content: "\e675";
+}
+
+.icon-home:before {
+  content: "\e65a";
+}

@@ -1,0 +1,262 @@
+<!--pages/shouru/shouru.wxml-->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <view class="header-title">智慧收入</view>
+  </view>
+
+  <!-- Hero Section -->
+  <view class="hero-section">
+    <view class="hero-pattern"></view>
+    <view class="hero-content">
+      <view class="hero-title">智慧收入</view>
+      <view class="hero-subtitle">数据驱动的乡村振兴 · 智能分析平台</view>
+      <view class="btn-container">
+        <view class="apple-button" bindtap="scrollToOverview">探索数据</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 总体概览部分 -->
+  <view class="section" id="overview">
+    <view class="section-title">总体概览</view>
+    
+    <view class="stat-cards">
+      <view class="stat-card">
+        <view class="stat-label">农村居民人均可支配收入</view>
+        <view class="stat-value-container">
+          <text class="stat-value">23,119</text>
+          <text class="stat-unit">元</text>
+        </view>
+        <view class="stat-change">
+          <text class="text-green">↑6.6%</text>
+          <text class="stat-change-label">同比增长</text>
+        </view>
+      </view>
+      
+      <view class="stat-card">
+        <view class="stat-label">人均可支配收入中位数</view>
+        <view class="stat-value-container">
+          <text class="stat-value">19,605</text>
+          <text class="stat-unit">元</text>
+        </view>
+        <view class="stat-change">
+          <text class="text-green">↑4.6%</text>
+          <text class="stat-change-label">同比增长</text>
+        </view>
+      </view>
+      
+      <view class="stat-card">
+        <view class="stat-label">工资性收入占比</view>
+        <view class="stat-value-container">
+          <text class="stat-value">42</text>
+          <text class="stat-unit">%</text>
+        </view>
+        <view class="stat-change">
+          <text class="text-blue">↔</text>
+          <text class="stat-change-label">相对稳定</text>
+        </view>
+      </view>
+      
+      <view class="stat-card">
+        <view class="stat-label">经营性收入占比</view>
+        <view class="stat-value-container">
+          <text class="stat-value">34.7</text>
+          <text class="stat-unit">%</text>
+        </view>
+        <view class="stat-change">
+          <text class="text-green">↑1.2%</text>
+          <text class="stat-change-label">同比增长</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 收入增长趋势图表 -->
+    <view class="data-card">
+      <view class="card-title">收入增长趋势</view>
+      <view class="chart-container">
+        <ec-canvas id="incomeChart" canvas-id="incomeChart" ec="{{ incomeChartEc }}"></ec-canvas>
+      </view>
+      <view class="data-source">数据来源：国家统计局 (2015-2024)</view>
+    </view>
+    
+    <!-- 收入结构和城乡比较 -->
+    <view class="chart-grid">
+      <view class="data-card">
+        <view class="card-title">收入结构分布</view>
+        <view class="chart-container">
+          <ec-canvas id="incomeStructureChart" canvas-id="incomeStructureChart" ec="{{ incomeStructureChartEc }}"></ec-canvas>
+        </view>
+        <view class="data-source">数据来源：国家统计局 (2024年)</view>
+      </view>
+      
+      <view class="data-card">
+        <view class="card-title">城乡收入比较</view>
+        <view class="chart-container">
+          <ec-canvas id="urbanRuralChart" canvas-id="urbanRuralChart" ec="{{ urbanRuralChartEc }}"></ec-canvas>
+        </view>
+        <view class="data-source">数据来源：国家统计局 (2015-2024)</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 区域收入数据部分 -->
+  <view class="section bg-dark">
+    <view class="section-title">区域收入数据</view>
+    
+    <view class="data-card">
+      <view class="card-title">省份农村居民人均可支配收入排名</view>
+      <view class="chart-container chart-large">
+        <ec-canvas id="regionalRankingChart" canvas-id="regionalRankingChart" ec="{{ regionalRankingChartEc }}"></ec-canvas>
+      </view>
+      <view class="data-source">数据来源：国家统计局 (2024年)</view>
+    </view>
+    
+    <view class="data-card">
+      <view class="card-title">区域收入详细数据</view>
+      <scroll-view scroll-x="true" class="table-wrapper">
+        <view class="table">
+          <view class="tr header">
+            <view class="th">排名</view>
+            <view class="th">省份</view>
+            <view class="th">人均可支配收入(元)</view>
+            <view class="th">同比增长(%)</view>
+            <view class="th">工资性收入占比(%)</view>
+            <view class="th">经营性收入占比(%)</view>
+          </view>
+          <view class="tr" wx:for="{{regionalData}}" wx:key="index">
+            <view class="td">{{item.rank}}</view>
+            <view class="td">{{item.province}}</view>
+            <view class="td">{{item.income}}</view>
+            <view class="td {{item.growth >= 7.0 ? 'text-green' : ''}}">{{item.growth}}</view>
+            <view class="td">{{item.wagePercent}}</view>
+            <view class="td">{{item.businessPercent}}</view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="data-source">数据来源：国家统计局 (2024年)</view>
+    </view>
+  </view>
+
+  <!-- AI 智能分析部分 -->
+  <view class="section ai-bg">
+    <view class="section-title">AI 智能分析</view>
+    
+    <view class="insight-grid">
+      <view class="ai-insight-card">
+        <view class="insight-header">
+          <view class="insight-icon robot"></view>
+          <view class="insight-title">收入趋势分析</view>
+        </view>
+        <view class="insight-content">
+          基于深度学习算法分析，农村居民人均可支配收入持续保持较快增长，年均增速6.6%，高于城镇居民收入增速2.2个百分点。预计未来5年，这一趋势将持续，农村居民收入有望保持6%-7%的增长速度。
+        </view>
+      </view>
+      
+      <view class="ai-insight-card">
+        <view class="insight-header">
+          <view class="insight-icon chart"></view>
+          <view class="insight-title">收入结构优化</view>
+        </view>
+        <view class="insight-content">
+          AI分析显示，农村居民收入结构正在优化，工资性收入占比逐年提高，从2015年的38.6%上升到2024年的42%。同时，经营性收入质量提升，特色农产品和乡村旅游等新型业态贡献明显增加。
+        </view>
+      </view>
+      
+      <view class="ai-insight-card">
+        <view class="insight-header">
+          <view class="insight-icon map"></view>
+          <view class="insight-title">区域差异分析</view>
+        </view>
+        <view class="insight-content">
+          东部沿海地区农村收入显著高于中西部地区，但增速差距在缩小。AI预测显示，未来5年中西部地区农村收入增速将继续快于东部地区，区域收入差距将逐步缩小。
+        </view>
+      </view>
+      
+      <view class="ai-insight-card">
+        <view class="insight-header">
+          <view class="insight-icon bulb"></view>
+          <view class="insight-title">政策建议</view>
+        </view>
+        <view class="insight-content">
+          基于机器学习模型，针对不同区域特点，推荐差异化发展策略：东部地区提升产业链价值；中部地区发展特色农业和加工业；西部地区结合生态优势发展乡村旅游和特色产业。
+        </view>
+      </view>
+      
+      <view class="ai-insight-card">
+        <view class="insight-header">
+          <view class="insight-icon warning"></view>
+          <view class="insight-title">风险预警</view>
+        </view>
+        <view class="insight-content">
+          AI系统识别出几个影响农村收入增长的潜在风险因素：农业生产成本上升、农产品价格波动、农村人口老龄化加速等。建议加强政策支持和技术创新，降低这些因素的负面影响。
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未来展望部分 -->
+  <view class="section future-bg">
+    <view class="section-title">未来展望</view>
+    
+    <view class="data-card">
+      <view class="card-title">农村人均可支配收入预测</view>
+      <view class="chart-container">
+        <ec-canvas id="forecastChart" canvas-id="forecastChart" ec="{{ forecastChartEc }}"></ec-canvas>
+      </view>
+      <view class="data-source">数据来源：AI预测模型基于国家统计局历史数据</view>
+    </view>
+    
+    <view class="data-card">
+      <view class="card-title">乡村振兴重点任务</view>
+      <view class="task-list">
+        <view class="task-item">
+          <view class="task-icon"></view>
+          <view class="task-content">
+            <view class="task-title">深化农业供给侧结构性改革</view>
+            <view class="task-desc">优化农业产业结构，发展高附加值农产品，提高农民收入</view>
+          </view>
+        </view>
+        
+        <view class="task-item">
+          <view class="task-icon"></view>
+          <view class="task-content">
+            <view class="task-title">推进数字乡村建设</view>
+            <view class="task-desc">加快农村信息基础设施建设，发展智慧农业和数字乡村经济</view>
+          </view>
+        </view>
+        
+        <view class="task-item">
+          <view class="task-icon"></view>
+          <view class="task-content">
+            <view class="task-title">促进农民持续增收</view>
+            <view class="task-desc">拓宽农民增收渠道，促进农民收入持续稳定增长</view>
+          </view>
+        </view>
+        
+        <view class="task-item">
+          <view class="task-icon"></view>
+          <view class="task-content">
+            <view class="task-title">加强乡村人才队伍建设</view>
+            <view class="task-desc">培养懂农业、爱农村、爱农民的乡村振兴人才队伍</view>
+          </view>
+        </view>
+        
+        <view class="task-item">
+          <view class="task-icon"></view>
+          <view class="task-content">
+            <view class="task-title">完善农村基础设施</view>
+            <view class="task-desc">改善农村生产生活条件，增强农村发展活力</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 页脚 -->
+  <view class="footer">
+    <view class="footer-title">智慧收入 · 数据可视化平台</view>
+    <view class="footer-source">数据来源：国家统计局、农业农村部等官方数据</view>
+    <view class="footer-copyright">© 2025 智慧收入数据可视化平台 · 版权所有</view>
+  </view>
+</view>

@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧收入 - 数据可视化平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- 添加原网站的样式 -->
+    <link rel="stylesheet" href="/index/css/swiper.css" type="text/css">
+    <link rel="stylesheet" href="/index/css/animate.min.css" type="text/css">
+    <script type="text/javascript">
+        document.write("<link rel='stylesheet' type='text/css' href='/index/css/style.css?v=" + new Date().getTime() + "'>");   
+    </script>
+    <script src="/index/js/jquery-1.12.4.min.js"></script>
+    <script src="/index/js/jquery.superslide.2.1.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #34c759;
+            --dark-bg: #111827;
+            --card-bg: rgba(31, 41, 55, 0.8);
+            --accent-color: #5ac8fa;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding-top: 60px; /* 为顶部导航栏留出空间 */
+        }
+        
+        /* 头部样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1e3a8a;
+            z-index: 1000;
+            height: 60px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .headerbox {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+        }
+        
+        .nav {
+            height: 100%;
+        }
+        
+        .nav ul {
+            display: flex;
+            height: 100%;
+        }
+        
+        .nav ul li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 15px;
+        }
+        
+        .nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav ul li b {
+            color: rgba(255, 255, 255, 0.3);
+            margin: 0 5px;
+        }
+        
+        .nav .sub {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: #1e3a8a; /* Solid blue background */
+            min-width: 200px;
+            display: none;
+            border-radius: 0 0 4px 4px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav .sub dl {
+            padding: 20px 0;
+        }
+        
+        .nav .sub dt {
+            padding: 20px 15px; /* Increased vertical padding */
+            text-align: center;
+        }
+        
+        .nav .sub dt a {
+            display: flex;
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            letter-spacing: 0.5em; /* Add letter spacing between characters */
+        }
+        
+        .nav .sub dt a img {
+            width: 24px;
+            height: 24px;
+            margin-right: 0;
+            margin-bottom: 10px; /* Add space between image and text */
+        }
+        
+        .nav li.m:hover .sub {
+            display: block;
+        }
+        
+        .nav li.on a {
+            font-weight: bold;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            z-index: 10;
+            position: relative;
+        }
+        
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.5;
+        }
+        
+        .section-title {
+            display: inline-block;
+            position: relative;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        .data-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .chart-container {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ai-insight-card {
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.15) 0%, rgba(64, 200, 224, 0.15) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+        
+        th {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Apple-style animation classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-delay-1 {
+            transition-delay: 0.2s;
+        }
+        
+        .stagger-delay-2 {
+            transition-delay: 0.4s;
+        }
+        
+        .stagger-delay-3 {
+            transition-delay: 0.6s;
+        }
+        
+        .parallax-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Progress indicator styling */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            z-index: 100;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #34c759, #5ac8fa);
+            width: 0%;
+        }
+        
+        /* Pulse effect for some elements */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(52, 199, 89, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* For Apple-style sticky sections */
+        .sticky-section {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        /* Customize scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 3px;
+        }
+        
+        .smart-agriculture-bg {
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .smart-agriculture-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.7) 100%);
+            z-index: 1;
+        }
+        
+        .smart-agriculture-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Table wrapper for horizontal scrolling if needed */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            background: rgba(31, 41, 55, 0.5);
+        }
+        
+        /* Custom styles for Apple-like UI elements */
+        .apple-button {
+            background: rgba(59, 130, 246, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .apple-button:hover {
+            background: rgba(59, 130, 246, 1);
+            transform: scale(1.03);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="header">
+        <div class="headerbox">
+            <h1 class="logo"><a href="/"><img src="/uploads/20220506/png/1da06e9099375f3d4d63a17c89afecc8.png" /></a></h1>
+            <div class="dhbnt"></div>
+            <div class="nav">
+                <ul>
+                    <li class="m on"><a href="/">首页</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">平台</a><b>|</b>
+                        <div class="sub">
+                            <dl>
+                                <dt><a href="/jingji.html"><img src="/index/images/ta_177.png" /><span>智慧经济</span></a></dt>
+                                <dt><a href="/chanye.html"><img src="/index/images/ta_178.png" /><span>智慧产业</span></a></dt>
+                                <dt><a href="/shouru.html"><img src="/index/images/ta_179.png" /><span>智慧收入</span></a></dt>
+                                <dt><a href="/zhushou.html"><img src="/index/images/ta_180.png" /><span>智慧助手</span></a></dt>
+                                <dt><a href="/analysis.html"><img src="/index/images/ta_180.png" />数据分析</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <li><a href="/news">资讯</a><b>|</b></li>
+                    <li><a href="/cooperation">合作</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">联系</a>
+                        <div class="sub sub1">
+                            <dl>
+                                <dt><a href="/contactus.html"><img src="/index/images/ta_215.png" />联系我们</a></dt>
+                                <dt><a href="/enter.html"><img src="/index/images/ta_214.png" />关于我们</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section flex items-center justify-center">
+        <div class="hero-pattern"></div>
+        <div class="hero-content text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 fade-up">智慧收入</h1>
+            <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-gray-200 fade-up stagger-delay-1">数据驱动的乡村振兴 · 智能分析平台</p>
+            <div class="fade-up stagger-delay-2">
+                <a href="#overview" class="apple-button inline-flex items-center">
+                    <span>探索数据</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-20 px-4 md:px-16">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="section-title text-3xl md:text-4xl">总体概览</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="stat-card p-6 fade-up">
+                    <h3 class="text-gray-400 text-sm mb-1">农村居民人均可支配收入</h3>
+                    <div class="flex items-end">
+                        <span class="text-3xl font-bold">23,119</span>
+                        <span class="text-lg ml-1">元</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-green-400">↑6.6%</span>
+                        <span class="text-gray-400 text-sm ml-2">同比增长</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card p-6 fade-up stagger-delay-1">
+                    <h3 class="text-gray-400 text-sm mb-1">人均可支配收入中位数</h3>
+                    <div class="flex items-end">
+                        <span class="text-3xl font-bold">19,605</span>
+                        <span class="text-lg ml-1">元</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-green-400">↑4.6%</span>
+                        <span class="text-gray-400 text-sm ml-2">同比增长</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card p-6 fade-up stagger-delay-2">
+                    <h3 class="text-gray-400 text-sm mb-1">工资性收入占比</h3>
+                    <div class="flex items-end">
+                        <span class="text-3xl font-bold">42</span>
+                        <span class="text-lg ml-1">%</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-blue-400">↔</span>
+                        <span class="text-gray-400 text-sm ml-2">相对稳定</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card p-6 fade-up stagger-delay-3">
+                    <h3 class="text-gray-400 text-sm mb-1">经营性收入占比</h3>
+                    <div class="flex items-end">
+                        <span class="text-3xl font-bold">34.7</span>
+                        <span class="text-lg ml-1">%</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-green-400">↑1.2%</span>
+                        <span class="text-gray-400 text-sm ml-2">同比增长</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card p-6 mb-16 fade-up">
+                <h3 class="text-2xl font-bold mb-4">收入增长趋势</h3>
+                <div id="incomeChart" class="chart-container"></div>
+                <p class="text-gray-400 text-sm">数据来源：国家统计局 (2015-2024)</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="data-card p-6 fade-up">
+                    <h3 class="text-2xl font-bold mb-4">收入结构分布</h3>
+                    <div id="incomeStructureChart" class="chart-container"></div>
+                    <p class="text-gray-400 text-sm">数据来源：国家统计局 (2024年)</p>
+                </div>
+                
+                <div class="data-card p-6 fade-up stagger-delay-1">
+                    <h3 class="text-2xl font-bold mb-4">城乡收入比较</h3>
+                    <div id="urbanRuralComparisonChart" class="chart-container"></div>
+                    <p class="text-gray-400 text-sm">数据来源：国家统计局 (2015-2024)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Data Section -->
+    <section class="py-20 px-4 md:px-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="section-title text-3xl md:text-4xl">区域收入数据</h2>
+            
+            <div class="data-card p-6 mb-16 fade-up">
+                <h3 class="text-2xl font-bold mb-6">省份农村居民人均可支配收入排名</h3>
+                <div id="regionalRankingChart" class="chart-container" style="height: 600px;"></div>
+                <p class="text-gray-400 text-sm">数据来源：国家统计局 (2024年)</p>
+            </div>
+            
+            <div class="data-card p-6 fade-up">
+                <h3 class="text-2xl font-bold mb-6">区域收入详细数据</h3>
+                <div class="table-wrapper">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>省份</th>
+                                <th>人均可支配收入(元)</th>
+                                <th>同比增长(%)</th>
+                                <th>工资性收入占比(%)</th>
+                                <th>经营性收入占比(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>浙江</td>
+                                <td>40,795</td>
+                                <td class="text-green-400">7.2</td>
+                                <td>46.5</td>
+                                <td>32.8</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>上海</td>
+                                <td>38,622</td>
+                                <td class="text-green-400">6.8</td>
+                                <td>52.3</td>
+                                <td>26.5</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>北京</td>
+                                <td>37,540</td>
+                                <td class="text-green-400">6.5</td>
+                                <td>54.8</td>
+                                <td>24.2</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>江苏</td>
+                                <td>35,218</td>
+                                <td class="text-green-400">7.0</td>
+                                <td>48.2</td>
+                                <td>30.6</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>天津</td>
+                                <td>33,756</td>
+                                <td class="text-green-400">6.2</td>
+                                <td>50.1</td>
+                                <td>28.4</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>广东</td>
+                                <td>31,842</td>
+                                <td class="text-green-400">7.5</td>
+                                <td>49.3</td>
+                                <td>30.2</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>福建</td>
+                                <td>29,764</td>
+                                <td class="text-green-400">7.8</td>
+                                <td>47.8</td>
+                                <td>31.5</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>山东</td>
+                                <td>28,150</td>
+                                <td class="text-green-400">6.8</td>
+                                <td>43.6</td>
+                                <td>35.1</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>辽宁</td>
+                                <td>26,682</td>
+                                <td class="text-green-400">6.0</td>
+                                <td>45.8</td>
+                                <td>32.7</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>湖北</td>
+                                <td>25,428</td>
+                                <td class="text-green-400">6.9</td>
+                                <td>41.2</td>
+                                <td>36.4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-gray-400 text-sm mt-4">数据来源：国家统计局 (2024年)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Analysis Section -->
+    <section class="smart-agriculture-bg py-20 px-4 md:px-16" style="background-image: url('https://i-blog.csdnimg.cn/direct/ea6ac207b6a445c68644407d068fc01a.png');">
+        <div class="smart-agriculture-content max-w-7xl mx-auto">
+            <h2 class="section-title text-3xl md:text-4xl">AI 智能分析</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <div class="ai-insight-card p-6 fade-up">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 pulse">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">收入趋势分析</h3>
+                    </div>
+                    <p class="text-gray-300">基于深度学习算法分析，农村居民人均可支配收入持续保持较快增长，年均增速6.6%，高于城镇居民收入增速2.2个百分点。预计未来5年，这一趋势将持续，农村居民收入有望保持6%-7%的增长速度。</p>
+                </div>
+                
+                <div class="ai-insight-card p-6 fade-up stagger-delay-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-4 pulse">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">收入结构优化</h3>
+                    </div>
+                    <p class="text-gray-300">AI分析显示，农村居民收入结构正在优化，工资性收入占比逐年提高，从2015年的38.6%上升到2024年的42%。同时，经营性收入质量提升，特色农产品和乡村旅游等新型业态贡献明显增加。</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="ai-insight-card p-6 fade-up">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center mr-4">
+                            <i class="fas fa-map-marked-alt text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">区域差异分析</h3>
+                    </div>
+                    <p class="text-gray-300">东部沿海地区农村收入显著高于中西部地区，但增速差距在缩小。AI预测显示，未来5年中西部地区农村收入增速将继续快于东部地区，区域收入差距将逐步缩小。</p>
+                </div>
+                
+                <div class="ai-insight-card p-6 fade-up stagger-delay-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-4">
+                            <i class="fas fa-lightbulb text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">政策建议</h3>
+                    </div>
+                    <p class="text-gray-300">基于机器学习模型，针对不同区域特点，推荐差异化发展策略：东部地区提升产业链价值；中部地区发展特色农业和加工业；西部地区结合生态优势发展乡村旅游和特色产业。</p>
+                </div>
+                
+                <div class="ai-insight-card p-6 fade-up stagger-delay-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mr-4">
+                            <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">风险预警</h3>
+                    </div>
+                    <p class="text-gray-300">AI系统识别出几个影响农村收入增长的潜在风险因素：农业生产成本上升、农产品价格波动、农村人口老龄化加速等。建议加强政策支持和技术创新，降低这些因素的负面影响。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Future Outlook Section -->
+    <section class="py-20 px-4 md:px-16 bg-gradient-to-b from-gray-900 to-blue-900">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="section-title text-3xl md:text-4xl">未来展望</h2>
+            
+            <div class="data-card p-6 mb-16 fade-up">
+                <h3 class="text-2xl font-bold mb-4">农村人均可支配收入预测</h3>
+                <div id="incomeForecastChart" class="chart-container"></div>
+                <p class="text-gray-400 text-sm">数据来源：AI预测模型基于国家统计局历史数据</p>
+            </div>
+        
+                
+                <div class="data-card p-6 fade-up stagger-delay-1">
+                    <h3 class="text-xl font-bold mb-4">乡村振兴重点任务</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">深化农业供给侧结构性改革</h4>
+                                <p class="text-gray-400">优化农业产业结构，发展高附加值农产品，提高农民收入</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">推进数字乡村建设</h4>
+                                <p class="text-gray-400">加快农村信息基础设施建设，发展智慧农业和数字乡村经济</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">促进农民持续增收</h4>
+                                <p class="text-gray-400">拓宽农民增收渠道，促进农民收入持续稳定增长</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">加强乡村人才队伍建设</h4>
+                                <p class="text-gray-400">培养懂农业、爱农村、爱农民的乡村振兴人才队伍</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">完善农村基础设施</h4>
+                                <p class="text-gray-400">改善农村生产生活条件，增强农村发展活力</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="py-12 px-4 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-8">智慧收入 · 数据可视化平台</h2>
+            <p class="text-gray-400 mb-8">数据来源：国家统计局、农业农村部等官方数据</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fab fa-weixin text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fab fa-weibo text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-envelope text-xl"></i>
+                </a>
+            </div>
+            <p class="text-sm text-gray-600">© 2025 智慧收入数据可视化平台 · 版权所有</p>
+        </div>
+    </footer>
+
+    <!-- 添加原网站的下拉菜单JavaScript -->
+    <script type="text/javascript">
+        jQuery(".nav").slide({ type: "menu", titCell: ".m", targetCell: ".sub", effect: "slideDown", delayTime: 300, triggerTime: 0, returnDefault: true });
+    </script>
+    
+    <script>
+        // 观察元素进入视口
+        const observeElements = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.fade-up').forEach(element => {
+                observer.observe(element);
+            });
+        };
+        
+        // 进度条更新
+        const updateProgressBar = () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        };
+        
+        // 收入增长趋势图表
+        const renderIncomeChart = () => {
+            const chart = echarts.init(document.getElementById('incomeChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '元',
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '农村居民人均可支配收入',
+                        type: 'bar',
+                        data: [11422, 12363, 13432, 14617, 16021, 17131, 18931, 20133, 21691, 23119],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {offset: 0, color: '#3b82f6'},
+                                {offset: 1, color: '#1e3a8a'}
+                            ])
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {offset: 0, color: '#60a5fa'},
+                                    {offset: 1, color: '#2563eb'}
+                                ])
+                            }
+                        }
+                    },
+                    {
+                        name: '同比增长率',
+                        type: 'line',
+                        yAxisIndex: 0,
+                        data: [8.9, 8.2, 8.6, 8.8, 9.6, 6.9, 10.5, 6.3, 7.7, 6.6],
+                        itemStyle: {
+                            color: '#34d399'
+                        },
+                        symbolSize: 8
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 收入结构分布图表
+        const renderIncomeStructureChart = () => {
+            const chart = echarts.init(document.getElementById('incomeStructureChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                series: [
+                    {
+                        name: '收入结构',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#111827',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '18',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            {value: 42.0, name: '工资性收入'},
+                            {value: 34.7, name: '经营净收入'},
+                            {value: 2.5, name: '财产净收入'},
+                            {value: 20.8, name: '转移净收入'}
+                        ],
+                        color: ['#3b82f6', '#34d399', '#fbbf24', '#f472b6']
+                    }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 城乡收入比较图表
+        const renderUrbanRuralComparisonChart = () => {
+            const chart = echarts.init(document.getElementById('urbanRuralComparisonChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['城镇居民收入', '农村居民收入', '城乡收入比'],
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        axisLabel: {
+                            color: '#e5e7eb'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#374151'
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '收入（元）',
+                        axisLabel: {
+                            color: '#e5e7eb',
+                            formatter: '{value}'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#374151'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: '收入比',
+                        min: 2.0,
+                        max: 3.0,
+                        interval: 0.2,
+                        axisLabel: {
+                            color: '#e5e7eb',
+                            formatter: '{value}'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#374151'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '城镇居民收入',
+                        type: 'bar',
+                        data: [31195, 33616, 36396, 39251, 42359, 43834, 47412, 49283, 51665, 54188],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {offset: 0, color: '#60a5fa'},
+                                {offset: 1, color: '#3b82f6'}
+                            ])
+                        }
+                    },
+                    {
+                        name: '农村居民收入',
+                        type: 'bar',
+                        data: [11422, 12363, 13432, 14617, 16021, 17131, 18931, 20133, 21691, 23119],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {offset: 0, color: '#34d399'},
+                                {offset: 1, color: '#10b981'}
+                            ])
+                        }
+                    },
+                    {
+                        name: '城乡收入比',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [2.73, 2.72, 2.71, 2.69, 2.64, 2.56, 2.50, 2.45, 2.38, 2.34],
+                        itemStyle: {
+                            color: '#f472b6'
+                        },
+                        symbolSize: 8
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 区域排名图表
+        const renderRegionalRankingChart = () => {
+            const chart = echarts.init(document.getElementById('regionalRankingChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '10%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '元',
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['浙江', '上海', '北京', '江苏', '天津', '广东', '福建', '山东', '辽宁', '湖北', '安徽', '河北', '重庆', '湖南', '河南', '陕西', '四川', '江西', '宁夏', '黑龙江', '海南', '吉林', '内蒙古', '广西', '新疆', '青海', '山西', '贵州', '云南', '甘肃', '西藏'],
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '2024年农村居民人均可支配收入',
+                        type: 'bar',
+                        data: [40795, 38622, 37540, 35218, 33756, 31842, 29764, 28150, 26682, 25428, 24865, 24265, 23785, 23350, 22950, 21845, 21520, 21280, 20760, 20520, 20450, 20120, 19850, 19460, 18950, 18750, 18430, 18120, 17850, 17350, 17120],
+                        itemStyle: {
+                            color: params => {
+                                // 创建不同的颜色渐变
+                                const colorList = [
+                                    ['#3b82f6', '#1e3a8a'], // 蓝色系
+                                    ['#34d399', '#059669'], // 绿色系
+                                    ['#8b5cf6', '#4c1d95']  // 紫色系
+                                ];
+                                
+                                // 根据值的范围选择不同的颜色
+                                let colorIndex = 0;
+                                if (params.value > 30000) {
+                                    colorIndex = 0;
+                                } else if (params.value > 20000) {
+                                    colorIndex = 1;
+                                } else {
+                                    colorIndex = 2;
+                                }
+                                
+                                return new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                    {offset: 0, color: colorList[colorIndex][0]},
+                                    {offset: 1, color: colorList[colorIndex][1]}
+                                ]);
+                            }
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 技术应用情况图表
+        const renderTechAdoptionChart = () => {
+            const chart = echarts.init(document.getElementById('techAdoptionChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['互联网应用率', '智能设备应用率', 'AI技术应用率'],
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2020', '2021', '2022', '2023', '2024'],
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '应用率（%）',
+                    axisLabel: {
+                        color: '#e5e7eb'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#374151'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '互联网应用率',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [56.2, 63.8, 71.5, 78.3, 85.6]
+                    },
+                    {
+                        name: '智能设备应用率',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [18.5, 25.3, 32.6, 38.4, 45.2]
+                    },
+                    {
+                        name: 'AI技术应用率',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [5.2, 8.7, 14.3, 21.8, 28.5]
+                    }
+                ],
+                color: ['#3b82f6', '#34d399', '#f472b6']
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 技术收入贡献图表
+        const renderTechContributionChart = () => {
+            const chart = echarts.init(document.getElementById('techContributionChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                radar: {
+                    indicator: [
+                        {name: '农业产量提升', max: 100},
+                        {name: '劳动效率提高', max: 100},
+                        {name: '降低生产成本', max: 100},
+                        {name: '农产品品质提升', max: 100},
+                        {name: '销售渠道拓展', max: 100},
+                        {name: '产业链升级', max: 100}
+                    ],
+                    axisName: {
+                        color: '#e5e7eb'
+                    },
+                    splitArea: {
+                        areaStyle: {
+                            color: ['rgba(59, 130, 246, 0.03)', 'rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.07)', 'rgba(59, 130, 246, 0.09)', 'rgba(59, 130, 246, 0.11)']
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '技术应用效果',
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [85, 92, 78, 84, 76, 68],
+                                name: '大型农场',
+                                symbol: 'circle',
+                                symbolSize: 8,
+                                itemStyle: {
+                                    color: '#3b82f6'
+                                },
+                                areaStyle: {
+                                    color: 'rgba(59, 130, 246, 0.4)'
+                                }
+                            },
+                            {
+                                value: [65, 75, 82, 70, 85, 58],
+                                name: '家庭农场',
+                                symbol: 'circle',
+                                symbolSize: 8,
+                                itemStyle: {
+                                    color: '#34d399'
+                                },
+                                areaStyle: {
+                                    color: 'rgba(52, 211, 153, 0.4)'
+                                }
+                            },
+                            {
+                                value: [45, 52, 60, 75, 90, 72],
+                                name: '合作社',
+                                symbol: 'circle',
+                                symbolSize: 8,
+                                itemStyle: {
+                                    color: '#f472b6'
+                                },
+                                areaStyle: {
+                                    color: 'rgba(244, 114, 182, 0.4)'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 收入预测图表
+        const renderIncomeForecastChart = () => {
+            const chart = echarts.init(document.getElementById('incomeForecastChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['历史数据', 'AI预测值-乐观', 'AI预测值-中性', 'AI预测值-保守'],
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                        axisLabel: {
+                            color: '#e5e7eb'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#374151'
+                            }
+                        },
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '元',
+                        axisLabel: {
+                            color: '#e5e7eb'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#374151'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '历史数据',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [17131, 18931, 20133, 21691, 23119, null, null, null, null, null, null],
+                        itemStyle: {
+                            color: '#3b82f6'
+                        },
+                        lineStyle: {
+                            width: 3
+                        }
+                    },
+                    {
+                        name: 'AI预测值-乐观',
+                        type: 'line',
+                        stack: '总量1',
+                        areaStyle: {
+                            opacity: 0.2
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [null, null, null, null, 23119, 24828, 26664, 28638, 30761, 33045, 35503],
+                        itemStyle: {
+                            color: '#34d399'
+                        },
+                        lineStyle: {
+                            width: 2,
+                            type: 'dashed'
+                        }
+                    },
+                    {
+                        name: 'AI预测值-中性',
+                        type: 'line',
+                        stack: '总量2',
+                        areaStyle: {
+                            opacity: 0.2
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [null, null, null, null, 23119, 24506, 25975, 27533, 29185, 30935, 32792],
+                        itemStyle: {
+                            color: '#fbbf24'
+                        },
+                        lineStyle: {
+                            width: 2,
+                            type: 'dashed'
+                        }
+                    },
+                    {
+                        name: 'AI预测值-保守',
+                        type: 'line',
+                        stack: '总量3',
+                        areaStyle: {
+                            opacity: 0.2
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [null, null, null, null, 23119, 24183, 25271, 26383, 27521, 28691, 29896],
+                        itemStyle: {
+                            color: '#f472b6'
+                        },
+                        lineStyle: {
+                            width: 2,
+                            type: 'dashed'
+                        }
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 智慧农村建设目标图表
+        const renderRuralGoalsChart = () => {
+            const chart = echarts.init(document.getElementById('ruralGoalsChart'));
+            
+            const option = {
+                textStyle: {
+                    color: '#e5e7eb'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: 'bottom',
+                    textStyle: {
+                        color: '#e5e7eb'
+                    }
+                },
+                series: [
+                    {
+                        name: '乡村振兴建设重点',
+                        type: 'pie',
+                        radius: ['30%', '60%'],
+                        center: ['50%', '40%'],
+                        roseType: 'area',
+                        itemStyle: {
+                            borderRadius: 8
+                        },
+                        label: {
+                            color: '#e5e7eb'
+                        },
+                        data: [
+                            {value: 30, name: '提高农民收入'},
+                            {value: 25, name: '数字基础设施'},
+                            {value: 20, name: '人才培养'},
+                            {value: 15, name: '产业融合发展'},
+                            {value: 10, name: '生态环境保护'}
+                        ],
+                        color: ['#3b82f6', '#34d399', '#f472b6', '#fbbf24', '#8b5cf6']
+                    }
+                ]
+            };
+            
+            chart.setOption(option);
+            window.addEventListener('resize', () => chart.resize());
+        };
+        
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 添加滚动事件监听
+            window.addEventListener('scroll', updateProgressBar);
+            
+            // 初始化动画观察
+            observeElements();
+            
+            // 初始化所有图表
+            renderIncomeChart();
+            renderIncomeStructureChart();
+            renderUrbanRuralComparisonChart();
+            renderRegionalRankingChart();
+            renderTechAdoptionChart();
+            renderTechContributionChart();
+            renderIncomeForecastChart();
+            renderRuralGoalsChart();
+        });
+
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 添加滚动事件监听
+            window.addEventListener('scroll', updateProgressBar);
+            
+            // 初始化动画观察
+            observeElements();
+            
+            // 初始化所有图表
+            // 图表初始化代码省略...
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDjr3ZjW1aYyolPk832rYRhojMICLnTkeae36CCaQlkNFqSzZSSWsdVRIMM0KOCpa0IKIenzjb5KNcV8%2FMcwdY5Y9hqeMS919pFVzVkI%2BoN4ii6UJ7ZkccHuQO83T00X3o6EX%2Bt1fRxw1CeF3DIQYj%2BC05dc19UBqN65EWvUH0ym3qX1GjUnxtVL0lelSJjtvcNt53k1l3RzY9fd7zI3MFKYRpTWwSjJL8HnenyPXEZre38uu505e%2BEauomB1w%2BqUsVVNbopkZzdg%2BVfX6zmpGf5EuuV8Ub9nkkyPYOuKjqJmmoKutf%2FiIt3x2DNF4eWsQIX%2FIH7vNvnggcwxX%2BY8skcFQN3lCxLi3sMWVNa0Oj%2F5wctiIBi5DhyQ0nyulJm4%2FjasvOzupvcUCEMOgYvEaXzhR28G1gRC4lINqXkB5RXF8F4uUPOZcdrDFgAkVje4jj9tVI5cj5SAB0lYaw5Qrz3wc%2BEN2gLOES4YJTO%2BkKec%2BzzOi61aXctgq9j5%2FTDktms%2FeaDxy3blZV85h%2FEb95s%3D";
+        window.__genspark_locale = "zh-CN";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDjr3ZjW1aYyolPk832rYRhojMICLnTkeae36CCaQlkNFqSzZSSWsdVRIMM0KOCpa0IKIenzjb5KNcV8/McwdY5Y9hqeMS919pFVzVkI+oN4ii6UJ7ZkccHuQO83T00X3o6EX+t1fRxw1CeF3DIQYj+C05dc19UBqN65EWvUH0ym3qX1GjUnxtVL0lelSJjtvcNt53k1l3RzY9fd7zI3MFKYRpTWwSjJL8HnenyPXEZre38uu505e+EauomB1w+qUsVVNbopkZzdg+VfX6zmpGf5EuuV8Ub9nkkyPYOuKjqJmmoKutf/iIt3x2DNF4eWsQIX/IH7vNvnggcwxX+Y8skcFQN3lCxLi3sMWVNa0Oj/5wctiIBi5DhyQ0nyulJm4/jasvOzupvcUCEMOgYvEaXzhR28G1gRC4lINqXkB5RXF8F4uUPOZcdrDFgAkVje4jj9tVI5cj5SAB0lYaw5Qrz3wc+EN2gLOES4YJTO+kKec+zzOi61aXctgq9j5/TDktms/eaDxy3blZV85h/Eb95s=";
+    </script>
+    

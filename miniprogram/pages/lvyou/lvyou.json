@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "山西大同特色乡村旅游",
+  "navigationBarBackgroundColor": "#0a264a",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#0a264a",
+  "backgroundTextStyle": "light",
+  "usingComponents": {}
+}

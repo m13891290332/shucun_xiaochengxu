@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "助农贷款产品中心",
+  "navigationBarBackgroundColor": "#0a2647",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f9f9f9",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

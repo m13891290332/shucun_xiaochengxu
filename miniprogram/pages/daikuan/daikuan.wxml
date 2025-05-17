@@ -1,0 +1,527 @@
+<!--pages/daikuan/daikuan.wxml-->
+<view class="container">
+  <!-- 标题区域 -->
+  <view class="blue-gradient text-white rounded-lg shadow-lg p-8 mb-8">
+    <view class="text-4xl font-bold mb-4">助农贷款产品中心</view>
+    <view class="text-xl opacity-90">专为农户提供优质便捷的金融服务，助力乡村振兴</view>
+    <view class="flex flex-wrap gap-4 mt-6">
+      <view class="flex items-center">
+        <text class="iconfont icon-check-circle text-light mr-2"></text>
+        <text>银行直接合作</text>
+      </view>
+      <view class="flex items-center">
+        <text class="iconfont icon-check-circle text-light mr-2"></text>
+        <text>快速审批放款</text>
+      </view>
+      <view class="flex items-center">
+        <text class="iconfont icon-check-circle text-light mr-2"></text>
+        <text>优惠利率政策</text>
+      </view>
+      <view class="flex items-center">
+        <text class="iconfont icon-check-circle text-light mr-2"></text>
+        <text>专人跟踪服务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选与分类区域 -->
+  <view class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <view class="text-2xl font-bold text-gray-800 mb-4">贷款产品筛选</view>
+    
+    <view class="grid grid-cols-2 gap-4">
+      <view class="mb-4">
+        <text class="block text-gray-700 font-medium mb-2">贷款用途</text>
+        <picker bindchange="onLoanPurposeChange" value="{{loanPurposeIndex}}" range="{{loanPurposeOptions}}">
+          <view class="picker-content">{{loanPurposeOptions[loanPurposeIndex]}}</view>
+        </picker>
+      </view>
+      
+      <view class="mb-4">
+        <text class="block text-gray-700 font-medium mb-2">贷款金额</text>
+        <picker bindchange="onLoanAmountChange" value="{{loanAmountIndex}}" range="{{loanAmountOptions}}">
+          <view class="picker-content">{{loanAmountOptions[loanAmountIndex]}}</view>
+        </picker>
+      </view>
+      
+      <view class="mb-4">
+        <text class="block text-gray-700 font-medium mb-2">还款期限</text>
+        <picker bindchange="onRepaymentTermChange" value="{{repaymentTermIndex}}" range="{{repaymentTermOptions}}">
+          <view class="picker-content">{{repaymentTermOptions[repaymentTermIndex]}}</view>
+        </picker>
+      </view>
+      
+      <view class="mb-4">
+        <text class="block text-gray-700 font-medium mb-2">利率水平</text>
+        <picker bindchange="onInterestRateChange" value="{{interestRateIndex}}" range="{{interestRateOptions}}">
+          <view class="picker-content">{{interestRateOptions[interestRateIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    
+    <view class="flex justify-center mt-4">
+      <button bindtap="filterProducts" class="blue-bg text-white py-2 px-6 rounded-md">
+        <text class="iconfont icon-filter mr-2"></text>筛选贷款产品
+      </button>
+      <button bindtap="resetFilter" class="ml-4 bg-gray-200 text-gray-700 py-2 px-6 rounded-md">
+        <text class="iconfont icon-sync-alt mr-2"></text>重置筛选
+      </button>
+    </view>
+  </view>
+  
+  <!-- 分类标签 -->
+  <scroll-view scroll-x="true" class="tabs-container bg-white rounded-lg shadow-md p-4 mb-8">
+    <view class="flex space-x-6 min-w-max">
+      <view wx:for="{{categories}}" wx:key="id" class="tab {{currentCategory === item.id ? 'active' : ''}}" data-category="{{item.id}}" bindtap="switchCategory">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 贷款产品展示列表 -->
+  <view class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <view class="text-2xl font-bold text-gray-800 mb-4">特色贷款产品</view>
+    
+    <view wx:for="{{filteredProducts}}" wx:key="id" class="loan-item {{selectedProductId === item.id ? 'selected' : ''}}" data-category="{{item.categories}}">
+      <view class="loan-header">
+        <view class="flex items-center">
+          <view class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full {{item.iconBg}}">
+            <text class="iconfont {{item.icon}} {{item.iconColor}}"></text>
+          </view>
+          <view class="ml-4">
+            <view class="text-sm font-medium text-gray-900">{{item.name}}</view>
+            <view class="text-xs text-gray-500">{{item.description}}</view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="loan-details">
+        <view class="loan-detail-item">
+          <text class="detail-label">贷款额度</text>
+          <view>
+            <text class="detail-value">{{item.amount}}</text>
+            <text class="text-xs text-gray-500">{{item.amountDesc}}</text>
+          </view>
+        </view>
+        
+        <view class="loan-detail-item">
+          <text class="detail-label">年利率</text>
+          <view class="rate-badge {{item.rateBg}} {{item.rateColor}}">
+            {{item.rate}}
+          </view>
+        </view>
+        
+        <view class="loan-detail-item">
+          <text class="detail-label">期限</text>
+          <view>
+            <text class="detail-value">{{item.term}}</text>
+            <text class="text-xs text-gray-500">{{item.termDesc}}</text>
+          </view>
+        </view>
+        
+        <view class="loan-detail-item">
+          <text class="detail-label">申请条件</text>
+          <view>
+            <text class="detail-value">{{item.requirement}}</text>
+            <text class="text-xs text-gray-500">{{item.requirementDesc}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="loan-action">
+        <button class="apply-btn" data-product-id="{{item.id}}" bindtap="applyLoan">立即申请</button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 申请表单区域 - 默认隐藏 -->
+  <view id="application-form-container" class="application-form mb-8 bg-white rounded-lg shadow-md p-6 {{isFormVisible ? 'open' : ''}}">
+    <view class="text-xl font-bold text-gray-800 mb-4">贷款申请表单</view>
+    <view id="selected-product-info" class="mb-6 p-4 bg-blue-50 rounded-md border-l-4 border-blue-500">
+      <view class="flex items-center mb-2">
+        <text class="iconfont icon-info-circle text-blue-500 mr-2"></text>
+        <view class="text-lg font-medium text-gray-900">{{selectedProduct.name}}</view>
+      </view>
+      <view class="grid grid-cols-3 gap-4 text-sm">
+        <view>
+          <text class="text-gray-600">贷款额度：</text>
+          <text class="text-gray-900 font-medium">{{selectedProduct.amount}}</text>
+        </view>
+        <view>
+          <text class="text-gray-600">年利率：</text>
+          <text class="text-gray-900 font-medium">{{selectedProduct.rate}}</text>
+        </view>
+        <view>
+          <text class="text-gray-600">期限：</text>
+          <text class="text-gray-900 font-medium">{{selectedProduct.term}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 申请步骤进度条 -->
+    <view class="form-progress relative mb-8">
+      <view class="connector {{formStep >= 1 ? 'active' : ''}}"></view>
+      <view class="flex justify-between">
+        <view class="step flex flex-col items-center">
+          <view class="w-8 h-8 rounded-full {{formStep >= 0 ? 'bg-primary-light' : 'bg-gray-300'}} text-white flex items-center justify-center mb-2 step-indicator">
+            1
+          </view>
+          <view class="text-xs text-center">基本信息</view>
+        </view>
+        <view class="step flex flex-col items-center">
+          <view class="w-8 h-8 rounded-full {{formStep >= 1 ? 'bg-primary-light' : 'bg-gray-300'}} text-white flex items-center justify-center mb-2 step-indicator">
+            2
+          </view>
+          <view class="text-xs text-center">贷款信息</view>
+        </view>
+        <view class="step flex flex-col items-center">
+          <view class="w-8 h-8 rounded-full {{formStep >= 2 ? 'bg-primary-light' : 'bg-gray-300'}} text-white flex items-center justify-center mb-2 step-indicator">
+            3
+          </view>
+          <view class="text-xs text-center">资料上传</view>
+        </view>
+        <view class="step flex flex-col items-center">
+          <view class="w-8 h-8 rounded-full {{formStep >= 3 ? 'bg-primary-light' : 'bg-gray-300'}} text-white flex items-center justify-center mb-2 step-indicator">
+            4
+          </view>
+          <view class="text-xs text-center">提交确认</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 表单步骤内容 -->
+    <form bindsubmit="submitApplication">
+      <!-- 第一步：基本信息 -->
+      <view class="form-step {{formStep === 0 ? 'active' : ''}}" id="step-1">
+        <view class="text-lg font-medium text-gray-900 mb-4">第一步：个人基本信息</view>
+        
+        <view class="form-grid">
+          <view class="form-item">
+            <text class="form-label">姓名</text>
+            <input name="fullname" class="form-input" placeholder="请输入您的真实姓名" value="{{formData.fullname}}" bindinput="onInputChange" data-field="fullname"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">身份证号</text>
+            <input name="idCard" class="form-input" placeholder="请输入18位身份证号码" value="{{formData.idCard}}" bindinput="onInputChange" data-field="idCard"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">手机号码</text>
+            <input name="mobile" type="number" class="form-input" placeholder="请输入11位手机号" value="{{formData.mobile}}" bindinput="onInputChange" data-field="mobile"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">常住地址</text>
+            <input name="address" class="form-input" placeholder="请输入详细住址" value="{{formData.address}}" bindinput="onInputChange" data-field="address"/>
+          </view>
+        </view>
+        
+        <view class="flex justify-end">
+          <button type="button" class="next-step blue-bg text-white" bindtap="nextStep">
+            下一步 <text class="iconfont icon-arrow-right ml-2"></text>
+          </button>
+        </view>
+      </view>
+      
+      <!-- 第二步：贷款信息 -->
+      <view class="form-step {{formStep === 1 ? 'active' : ''}}" id="step-2">
+        <view class="text-lg font-medium text-gray-900 mb-4">第二步：贷款信息</view>
+        
+        <view class="form-grid">
+          <view class="form-item">
+            <text class="form-label">申请金额（元）</text>
+            <input name="loanAmount" type="number" class="form-input" placeholder="请输入申请金额" value="{{formData.loanAmount}}" bindinput="onInputChange" data-field="loanAmount"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">申请期限</text>
+            <picker bindchange="onLoanTermChange" value="{{loanTermIndex}}" range="{{loanTerms}}">
+              <view class="picker-content">{{loanTerms[loanTermIndex]}}</view>
+            </picker>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">贷款用途</text>
+            <picker bindchange="onLoanPurposeInputChange" value="{{loanPurposeInputIndex}}" range="{{loanPurposeInputs}}">
+              <view class="picker-content">{{loanPurposeInputs[loanPurposeInputIndex]}}</view>
+            </picker>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">还款方式</text>
+            <picker bindchange="onRepaymentMethodChange" value="{{repaymentMethodIndex}}" range="{{repaymentMethods}}">
+              <view class="picker-content">{{repaymentMethods[repaymentMethodIndex]}}</view>
+            </picker>
+          </view>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">详细说明</text>
+          <textarea name="loanDescription" class="form-textarea" placeholder="请详细说明贷款用途及计划" value="{{formData.loanDescription}}" bindinput="onInputChange" data-field="loanDescription"></textarea>
+        </view>
+        
+        <view class="flex justify-between">
+          <button type="button" class="prev-step bg-gray-200 text-gray-700" bindtap="prevStep">
+            <text class="iconfont icon-arrow-left mr-2"></text> 上一步
+          </button>
+          <button type="button" class="next-step blue-bg text-white" bindtap="nextStep">
+            下一步 <text class="iconfont icon-arrow-right ml-2"></text>
+          </button>
+        </view>
+      </view>
+      
+      <!-- 第三步：资料上传 -->
+      <view class="form-step {{formStep === 2 ? 'active' : ''}}" id="step-3">
+        <view class="text-lg font-medium text-gray-900 mb-4">第三步：资料上传</view>
+        
+        <view class="mb-6">
+          <view class="text-sm text-gray-600 mb-4">请准备并上传以下资料，以加快审批进度</view>
+          
+          <view class="upload-grid">
+            <view class="upload-item">
+              <view class="upload-label">身份证照片</view>
+              <view class="upload-area" bindtap="chooseImage" data-type="idCard">
+                <view class="upload-placeholder" wx:if="{{!formData.idCardImage}}">
+                  <text class="iconfont icon-id-card"></text>
+                </view>
+                <image wx:else class="upload-preview" src="{{formData.idCardImage}}" mode="aspectFit"></image>
+              </view>
+              <view class="upload-btn">
+                <text class="iconfont icon-upload mr-2"></text>上传证件照
+              </view>
+            </view>
+            
+            <view class="upload-item">
+              <view class="upload-label">经营许可证</view>
+              <view class="upload-area" bindtap="chooseImage" data-type="businessLicense">
+                <view class="upload-placeholder" wx:if="{{!formData.businessLicenseImage}}">
+                  <text class="iconfont icon-file-contract"></text>
+                </view>
+                <image wx:else class="upload-preview" src="{{formData.businessLicenseImage}}" mode="aspectFit"></image>
+              </view>
+              <view class="upload-btn">
+                <text class="iconfont icon-upload mr-2"></text>上传许可证
+              </view>
+            </view>
+            
+            <view class="upload-item">
+              <view class="upload-label">财务报表</view>
+              <view class="upload-area" bindtap="chooseImage" data-type="financialDoc">
+                <view class="upload-placeholder" wx:if="{{!formData.financialDocImage}}">
+                  <text class="iconfont icon-file-invoice-dollar"></text>
+                </view>
+                <image wx:else class="upload-preview" src="{{formData.financialDocImage}}" mode="aspectFit"></image>
+              </view>
+              <view class="upload-btn">
+                <text class="iconfont icon-upload mr-2"></text>上传财务报表
+              </view>
+            </view>
+            
+            <view class="upload-item">
+              <view class="upload-label">其他证明材料</view>
+              <view class="upload-area" bindtap="chooseImage" data-type="otherDocs">
+                <view class="upload-placeholder" wx:if="{{!formData.otherDocsImage}}">
+                  <text class="iconfont icon-file-alt"></text>
+                </view>
+                <image wx:else class="upload-preview" src="{{formData.otherDocsImage}}" mode="aspectFit"></image>
+              </view>
+              <view class="upload-btn">
+                <text class="iconfont icon-upload mr-2"></text>上传其他材料
+              </view>
+            </view>
+          </view>
+        </view>
+        
+        <view class="flex justify-between">
+          <button type="button" class="prev-step bg-gray-200 text-gray-700" bindtap="prevStep">
+            <text class="iconfont icon-arrow-left mr-2"></text> 上一步
+          </button>
+          <button type="button" class="next-step blue-bg text-white" bindtap="nextStep">
+            下一步 <text class="iconfont icon-arrow-right ml-2"></text>
+          </button>
+        </view>
+      </view>
+      
+      <!-- 第四步：提交确认 -->
+      <view class="form-step {{formStep === 3 ? 'active' : ''}}" id="step-4">
+        <view class="text-lg font-medium text-gray-900 mb-4">第四步：提交确认</view>
+        
+        <view class="mb-6">
+          <view class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+            <view class="flex">
+              <text class="iconfont icon-check-circle text-green-600"></text>
+              <view class="ml-3">
+                <text class="text-sm text-green-700">您的贷款申请已准备就绪，请阅读以下条款并确认提交。</text>
+              </view>
+            </view>
+          </view>
+          
+          <view class="mb-4">
+            <view class="font-medium text-gray-900 mb-2">申请信息确认</view>
+            <view class="bg-gray-50 rounded-md p-4">
+              <view class="confirm-info-grid">
+                <view class="confirm-item">
+                  <text class="text-gray-600">申请人姓名：</text>
+                  <text class="text-gray-900 font-medium">{{formData.fullname}}</text>
+                </view>
+                <view class="confirm-item">
+                  <text class="text-gray-600">联系电话：</text>
+                  <text class="text-gray-900 font-medium">{{formData.mobile}}</text>
+                </view>
+                <view class="confirm-item">
+                  <text class="text-gray-600">贷款产品：</text>
+                  <text class="text-gray-900 font-medium">{{selectedProduct.name}}</text>
+                </view>
+                <view class="confirm-item">
+                  <text class="text-gray-600">申请金额：</text>
+                  <text class="text-gray-900 font-medium">{{formData.loanAmount}}元</text>
+                </view>
+                <view class="confirm-item">
+                  <text class="text-gray-600">贷款期限：</text>
+                  <text class="text-gray-900 font-medium">{{loanTerms[loanTermIndex]}}</text>
+                </view>
+                <view class="confirm-item">
+                  <text class="text-gray-600">贷款用途：</text>
+                  <text class="text-gray-900 font-medium">{{loanPurposeInputs[loanPurposeInputIndex]}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          
+          <view class="mb-4">
+            <view class="font-medium text-gray-900 mb-2">服务协议与隐私政策</view>
+            <scroll-view scroll-y="true" class="agreement-scroll">
+              <view class="text-sm text-gray-600">
+                <view>尊敬的用户，欢迎申请我行的助农贷款服务。在提交申请前，请仔细阅读以下条款：</view>
+                <view class="mt-2">1. 本人同意贵行及其合作机构获取、保存、使用本人的身份信息、联系方式等个人信息用于贷款审批及后续服务。</view>
+                <view class="mt-2">2. 本人保证所提供的所有申请资料均真实、准确、完整，如有虚假将承担相应法律责任。</view>
+                <view class="mt-2">3. 贵行有权根据本人的资信状况、还款能力等因素审批贷款，并有权决定是否发放贷款及贷款金额。</view>
+                <view class="mt-2">4. 本人了解贷款利率、期限、还款方式等信息，并同意按照合同约定履行还款义务。</view>
+                <view class="mt-2">5. 如本人未按期还款，贵行有权采取催收措施，并将逾期信息报送至人民银行征信系统，这将对本人的信用记录产生不良影响。</view>
+                <view class="mt-2">6. 本人知晓并同意贵行可能会通过电话、短信、电子邮件等方式向本人推送与贷款相关的信息。</view>
+              </view>
+            </scroll-view>
+            <checkbox-group bindchange="onAgreementChange">
+              <label class="custom-checkbox">
+                <checkbox value="agree" checked="{{formData.agreement}}" />
+                <text class="ml-2 text-sm text-gray-700">我已阅读并同意《助农贷款服务协议》和《个人信息保护政策》</text>
+              </label>
+            </checkbox-group>
+          </view>
+        </view>
+        
+        <view class="flex justify-between">
+          <button type="button" class="prev-step bg-gray-200 text-gray-700" bindtap="prevStep">
+            <text class="iconfont icon-arrow-left mr-2"></text> 上一步
+          </button>
+          <button formType="submit" class="blue-bg text-white py-2 px-6 rounded-md" disabled="{{!formData.agreement}}">
+            完成申请 <text class="iconfont icon-check-circle ml-2"></text>
+          </button>
+        </view>
+      </view>
+    </form>
+  </view>
+  
+  <!-- 提交成功页面 -->
+  <view class="success-page {{isSuccessVisible ? 'visible' : ''}}" id="success-page">
+    <view class="text-center py-12">
+      <view class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-green-100 mb-6">
+        <text class="iconfont icon-check-circle text-5xl text-green-600"></text>
+      </view>
+      <view class="text-2xl font-bold text-gray-900 mb-2">申请提交成功！</view>
+      <view class="text-gray-600 mb-6">我们已收到您的贷款申请，将在1-2个工作日内与您联系</view>
+      <view class="text-gray-600">申请编号：<text class="font-medium">{{applicationId}}</text></view>
+      <view class="mt-8">
+        <button class="blue-bg text-white py-2 px-6 rounded-md" bindtap="backToHome">
+          返回首页
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 优势宣传区域 -->
+  <view class="grid grid-cols-1 gap-6 mb-8">
+    <view class="bg-white rounded-lg shadow-md p-6 hover-scale">
+      <view class="flex items-center mb-4">
+        <view class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-primary text-white">
+          <text class="iconfont icon-bolt"></text>
+        </view>
+        <view class="ml-4 text-xl font-semibold text-gray-800">快速审批</view>
+      </view>
+      <view class="text-gray-600">专属绿色通道，最快24小时完成审批，3个工作日内放款到账，满足农时农事急需。</view>
+    </view>
+    
+    <view class="bg-white rounded-lg shadow-md p-6 hover-scale">
+      <view class="flex items-center mb-4">
+        <view class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-primary text-white">
+          <text class="iconfont icon-percentage"></text>
+        </view>
+        <view class="ml-4 text-xl font-semibold text-gray-800">优惠利率</view>
+      </view>
+      <view class="text-gray-600">享受政策性支持，利率低至3.2%起，多种贴息政策，为您的农业生产提供资金保障。</view>
+    </view>
+    
+    <view class="bg-white rounded-lg shadow-md p-6 hover-scale">
+      <view class="flex items-center mb-4">
+        <view class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-primary text-white">
+          <text class="iconfont icon-shield-alt"></text>
+        </view>
+        <view class="ml-4 text-xl font-semibold text-gray-800">安全保障</view>
+      </view>
+      <view class="text-gray-600">银行直接合作，资金安全有保障，全程专人对接服务，定期回访及农业技术支持。</view>
+    </view>
+  </view>
+
+  <!-- 合作银行展示 -->
+  <view class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <view class="text-2xl font-bold text-gray-800 mb-4">合作银行</view>
+    <view class="grid grid-cols-2 gap-6">
+      <view wx:for="{{banks}}" wx:key="index" class="flex items-center justify-center h-16 bg-gray-50 rounded-md">
+        <text class="text-gray-700 font-medium">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 页脚 -->
+  <view class="blue-gradient text-white rounded-lg shadow-lg p-6">
+    <view class="mb-4">
+      <view class="text-lg font-bold mb-4">联系我们</view>
+      <view class="flex items-center mb-2">
+        <text class="iconfont icon-phone-alt mr-2"></text>
+        <text>客服热线：400-888-XXXX</text>
+      </view>
+      <view class="flex items-center mb-2">
+        <text class="iconfont icon-envelope mr-2"></text>
+        <text>邮箱：support@example.com</text>
+      </view>
+      <view class="flex items-center">
+        <text class="iconfont icon-map-marker-alt mr-2"></text>
+        <text>地址：某省某市某区某街道XX号</text>
+      </view>
+    </view>
+    
+    <view class="mb-4">
+      <view class="text-lg font-bold mb-4">服务时间</view>
+      <view class="mb-2">工作日：9:00-18:00</view>
+      <view class="mb-2">节假日：9:00-17:00</view>
+      <view>紧急情况24小时响应</view>
+    </view>
+    
+    <view class="mb-4">
+      <view class="text-lg font-bold mb-4">关注我们</view>
+      <view class="flex space-x-4">
+        <view class="hover:text-light">
+          <text class="iconfont icon-weixin text-2xl"></text>
+        </view>
+        <view class="hover:text-light">
+          <text class="iconfont icon-weibo text-2xl"></text>
+        </view>
+      </view>
+      <view class="mt-4 text-sm opacity-90">扫描二维码关注官方公众号</view>
+    </view>
+    
+    <view class="mt-8 pt-6 border-t border-blue-400 text-center">
+      <view class="text-sm opacity-90">© 2023 助农贷款服务平台 版权所有</view>
+    </view>
+  </view>
+</view>

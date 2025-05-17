@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "智慧收入",
+  "navigationBarBackgroundColor": "#1e3a8a",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#111827",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "ec-canvas": "../../ec-canvas/ec-canvas"
+  }
+}

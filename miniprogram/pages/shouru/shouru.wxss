@@ -1,0 +1,423 @@
+/* 全局样式 */
+page {
+  background-color: #111827;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+  padding-bottom: 30rpx;
+}
+
+/* 顶部导航 */
+.header {
+  background-color: #1e3a8a;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 10;
+  margin-bottom: 0;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Hero Section 样式 */
+.hero-section {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+}
+
+.hero-content {
+  z-index: 10;
+  position: relative;
+  text-align: center;
+  padding: 0 40rpx;
+}
+
+.hero-title {
+  font-size: 70rpx;
+  font-weight: bold;
+  margin-bottom: 24rpx;
+}
+
+.hero-subtitle {
+  font-size: 36rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 48rpx;
+}
+
+.btn-container {
+  margin-top: 50rpx;
+}
+
+.apple-button {
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  padding: 24rpx 48rpx;
+  border-radius: 48rpx;
+  font-weight: 500;
+  display: inline-block;
+  box-shadow: 0 8rpx 24rpx rgba(59, 130, 246, 0.3);
+}
+
+/* 总体概览部分 */
+.section {
+  padding: 80rpx 30rpx;
+}
+
+.bg-dark {
+  background-color: #1a202c;
+}
+
+.ai-bg {
+  background: linear-gradient(to bottom, #111827, #1e293b);
+  position: relative;
+}
+
+.ai-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://i-blog.csdnimg.cn/direct/ea6ac207b6a445c68644407d068fc01a.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.future-bg {
+  background: linear-gradient(to bottom, #1a202c, #0f172a);
+}
+
+.section-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 60rpx;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -20rpx;
+  left: 0;
+  width: 120rpx;
+  height: 8rpx;
+  background-color: #5ac8fa;
+  border-radius: 4rpx;
+}
+
+/* 统计卡片样式 */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+  margin-bottom: 60rpx;
+}
+
+.stat-card {
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 24rpx;
+  backdrop-filter: blur(16rpx);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 30rpx;
+}
+
+.stat-label {
+  color: rgba(229, 231, 235, 0.8);
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}
+
+.stat-value-container {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 16rpx;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
+.stat-unit {
+  font-size: 30rpx;
+  margin-left: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.stat-change {
+  display: flex;
+  align-items: center;
+}
+
+.text-green {
+  color: #34d399;
+}
+
+.text-blue {
+  color: #3b82f6;
+}
+
+.stat-change-label {
+  color: rgba(229, 231, 235, 0.7);
+  font-size: 24rpx;
+  margin-left: 16rpx;
+}
+
+/* 数据卡片样式 */
+.data-card {
+  background-color: rgba(31, 41, 55, 0.8);
+  border-radius: 32rpx;
+  backdrop-filter: blur(20rpx);
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
+  padding: 40rpx;
+  margin-bottom: 60rpx;
+  overflow: hidden;
+}
+
+.card-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+.chart-container {
+  height: 700rpx;
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+
+.chart-large {
+  height: 1000rpx;
+}
+
+.data-source {
+  color: rgba(229, 231, 235, 0.6);
+  font-size: 24rpx;
+  text-align: right;
+}
+
+/* 图表网格样式 */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40rpx;
+}
+
+/* 表格样式 */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 30rpx;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header {
+  font-weight: 500;
+}
+
+.th, .td {
+  padding: 24rpx 30rpx;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.th {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #fff;
+}
+
+/* AI 洞察卡片样式 */
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30rpx;
+}
+
+.ai-insight-card {
+  background: linear-gradient(135deg, rgba(52, 199, 89, 0.15) 0%, rgba(64, 200, 224, 0.15) 100%);
+  border-radius: 24rpx;
+  border-left: 8rpx solid #34d399;
+  padding: 30rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.insight-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.insight-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.robot {
+  background-color: #34d399;
+}
+
+.chart {
+  background-color: #3b82f6;
+}
+
+.map {
+  background-color: #8b5cf6;
+}
+
+.bulb {
+  background-color: #fbbf24;
+}
+
+.warning {
+  background-color: #ef4444;
+}
+
+.insight-title {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.insight-content {
+  font-size: 28rpx;
+  color: rgba(229, 231, 235, 0.8);
+  line-height: 1.6;
+}
+
+/* 任务列表样式 */
+.task-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30rpx;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.task-icon {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: #34d399;
+  margin-right: 20rpx;
+  margin-top: 6rpx;
+  flex-shrink: 0;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-title {
+  font-weight: 600;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+
+.task-desc {
+  color: rgba(229, 231, 235, 0.7);
+  font-size: 28rpx;
+}
+
+/* 页脚样式 */
+.footer {
+  background-color: #0f172a;
+  padding: 60rpx 30rpx;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.footer-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.footer-source {
+  color: rgba(229, 231, 235, 0.6);
+  font-size: 28rpx;
+  margin-bottom: 30rpx;
+}
+
+.footer-copyright {
+  color: rgba(229, 231, 235, 0.4);
+  font-size: 24rpx;
+}
+
+/* 媒体查询 - 用于平板和桌面设备 */
+@media (min-width: 768px) {
+  .stat-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .chart-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .insight-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* ec-canvas组件样式 */
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}

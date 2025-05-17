@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧经济数据中心</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-blue: #0e3c63;
+            --secondary-blue: #1e5d94;
+            --accent-green: #42c28c;
+            --accent-cyan: #4fd8f5;
+            --bg-dark: #031929;
+            --bg-light: #f8fcff;
+            --text-light: #e6f0fa;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+            background-color: #fff;
+        }
+
+        .hero-background {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-background::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .data-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .parallax {
+            will-change: transform;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        thead th {
+            background-color: var(--primary-blue);
+            color: white;
+            font-weight: 500;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .chart-container {
+            height: 400px;
+            width: 100%;
+            margin: 30px 0;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-green);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .glow-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: rotate(30deg);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .glow-card:hover::before {
+            opacity: 1;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .vertical-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-green);
+        }
+
+        .blurred-bg {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            width: 0%;
+            transition: width 1.5s ease;
+        }
+
+        /* Wave animation */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.35' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,208C960,192,1056,160,1152,154.7C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            animation: wave-animation 20s linear infinite;
+        }
+
+        @keyframes wave-animation {
+            0% {
+                background-position-x: 0;
+            }
+
+            100% {
+                background-position-x: 1440px;
+            }
+        }
+
+        #digital-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .highlight-box {
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            bottom: -2px;
+            left: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--accent-green), var(--accent-cyan));
+            border-radius: 16px;
+        }
+
+        .highlight-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            background: white;
+            border-radius: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <header class="sticky-nav shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/leafy-green.svg" alt="智慧经济"
+                        class="h-10 mr-3 text-green-500">
+                    <h1 class="text-2xl font-bold text-gray-800">智慧经济 <span class="text-green-500">数据中心</span></h1>
+                </div>
+                <nav>
+                    <ul class="flex space-x-8">
+                        <li><a href="#overview" class="nav-link text-gray-700 hover:text-green-500">数据概览</a></li>
+                        <li><a href="#analysis" class="nav-link text-gray-700 hover:text-green-500">经济分析</a></li>
+                        <li><a href="#ai-village" class="nav-link text-gray-700 hover:text-green-500">AI赋能乡村</a></li>
+                        <li><a href="#case-studies" class="nav-link text-gray-700 hover:text-green-500">案例展示</a></li>
+                        <li><a href="#forecast" class="nav-link text-gray-700 hover:text-green-500">发展趋势</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero-background text-white py-28 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-6 animate-on-scroll" data-delay="0">
+                        智慧经济<br><span class="gradient-text">驱动乡村振兴</span>
+                    </h1>
+                    <p class="text-lg mb-8 text-gray-200 animate-on-scroll" data-delay="200">
+                        通过数据驱动和人工智能技术，构建创新农业生态系统，释放乡村发展潜能，实现经济高质量增长
+                    </p>
+                    <div class="flex space-x-4 animate-on-scroll" data-delay="400">
+                        <button
+                            class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            查看数据分析
+                        </button>
+                        <button
+                            class="border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-900 transition duration-300 ease-in-out transform hover:scale-105">
+                            <i class="fas fa-play-circle mr-2"></i>
+                            观看演示
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative floating animate-on-scroll" data-delay="600">
+                    <img src="https://agrmeta.com/static/picture/pocture/gbznt.png" alt="智慧农业数字平台"
+                        class="rounded-lg shadow-2xl w-full">
+                    <div
+                        class="absolute -bottom-10 -right-10 bg-white p-4 rounded-lg shadow-lg blurred-bg hidden md:block">
+                        <div class="flex items-center">
+                            <div class="bg-green-500 p-3 rounded-full mr-4">
+                                <i class="fas fa-robot text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">AI智能分析</h3>
+                                <p class="text-sm text-gray-600">实时监测农业生产数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="wave"></div>
+
+        <div id="digital-particles"></div>
+    </section>
+
+    <!-- 数据概览 -->
+    <section id="overview" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-2 text-center">数据概览</h2>
+            <p class="text-gray-600 text-center mb-12">全面呈现智慧乡村建设的核心数据指标</p>
+
+            <div class="grid md:grid-cols-4 gap-8 mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-6 data-card animate-on-scroll" data-delay="0">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-gray-800">数字化农村覆盖率</h3>
+                            <div class="stat-number" id="coverage">92<span class="text-2xl">%</span></div>
+                            <p class="text-green-500 text-sm">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                较上年增长 8.4%
+                            </p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-wifi text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" data-target="92"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 data-card animate-on-scroll" data-delay="200">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-gray-800">AI农业应用普及率</h3>
+                            <div class="stat-number" id="ai-adoption">63<span class="text-2xl">%</span></div>
+                            <p class="text-green-500 text-sm">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                较上年增长 15.2%
+                            </p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-microchip text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" data-target="63"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 data-card animate-on-scroll" data-delay="400">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-gray-800">数据平台项目数</h3>
+                            <div class="stat-number" id="projects">2,500<span class="text-2xl">+</span></div>
+                            <p class="text-green-500 text-sm">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                年增长率 24.6%
+                            </p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-project-diagram text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" data-target="80"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 data-card animate-on-scroll" data-delay="600">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-gray-800">农产效益提升</h3>
+                            <div class="stat-number" id="efficiency">38<span class="text-2xl">%</span></div>
+                            <p class="text-green-500 text-sm">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                较传统农业
+                            </p>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <i class="fas fa-seedling text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" data-target="38"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl p-8 animate-on-scroll" data-delay="800">
+                <h3 class="text-2xl font-bold mb-6">全国智慧农业建设进度</h3>
+                <div class="table-container">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>地区</th>
+                                <th>覆盖村庄数</th>
+                                <th>数字化程度</th>
+                                <th>AI应用数量</th>
+                                <th>年增长率</th>
+                                <th>实施进度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>华东地区</td>
+                                <td>12,458</td>
+                                <td>87%</td>
+                                <td>356</td>
+                                <td>26.4%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 87%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>华北地区</td>
+                                <td>9,845</td>
+                                <td>76%</td>
+                                <td>287</td>
+                                <td>22.7%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 76%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>华南地区</td>
+                                <td>8,762</td>
+                                <td>92%</td>
+                                <td>423</td>
+                                <td>31.2%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>西北地区</td>
+                                <td>5,124</td>
+                                <td>64%</td>
+                                <td>184</td>
+                                <td>18.5%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 64%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>西南地区</td>
+                                <td>6,837</td>
+                                <td>71%</td>
+                                <td>226</td>
+                                <td>24.8%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 71%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>东北地区</td>
+                                <td>7,291</td>
+                                <td>68%</td>
+                                <td>195</td>
+                                <td>19.3%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 68%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>华中地区</td>
+                                <td>10,438</td>
+                                <td>83%</td>
+                                <td>312</td>
+                                <td>27.9%</td>
+                                <td>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 83%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 经济分析 -->
+    <section id="analysis" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-2 text-center">智慧经济分析</h2>
+            <p class="text-gray-600 text-center mb-16">基于大数据分析的乡村经济发展态势</p>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/2 animate-on-scroll" data-delay="0">
+                    <div class="bg-white rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">乡村GDP增长趋势</h3>
+                        <div id="gdp-chart" class="chart-container"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 animate-on-scroll" data-delay="300">
+                    <div class="bg-white rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">产业结构分布</h3>
+                        <div id="industry-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/2 animate-on-scroll" data-delay="600">
+                    <div class="bg-white rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">智慧农业投资回报率</h3>
+                        <div id="roi-chart" class="chart-container"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 animate-on-scroll" data-delay="900">
+                    <div class="bg-white rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">数字技术普及率</h3>
+                        <div id="tech-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI赋能乡村 -->
+    <section id="ai-village" class="py-20 bg-blue-900 text-white relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <h2 class="text-3xl font-bold mb-2 text-center">AI赋能乡村</h2>
+            <p class="text-blue-200 text-center mb-16">人工智能如何重塑乡村经济生态</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="0">
+                    <div class="bg-green-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-leaf text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">精准农业</h3>
+                    <p class="text-blue-100 mb-4">AI算法分析土壤、气候和作物生长数据，优化灌溉和施肥策略，提高作物产量达38%，减少资源浪费</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-chart-line text-green-400 mr-1"></i>
+                            <span>效率提升 42%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-water text-green-400 mr-1"></i>
+                            <span>节水 35%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="300">
+                    <div class="bg-blue-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">智能病虫害识别</h3>
+                    <p class="text-blue-100 mb-4">结合计算机视觉和深度学习模型，实现对农作物病害的早期识别，准确率达96%，大幅降低农作物损失</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-bug text-blue-400 mr-1"></i>
+                            <span>损失降低 67%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-vial text-blue-400 mr-1"></i>
+                            <span>减少农药 53%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="600">
+                    <div class="bg-purple-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-chart-pie text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">市场预测分析</h3>
+                    <p class="text-blue-100 mb-4">基于大数据分析和AI预测模型，帮助农户了解市场需求趋势，优化种植计划和销售策略，提高收益率</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-coins text-purple-400 mr-1"></i>
+                            <span>收入增长 48%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-bullseye text-purple-400 mr-1"></i>
+                            <span>预测准确率 89%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="900">
+                    <div class="bg-yellow-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-tractor text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">智能农机协同</h3>
+                    <p class="text-blue-100 mb-4">通过5G和物联网技术，实现农机智能协同和远程操控，解决劳动力短缺问题，提升作业精度和效率</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-user-clock text-yellow-400 mr-1"></i>
+                            <span>劳力减少 62%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-tools text-yellow-400 mr-1"></i>
+                            <span>操作精度 95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="1200">
+                    <div class="bg-red-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-cloud-sun-rain text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">气候风险预警</h3>
+                    <p class="text-blue-100 mb-4">利用机器学习分析气象数据和历史灾害记录，建立精准气候预警系统，提前应对自然灾害和极端天气</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-shield-alt text-red-400 mr-1"></i>
+                            <span>灾害损失降低 56%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-clock text-red-400 mr-1"></i>
+                            <span>预警提前 72小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20 animate-on-scroll"
+                    data-delay="1500">
+                    <div class="bg-indigo-500 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-hand-holding-usd text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">普惠金融服务</h3>
+                    <p class="text-blue-100 mb-4">基于农户生产数据和信用评分模型，提供精准的普惠金融服务，解决小农户融资难题，促进产业升级</p>
+                    <div class="flex items-center text-sm">
+                        <div class="flex mr-4">
+                            <i class="fas fa-university text-indigo-400 mr-1"></i>
+                            <span>融资可得性提升 78%</span>
+                        </div>
+                        <div class="flex">
+                            <i class="fas fa-percentage text-indigo-400 mr-1"></i>
+                            <span>贷款利率降低 2.7%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 背景元素 -->
+        <div class="absolute top-0 right-0 w-1/2 h-full opacity-10">
+            <img src="https://img.taotu.cn/ssd/ssd3/57/2023-07-31/57_a682b1ad7d81009d82754e3c37d7eae4.png"
+                class="w-full h-full object-cover" alt="数字农业背景">
+        </div>
+    </section>
+
+    <!-- 案例展示 -->
+    <section id="case-studies" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-2 text-center">智慧经济典型案例</h2>
+            <p class="text-gray-600 text-center mb-16">实践中的数据驱动与AI赋能</p>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="flex flex-col animate-on-scroll" data-delay="0">
+                    <div class="relative">
+                        <img src="https://www.daqvision.com/hqgw/2023/02/16/4413c651861741ccb516aaf9a61f30d2.png"
+                            alt="智慧农业大数据平台" class="w-full h-80 object-cover rounded-t-lg">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm">浙江省金华市</span>
+                            <h3 class="text-white text-2xl font-bold mt-2">智慧农业大数据平台</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-b-lg shadow-lg flex-grow">
+                        <p class="text-gray-700 mb-6">
+                            该平台整合了土壤监测、气象数据、作物生长监测等多维数据，通过AI算法为当地农户提供精准种植指导。实施一年后，农产品产量提高32%，品质提升28%，农药使用量减少45%。</p>
+                        <div class="mt-4 flex space-x-4">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-server text-blue-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">数据接入点：1,458个</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-users text-green-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">覆盖农户：12,345户</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col animate-on-scroll" data-delay="300">
+                    <div class="relative">
+                        <img src="https://i-blog.csdnimg.cn/img_convert/4f743fd8d722322beb847b20f6a0b8b1.jpeg"
+                            alt="数字乡村治理系统" class="w-full h-80 object-cover rounded-t-lg">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">山东省烟台市</span>
+                            <h3 class="text-white text-2xl font-bold mt-2">数字乡村治理系统</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-b-lg shadow-lg flex-grow">
+                        <p class="text-gray-700 mb-6">
+                            该系统基于"知农AI农"平台构建，通过数字孪生技术建立乡村虚拟模型，实现资源配置优化、环境监测和公共服务智能化管理。系统上线后，行政效率提升65%，居民满意度提高38个百分点。</p>
+                        <div class="mt-4 flex space-x-4">
+                            <div class="flex items-center">
+                                <div class="bg-purple-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-building text-purple-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">覆盖村庄：156个</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-yellow-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-cog text-yellow-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">智能决策支持：93%准确率</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col animate-on-scroll" data-delay="600">
+                    <div class="relative">
+                        <img src="https://www.cdcbj.com/agriculture/village/images/lunbo5.jpg" alt="海洋牧场智能平台"
+                            class="w-full h-80 object-cover rounded-t-lg">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                            <span class="bg-cyan-500 text-white px-3 py-1 rounded-full text-sm">福建省福州市</span>
+                            <h3 class="text-white text-2xl font-bold mt-2">海洋牧场智能平台</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-b-lg shadow-lg flex-grow">
+                        <p class="text-gray-700 mb-6">
+                            该平台结合水质监测设备和AI分析系统，实现海洋养殖环境的智能监测和预警。系统通过分析水质参数和生物活动数据，自动调控养殖条件，有效提高了海产品质量和产量。</p>
+                        <div class="mt-4 flex space-x-4">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-fish text-blue-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">产量提升：46%</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-water text-green-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">水质监测点：248个</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col animate-on-scroll" data-delay="900">
+                    <div class="relative">
+                        <img src="https://img.taotu.cn/ssd/ssd3/57/2023-07-31/57_5b6421e87f5960b69b4a804741f18286.jpg"
+                            alt="富慧养AI养殖系统" class="w-full h-80 object-cover rounded-t-lg">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-6">
+                            <span class="bg-pink-500 text-white px-3 py-1 rounded-full text-sm">四川省成都市</span>
+                            <h3 class="text-white text-2xl font-bold mt-2">富慧养AI养殖系统</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-b-lg shadow-lg flex-grow">
+                        <p class="text-gray-700 mb-6">
+                            依托大数据分析和物联网技术，该系统实现了养殖环境的智能调控和动物健康的实时监测。通过从田间到餐桌的全程可追溯性，有效提升了养殖效率和产品质量安全。</p>
+                        <div class="mt-4 flex space-x-4">
+                            <div class="flex items-center">
+                                <div class="bg-red-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-heartbeat text-red-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">疾病预警准确率：94%</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-orange-100 p-2 rounded-full mr-2">
+                                    <i class="fas fa-piggy-bank text-orange-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">成本降低：34%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 发展趋势 -->
+    <section id="forecast" class="py-20 bg-gradient-to-b from-white to-blue-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-2 text-center">智慧经济发展趋势</h2>
+            <p class="text-gray-600 text-center mb-16">前瞻技术引领乡村经济新篇章</p>
+
+            <div class="relative">
+                <div class="absolute top-0 left-0 w-1 h-full bg-blue-200 rounded-full"></div>
+
+                <div class="relative pl-8 mb-16 animate-on-scroll" data-delay="0">
+                    <div class="absolute left-0 top-0 w-5 h-5 bg-blue-600 rounded-full -ml-2 border-4 border-white">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">1. AI与物联网深度融合</h3>
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:w-2/3 md:pr-6">
+                                <p class="text-gray-700 mb-4">
+                                    随着5G技术的普及和AI算法的不断优化，物联网设备与人工智能的深度融合将为乡村智慧经济带来革命性变化。智能传感器网络将实现农田、养殖场、加工厂等全环节的实时监测和自动化控制。
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">边缘计算</span>
+                                    <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">实时决策</span>
+                                    <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">自主控制</span>
+                                    <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">全场景覆盖</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-chart-line mr-2 text-blue-500"></i>
+                                    <span>预计到2027年，农业物联网设备将达到7500万个，年复合增长率42.3%</span>
+                                </div>
+                            </div>
+                            <div class="md:w-1/3 mt-4 md:mt-0 flex justify-center items-center">
+                                <div class="w-24 h-24 rounded-full bg-blue-100 flex justify-center items-center">
+                                    <i class="fas fa-microchip text-4xl text-blue-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-8 mb-16 animate-on-scroll" data-delay="300">
+                    <div class="absolute left-0 top-0 w-5 h-5 bg-green-600 rounded-full -ml-2 border-4 border-white">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">2. 区块链驱动的农产品溯源体系</h3>
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:w-2/3 md:pr-6">
+                                <p class="text-gray-700 mb-4">
+                                    区块链技术将构建从生产到销售的全链条透明溯源系统，重塑农产品价值链。消费者可以通过扫码了解产品的完整生产过程，包括种植环境、用药记录和质量检测结果，建立农产品品牌信任体系。
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">不可篡改</span>
+                                    <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">信息共享</span>
+                                    <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">质量认证</span>
+                                    <span
+                                        class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">供应链优化</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-chart-line mr-2 text-green-500"></i>
+                                    <span>农产品因区块链溯源实现的溢价率平均提升36%</span>
+                                </div>
+                            </div>
+                            <div class="md:w-1/3 mt-4 md:mt-0 flex justify-center items-center">
+                                <div class="w-24 h-24 rounded-full bg-green-100 flex justify-center items-center">
+                                    <i class="fas fa-link text-4xl text-green-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-8 mb-16 animate-on-scroll" data-delay="600">
+                    <div class="absolute left-0 top-0 w-5 h-5 bg-purple-600 rounded-full -ml-2 border-4 border-white">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">3. 数字孪生乡村治理</h3>
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:w-2/3 md:pr-6">
+                                <p class="text-gray-700 mb-4">
+                                    通过构建乡村的数字孪生模型，将物理世界与数字世界深度融合，实现对乡村治理、资源分配和基础设施的精细化管理。未来，乡村决策者可以在虚拟环境中预先评估政策效果和规划方案。
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span
+                                        class="bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full">虚实结合</span>
+                                    <span
+                                        class="bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full">动态监测</span>
+                                    <span
+                                        class="bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full">决策优化</span>
+                                    <span
+                                        class="bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full">资源协同</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-chart-line mr-2 text-purple-500"></i>
+                                    <span>数字孪生技术应用可提升乡村规划效率54%，减少资源浪费28%</span>
+                                </div>
+                            </div>
+                            <div class="md:w-1/3 mt-4 md:mt-0 flex justify-center items-center">
+                                <div class="w-24 h-24 rounded-full bg-purple-100 flex justify-center items-center">
+                                    <i class="fas fa-clone text-4xl text-purple-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-8 animate-on-scroll" data-delay="900">
+                    <div class="absolute left-0 top-0 w-5 h-5 bg-orange-600 rounded-full -ml-2 border-4 border-white">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">4. 智能化乡村创新创业生态</h3>
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:w-2/3 md:pr-6">
+                                <p class="text-gray-700 mb-4">
+                                    依托云计算和共享经济模式，乡村将形成更加开放和创新的创业生态。通过远程办公、在线培训和知识共享，城乡人才流动将更加便捷，促进技术与资本向乡村地区流动。</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span
+                                        class="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">人才回流</span>
+                                    <span
+                                        class="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">知识共享</span>
+                                    <span
+                                        class="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">创业孵化</span>
+                                    <span
+                                        class="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">融资渠道</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-chart-line mr-2 text-orange-500"></i>
+                                    <span>数字技能培训覆盖乡村人口比例将从当前15%提升至2026年的45%</span>
+                                </div>
+                            </div>
+                            <div class="md:w-1/3 mt-4 md:mt-0 flex justify-center items-center">
+                                <div class="w-24 h-24 rounded-full bg-orange-100 flex justify-center items-center">
+                                    <i class="fas fa-lightbulb text-4xl text-orange-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="bg-white rounded-2xl shadow-xl p-8 highlight-box">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-2/3 md:pr-8">
+                        <h2 class="text-2xl font-bold mb-4">深入了解智慧经济解决方案</h2>
+                        <p class="text-gray-600 mb-6">我们致力于通过数据和AI技术推动乡村智慧经济发展，为您提供全方位的技术支持和咨询服务。</p>
+                        <div class="flex space-x-4">
+                            <button
+                                class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-3 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                联系我们
+                            </button>
+                            <button
+                                class="border border-blue-800 text-blue-800 px-6 py-3 rounded-lg hover:bg-blue-50 transition duration-300 ease-in-out transform hover:scale-105">
+                                <i class="fas fa-download mr-2"></i>
+                                下载白皮书
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/3 mt-8 md:mt-0">
+                        <div class="pulse">
+                            <img src="https://pic1.zhimg.com/v2-851f8792cc5bda2269a989cfcc25e3f8_1440w.jpg"
+                                alt="智慧经济解决方案" class="rounded-lg shadow-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-4">关于我们</h3>
+                    <p class="text-gray-400 text-sm">
+                        智慧经济数据中心致力于通过大数据、人工智能和物联网技术赋能乡村振兴，推动乡村经济高质量发展。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">解决方案</h3>
+                    <ul class="text-gray-400 text-sm">
+                        <li class="mb-2"><a href="#" class="hover:text-white">智慧农业平台</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">数字乡村建设</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">农业大数据分析</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">AI赋能农业</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">资源中心</h3>
+                    <ul class="text-gray-400 text-sm">
+                        <li class="mb-2"><a href="#" class="hover:text-white">技术白皮书</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">案例研究</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">行业报告</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">数据开放平台</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">联系我们</h3>
+                    <ul class="text-gray-400 text-sm">
+                        <li class="mb-2 flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2 text-green-500"></i>
+                            北京市海淀区中关村创新中心
+                        </li>
+                        <li class="mb-2 flex items-center">
+                            <i class="fas fa-phone mr-2 text-green-500"></i>
+                            400-123-4567
+                        </li>
+                        <li class="mb-2 flex items-center">
+                            <i class="fas fa-envelope mr-2 text-green-500"></i>
+                            contact@smart-rural.cn
+                        </li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-bilibili text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm">© 2025 智慧经济数据中心 版权所有</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-500 text-sm hover:text-white">隐私政策</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-white">使用条款</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-white">网站地图</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化动画
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化滚动动画
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = entry.target.dataset.delay || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, delay);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // 初始化进度条动画
+            const progressBars = document.querySelectorAll('.progress-bar-fill');
+
+            const progressObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target.dataset.target || 0;
+                        entry.target.style.width = `${target}%`;
+                        progressObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            progressBars.forEach(bar => {
+                progressObserver.observe(bar);
+            });
+
+            // 初始化数字动画
+            const statsElements = document.querySelectorAll('.stat-number');
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const id = el.id;
+                        let value = parseInt(el.innerText);
+
+                        if (id === 'projects') {
+                            value = 2500;
+                            new CountUp(id, 0, value, 0, 2.5, {
+                                suffix: '+'
+                            }).start();
+                        } else {
+                            new CountUp(id, 0, value, 0, 2.5).start();
+                        }
+
+                        statsObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            statsElements.forEach(stat => {
+                statsObserver.observe(stat);
+            });
+
+            // 初始化图表
+            initCharts();
+        });
+
+        // 图表初始化
+        function initCharts() {
+            // GDP增长趋势图
+            const gdpChart = echarts.init(document.getElementById('gdp-chart'));
+            const gdpOption = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['传统农业GDP', '智慧农业GDP']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2020', '2021', '2022', '2023', '2024', '2025']
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '亿元'
+                },
+                series: [
+                    {
+                        name: '传统农业GDP',
+                        type: 'line',
+                        data: [542, 568, 587, 603, 618, 634],
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: '#8da0cb'
+                        },
+                        itemStyle: {
+                            color: '#8da0cb'
+                        }
+                    },
+                    {
+                        name: '智慧农业GDP',
+                        type: 'line',
+                        data: [125, 185, 278, 425, 612, 847],
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: '#42c28c'
+                        },
+                        itemStyle: {
+                            color: '#42c28c'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(66, 194, 140, 0.3)' },
+                                { offset: 1, color: 'rgba(66, 194, 140, 0.1)' }
+                            ])
+                        }
+                    }
+                ]
+            };
+            gdpChart.setOption(gdpOption);
+
+            // 产业结构分布图
+            const industryChart = echarts.init(document.getElementById('industry-chart'));
+            const industryOption = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: '产业结构分布',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '18',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 32, name: '智慧种植' },
+                            { value: 26, name: '智慧养殖' },
+                            { value: 18, name: '农产品加工' },
+                            { value: 14, name: '农村电商' },
+                            { value: 10, name: '乡村旅游' }
+                        ]
+                    }
+                ]
+            };
+            industryChart.setOption(industryOption);
+
+            // 智慧农业投资回报率图
+            const roiChart = echarts.init(document.getElementById('roi-chart'));
+            const roiOption = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '投资回报率(%)',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['智能灌溉系统', '病虫害预警', '无人机植保', '智能温室', '精准施肥']
+                },
+                series: [
+                    {
+                        name: '1年内',
+                        type: 'bar',
+                        data: [18, 22, 15, 12, 20],
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{c}%'
+                        },
+                        itemStyle: {
+                            color: '#66c2a5'
+                        }
+                    },
+                    {
+                        name: '3年内',
+                        type: 'bar',
+                        data: [32, 45, 37, 28, 42],
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{c}%'
+                        },
+                        itemStyle: {
+                            color: '#8da0cb'
+                        }
+                    }
+                ]
+            };
+            roiChart.setOption(roiOption);
+
+            // 数字技术普及率图
+            const techChart = echarts.init(document.getElementById('tech-chart'));
+            const techOption = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                radar: {
+                    indicator: [
+                        { name: '大数据', max: 100 },
+                        { name: 'AI应用', max: 100 },
+                        { name: '物联网', max: 100 },
+                        { name: '5G覆盖', max: 100 },
+                        { name: '区块链', max: 100 },
+                        { name: '数字孪生', max: 100 }
+                    ],
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: ['rgba(250, 250, 250, 0.05)', 'rgba(200, 200, 200, 0.05)']
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '技术普及率',
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [85, 65, 78, 92, 42, 38],
+                                name: '当前普及率',
+                                symbol: 'circle',
+                                symbolSize: 8,
+                                lineStyle: {
+                                    width: 2,
+                                    color: '#42c28c'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(66, 194, 140, 0.3)' },
+                                        { offset: 1, color: 'rgba(66, 194, 140, 0.1)' }
+                                    ])
+                                },
+                                itemStyle: {
+                                    color: '#42c28c'
+                                }
+                            },
+                            {
+                                value: [95, 88, 90, 98, 75, 72],
+                                name: '2027年目标',
+                                symbol: 'circle',
+                                symbolSize: 8,
+                                lineStyle: {
+                                    type: 'dashed',
+                                    width: 2,
+                                    color: '#4fd8f5'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(79, 216, 245, 0.3)' },
+                                        { offset: 1, color: 'rgba(79, 216, 245, 0.1)' }
+                                    ])
+                                },
+                                itemStyle: {
+                                    color: '#4fd8f5'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+            techChart.setOption(techOption);
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', function () {
+                gdpChart.resize();
+                industryChart.resize();
+                roiChart.resize();
+                techChart.resize();
+            });
+        }
+
+        // 数字粒子背景效果
+        function createDigitalParticles() {
+            const canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = document.getElementById('digital-particles').offsetHeight;
+            document.getElementById('digital-particles').appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            const particles = [];
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.speedY = Math.random() * 1 - 0.5;
+                    this.character = Math.random() > 0.5 ? '1' : '0';
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.y > canvas.height) this.y = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                }
+
+                draw() {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.font = `${this.size}px Arial`;
+                    ctx.fillText(this.character, this.x, this.y);
+                }
+            }
+
+            function init() {
+                for (let i = 0; i < 100; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            init();
+            animate();
+
+            window.addEventListener('resize', function () {
+                canvas.width = window.innerWidth;
+                canvas.height = document.getElementById('digital-particles').offsetHeight;
+            });
+        }
+
+        createDigitalParticles();
+    </script>
+</body>
+
+</html>

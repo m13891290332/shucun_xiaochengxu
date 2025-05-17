@@ -1,0 +1,24 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chanye/chanye",
+    "pages/jingji/jingji",
+    "pages/shouru/shouru",
+    "pages/zhushou/zhushou",
+    "pages/analysis/analysis",
+    "pages/gongxu/gongxu",
+    "pages/lvyou/lvyou",
+    "pages/daikuan/daikuan",
+    "pages/news/news",
+    "pages/cooperation/cooperation",
+    "pages/contactus/contactus"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "数村小程序",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

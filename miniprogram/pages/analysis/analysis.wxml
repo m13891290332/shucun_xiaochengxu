@@ -1,0 +1,267 @@
+<view class="container">
+  <view class="header">
+    <text class="title">农产品数据分析平台</text>
+    <navigator url="/pages/index/index" class="back-button">返回首页</navigator>
+  </view>
+  
+  <!-- 产品类别选择器 -->
+  <view class="card">
+    <text class="card-title">选择农产品类别</text>
+    <view class="btn-group">
+      <view class="btn {{currentCategory == '水果' ? 'active' : ''}}" bindtap="switchCategory" data-category="水果">水果</view>
+      <view class="btn {{currentCategory == '蔬菜' ? 'active' : ''}}" bindtap="switchCategory" data-category="蔬菜">蔬菜</view>
+      <view class="btn {{currentCategory == '粮食' ? 'active' : ''}}" bindtap="switchCategory" data-category="粮食">粮食</view>
+      <view class="btn {{currentCategory == '畜牧' ? 'active' : ''}}" bindtap="switchCategory" data-category="畜牧">畜牧</view>
+      <view class="btn {{currentCategory == '水产' ? 'active' : ''}}" bindtap="switchCategory" data-category="水产">水产</view>
+      <view class="btn {{currentCategory == '特色农产品' ? 'active' : ''}}" bindtap="switchCategory" data-category="特色农产品">特色农产品</view>
+    </view>
+
+    <view class="filter-group">
+      <view class="filter-item">
+        <text class="label">具体品种</text>
+        <picker bindchange="bindProductChange" value="{{productIndex}}" range="{{productList}}">
+          <view class="picker">{{productList[productIndex]}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">产地选择</text>
+        <picker bindchange="bindRegionChange" value="{{regionIndex}}" range="{{regionList}}">
+          <view class="picker">{{regionList[regionIndex]}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">时间范围</text>
+        <picker bindchange="bindTimeChange" value="{{timeIndex}}" range="{{timeList}}">
+          <view class="picker">{{timeList[timeIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时价格监控 -->
+  <view class="card">
+    <text class="card-title">实时价格监控</text>
+    <view class="table">
+      <view class="tr th">
+        <view class="td">品种</view>
+        <view class="td">规格</view>
+        <view class="td">京东价格</view>
+        <view class="td">淘宝价格</view>
+        <view class="td">拼多多价格</view>
+        <view class="td">24小时涨幅</view>
+        <view class="td">最后更新</view>
+      </view>
+      <block wx:for="{{priceData}}" wx:key="name">
+        <view class="tr">
+          <view class="td">{{item.name}}</view>
+          <view class="td">{{item.spec}}</view>
+          <view class="td">¥{{item.priceJD}}</view>
+          <view class="td">¥{{item.priceTB}}</view>
+          <view class="td">¥{{item.pricePDD}}</view>
+          <view class="td {{item.change > 0 ? 'price-up' : 'price-down'}}">{{item.changeText}}</view>
+          <view class="td">{{item.updateTime}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 价格走势与预测 -->
+  <view class="card">
+    <text class="card-title">价格走势分析与AI预测</text>
+    <view class="chart-header">
+      <view>
+        <text class="product-name">{{currentProduct}}</text>
+        <text class="product-spec">{{currentSpec}}</text>
+      </view>
+      <view class="time-filter">
+        <view class="btn {{timePeriod == 'week' ? 'active' : ''}}" bindtap="switchTimePeriod" data-period="week">周</view>
+        <view class="btn {{timePeriod == 'month' ? 'active' : ''}}" bindtap="switchTimePeriod" data-period="month">月</view>
+        <view class="btn {{timePeriod == 'quarter' ? 'active' : ''}}" bindtap="switchTimePeriod" data-period="quarter">季</view>
+        <view class="btn {{timePeriod == 'year' ? 'active' : ''}}" bindtap="switchTimePeriod" data-period="year">年</view>
+      </view>
+    </view>
+    <view class="chart-container">
+      <ec-canvas id="priceChart" canvas-id="priceChart" ec="{{ ecPriceChart }}"></ec-canvas>
+    </view>
+    
+    <view class="analysis-box">
+      <view class="analysis-title">
+        <image class="icon" src="/images/info-icon.png"></image>
+        <text>AI 价格预测分析</text>
+      </view>
+      <text class="analysis-content">根据历史价格数据和市场供需关系，AI预测未来30天内{{currentProduct}}价格将呈<text class="highlight">{{priceTrend}}</text>，预计涨幅为{{priceChangeRange}}。主要受以下因素影响：</text>
+      <view class="analysis-list">
+        <view wx:for="{{priceFactors}}" wx:key="*this" class="analysis-item">• {{item}}</view>
+      </view>
+      <text class="analysis-conclusion">建议销售时机：预计<text class="highlight">{{bestSellingTime}}</text>将达到价格高点，此时出售可获得最佳收益。</text>
+    </view>
+  </view>
+
+  <!-- 平台销量对比分析 -->
+  <view class="card">
+    <text class="card-title">平台销量对比分析</text>
+    
+    <view class="tab-container">
+      <view class="tab {{currentTab == 'sales' ? 'active' : ''}}" bindtap="switchTab" data-tab="sales">销量对比</view>
+      <view class="tab {{currentTab == 'price' ? 'active' : ''}}" bindtap="switchTab" data-tab="price">价格区间分布</view>
+      <view class="tab {{currentTab == 'review' ? 'active' : ''}}" bindtap="switchTab" data-tab="review">消费者评价分析</view>
+      <view class="tab {{currentTab == 'profit' ? 'active' : ''}}" bindtap="switchTab" data-tab="profit">利润率分析</view>
+    </view>
+    
+    <view class="dual-column">
+      <view class="chart-container">
+        <ec-canvas id="platformChart" canvas-id="platformChart" ec="{{ ecPlatformChart }}"></ec-canvas>
+      </view>
+      <view class="analysis-section">
+        <text class="section-title">平台销售分析结果</text>
+        <view class="analysis-box">
+          <text class="analysis-intro">基于最近30天的销售数据，AI系统分析得出以下结论：</text>
+          <view class="platform-analysis">
+            <view class="platform-item">
+              <text class="dot yellow"></text>
+              <view>
+                <text class="platform-name">京东平台</text>：适合高端果品销售，消费者更愿意为品质支付溢价，平均客单价高出15%，但销量较其他平台低25%。
+              </view>
+            </view>
+            <view class="platform-item">
+              <text class="dot blue"></text>
+              <view>
+                <text class="platform-name">淘宝平台</text>：销量稳定，市场覆盖广，但平台佣金较高，实际利润率比京东低2.5%。有明显的促销时段效应。
+              </view>
+            </view>
+            <view class="platform-item">
+              <text class="dot green"></text>
+              <view>
+                <text class="platform-name">拼多多平台</text>：销量最高，但利润率最低。适合快速去库存和规模销售，消费者对价格敏感度高。
+              </view>
+            </view>
+          </view>
+          
+          <view class="strategy-box">
+            <view class="strategy-title">
+              <image class="icon" src="/images/check-icon.png"></image>
+              <text>推荐销售策略</text>
+            </view>
+            <text class="strategy-content">根据您的农产品特性和当前市场状况，建议采用<text class="highlight">多平台差异化销售策略</text>：高品质产品重点投放京东，中端产品分配到淘宝，促销和去库存选择拼多多。</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 销售时机推荐 -->
+  <view class="card">
+    <text class="card-title">智能销售时机推荐</text>
+    <view class="chart-container">
+      <ec-canvas id="timingChart" canvas-id="timingChart" ec="{{ ecTimingChart }}"></ec-canvas>
+    </view>
+    
+    <view class="timing-grid">
+      <view class="timing-item">
+        <view class="timing-header">
+          <image class="icon" src="/images/time-icon.png"></image>
+          <text>最佳销售时段</text>
+        </view>
+        <text class="timing-text">根据历史交易数据分析，农产品销售高峰期通常为：</text>
+        <view class="timing-list">
+          <view class="timing-list-item">• 周四至周日（周末效应明显）</view>
+          <view class="timing-list-item">• 每天9:00-11:00，19:30-22:00</view>
+          <view class="timing-list-item">• 月初和月中发薪日后3天内</view>
+        </view>
+      </view>
+      
+      <view class="timing-item">
+        <view class="timing-header">
+          <image class="icon" src="/images/event-icon.png"></image>
+          <text>平台特殊活动</text>
+        </view>
+        <text class="timing-text">近期平台促销活动预告：</text>
+        <view class="timing-list">
+          <view class="timing-list-item">• 京东：10月15-20日 生鲜节</view>
+          <view class="timing-list-item">• 淘宝：11月1-3日 农品专场</view>
+          <view class="timing-list-item">• 拼多多：本周六团购日特惠</view>
+        </view>
+      </view>
+      
+      <view class="timing-item">
+        <view class="timing-header">
+          <image class="icon" src="/images/price-icon.png"></image>
+          <text>定价策略建议</text>
+        </view>
+        <text class="timing-text">根据当前市场价格和预测趋势：</text>
+        <view class="timing-list">
+          <view class="timing-list-item">• 京东定价：¥5.80-6.20/斤</view>
+          <view class="timing-list-item">• 淘宝定价：¥5.30-5.70/斤</view>
+          <view class="timing-list-item">• 拼多多定价：¥4.90-5.20/斤</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 库存与物流建议 -->
+  <view class="card">
+    <text class="card-title">库存与物流智能建议</text>
+    <view class="dual-column">
+      <view class="left-column">
+        <view class="chart-container">
+          <ec-canvas id="inventoryChart" canvas-id="inventoryChart" ec="{{ ecInventoryChart }}"></ec-canvas>
+        </view>
+        <view class="recommendation-box">
+          <view class="recommendation-title">库存优化建议</view>
+          <text class="recommendation-content">基于销售预测，建议将现有库存按7:2:1的比例分配至冷链仓储、常温仓储和即时配送库存，以平衡保鲜需求和销售速度。</text>
+        </view>
+      </view>
+      <view class="right-column">
+        <text class="section-title">发货地区热力分析</text>
+        <view class="region-analysis">
+          <view class="region-item">
+            <text class="region-name">华东地区</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: 86%"></view>
+            </view>
+            <text class="region-percent">42%</text>
+          </view>
+          <view class="region-item">
+            <text class="region-name">华北地区</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: 60%"></view>
+            </view>
+            <text class="region-percent">28%</text>
+          </view>
+          <view class="region-item">
+            <text class="region-name">华南地区</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: 45%"></view>
+            </view>
+            <text class="region-percent">16%</text>
+          </view>
+          <view class="region-item">
+            <text class="region-name">西南地区</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: 30%"></view>
+            </view>
+            <text class="region-percent">9%</text>
+          </view>
+          <view class="region-item">
+            <text class="region-name">其他地区</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: 13%"></view>
+            </view>
+            <text class="region-percent">5%</text>
+          </view>
+        </view>
+        
+        <view class="recommendation-box">
+          <view class="recommendation-title">物流优化建议</view>
+          <text class="recommendation-content">针对华东地区高需求，建议在江苏南京设立前置仓库，可减少配送时间35%，提升用户评分，并降低物流成本约12%。</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text>数据来源：京东、淘宝、拼多多官方API及公开市场数据</text>
+    <text>最后更新时间：{{lastUpdate}}</text>
+    <text>© 2023 农产品数据分析平台</text>
+  </view>
+</view>

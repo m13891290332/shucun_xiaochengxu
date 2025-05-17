@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "农产品供需信息平台",
+  "navigationBarBackgroundColor": "#0a2463",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f8f9fa",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

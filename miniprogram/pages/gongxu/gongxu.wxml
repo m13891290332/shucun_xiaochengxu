@@ -1,0 +1,294 @@
+<!--pages/gongxu/gongxu.wxml-->
+<view class="platform-container">
+  <!-- Header Section -->
+  <view class="header bg-primary text-white">
+    <view class="container">
+      <text class="title">农产品供需信息共享平台</text>
+      <text class="subtitle">连接政府、企业与农民，共创农业产业链新生态</text>
+    </view>
+  </view>
+
+  <!-- Introduction Section -->
+  <view class="platform-section bg-light-accent">
+    <view class="container">
+      <view class="intro-content">
+        <view class="intro-text">
+          <text class="section-title">平台介绍</text>
+          <text class="intro-desc">本平台旨在为政府部门、农业企业和广大农民提供一个直接交流的渠道，发布农产品供给和需求信息，减少中间环节，降低交易成本。</text>
+          <view class="feature-boxes">
+            <view class="feature-box">
+              <view class="feature-icon"><text class="iconfont icon-handshake"></text></view>
+              <view class="feature-content">
+                <text class="feature-title">直接对接</text>
+                <text class="feature-desc">减少中间环节</text>
+              </view>
+            </view>
+            <view class="feature-box">
+              <view class="feature-icon"><text class="iconfont icon-chart"></text></view>
+              <view class="feature-content">
+                <text class="feature-title">价格稳定</text>
+                <text class="feature-desc">降低市场波动</text>
+              </view>
+            </view>
+            <view class="feature-box">
+              <view class="feature-icon"><text class="iconfont icon-shield"></text></view>
+              <view class="feature-content">
+                <text class="feature-title">降低风险</text>
+                <text class="feature-desc">提高决策准确性</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="platform-stats">
+          <text class="stats-title">平台数据</text>
+          <view class="stats-grid">
+            <view class="stat-item">
+              <text class="stat-number">325</text>
+              <text class="stat-label">供应信息</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-number">278</text>
+              <text class="stat-label">需求信息</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-number">183</text>
+              <text class="stat-label">企业用户</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-number">562</text>
+              <text class="stat-label">农户用户</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Information Display Section -->
+  <view class="platform-section bg-white">
+    <view class="container">
+      <text class="section-title">信息公示栏</text>
+      
+      <!-- Tabs -->
+      <view class="info-tabs">
+        <view class="tab {{activeTab === 'supply' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="supply">供应信息</view>
+        <view class="tab {{activeTab === 'demand' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="demand">需求信息</view>
+      </view>
+      
+      <!-- Tab Content -->
+      <view class="tab-content">
+        <!-- Supply Information -->
+        <view class="tab-pane {{activeTab === 'supply' ? 'show' : 'hide'}}">
+          <view class="info-grid">
+            <block wx:for="{{supplyList}}" wx:key="id">
+              <view class="info-card">
+                <view class="card-header">
+                  <text class="card-title">{{item.title}}</text>
+                  <text class="card-status">{{item.status}}</text>
+                </view>
+                <text class="card-desc">{{item.description}}</text>
+                <view class="card-details">
+                  <text class="detail-item">供应商：{{item.supplier}}</text>
+                  <text class="detail-item">价格区间：{{item.priceRange}}</text>
+                  <text class="detail-item">供货周期：{{item.period}}</text>
+                  <text class="detail-item">联系方式：{{item.contact}}</text>
+                </view>
+                <view class="card-footer">
+                  <text class="publish-time">发布时间：{{item.publishTime}}</text>
+                  <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+        
+        <!-- Demand Information -->
+        <view class="tab-pane {{activeTab === 'demand' ? 'show' : 'hide'}}">
+          <view class="info-grid">
+            <block wx:for="{{demandList}}" wx:key="id">
+              <view class="info-card">
+                <view class="card-header">
+                  <text class="card-title">{{item.title}}</text>
+                  <text class="card-status">{{item.status}}</text>
+                </view>
+                <text class="card-desc">{{item.description}}</text>
+                <view class="card-details">
+                  <text class="detail-item">采购方：{{item.buyer}}</text>
+                  <text class="detail-item">采购量：{{item.quantity}}</text>
+                  <text class="detail-item">价格参考：{{item.priceRef}}</text>
+                  <text class="detail-item">联系方式：{{item.contact}}</text>
+                </view>
+                <view class="card-footer">
+                  <text class="publish-time">发布时间：{{item.publishTime}}</text>
+                  <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      
+      <view class="more-btn-container">
+        <button class="more-btn" bindtap="loadMoreInfo">查看更多信息</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Submit Information Section -->
+  <view class="platform-section bg-light-accent">
+    <view class="container">
+      <text class="section-title">信息发布</text>
+      <view class="form-container">
+        <form bindsubmit="submitForm">
+          <view class="form-grid">
+            <view class="form-column">
+              <view class="form-item">
+                <text class="form-label">信息类型</text>
+                <picker bindchange="bindTypeChange" value="{{typeIndex}}" range="{{infoTypes}}">
+                  <view class="picker">{{infoTypes[typeIndex]}}</view>
+                </picker>
+              </view>
+              <view class="form-item">
+                <text class="form-label">标题</text>
+                <input name="title" placeholder="请输入信息标题" />
+              </view>
+              <view class="form-item">
+                <text class="form-label">农产品类别</text>
+                <picker bindchange="bindCategoryChange" value="{{categoryIndex}}" range="{{categories}}">
+                  <view class="picker">{{categories[categoryIndex]}}</view>
+                </picker>
+              </view>
+              <view class="form-item">
+                <text class="form-label">数量/规模</text>
+                <view class="quantity-unit">
+                  <input name="quantity" placeholder="请输入数量" class="quantity-input" />
+                  <picker bindchange="bindUnitChange" value="{{unitIndex}}" range="{{units}}" class="unit-picker">
+                    <view class="picker">{{units[unitIndex]}}</view>
+                  </picker>
+                </view>
+              </view>
+            </view>
+            <view class="form-column">
+              <view class="form-item">
+                <text class="form-label">价格区间</text>
+                <view class="price-range">
+                  <input name="minPrice" placeholder="最低价" class="price-input" />
+                  <text class="price-separator">-</text>
+                  <input name="maxPrice" placeholder="最高价" class="price-input" />
+                  <picker bindchange="bindPriceUnitChange" value="{{priceUnitIndex}}" range="{{priceUnits}}" class="price-unit-picker">
+                    <view class="picker">{{priceUnits[priceUnitIndex]}}</view>
+                  </picker>
+                </view>
+              </view>
+              <view class="form-item">
+                <text class="form-label">供需周期</text>
+                <view class="date-range">
+                  <picker mode="date" bindchange="bindStartDateChange" value="{{startDate}}">
+                    <view class="date-picker">{{startDate}}</view>
+                  </picker>
+                  <text class="date-separator">至</text>
+                  <picker mode="date" bindchange="bindEndDateChange" value="{{endDate}}">
+                    <view class="date-picker">{{endDate}}</view>
+                  </picker>
+                </view>
+              </view>
+              <view class="form-item">
+                <text class="form-label">联系方式</text>
+                <input name="contact" placeholder="请输入联系电话或其他联系方式" />
+              </view>
+              <view class="form-item">
+                <text class="form-label">单位/组织</text>
+                <input name="organization" placeholder="请输入单位名称" />
+              </view>
+            </view>
+          </view>
+          
+          <view class="form-item">
+            <text class="form-label">详细说明</text>
+            <textarea name="description" placeholder="请详细描述产品信息、质量要求或其他重要说明"></textarea>
+          </view>
+          
+          <view class="agreement">
+            <checkbox value="agree" checked="{{agreePolicy}}" bindtap="toggleAgree" />
+            <text>我已阅读并同意《信息发布协议》和《隐私政策》</text>
+          </view>
+          
+          <view class="submit-btn-container">
+            <button formType="submit" class="submit-btn" disabled="{{!agreePolicy}}">提交信息</button>
+          </view>
+        </form>
+      </view>
+    </view>
+  </view>
+
+  <!-- Contact & Cooperation Section -->
+  <view class="platform-section bg-white">
+    <view class="container">
+      <text class="section-title">联系与合作</text>
+      <view class="contact-grid">
+        <view class="contact-item">
+          <view class="contact-icon"><text class="iconfont icon-phone"></text></view>
+          <text class="contact-title">联系电话</text>
+          <text class="contact-desc">工作日: 9:00 - 18:00</text>
+          <text class="contact-value">400-123-4567</text>
+        </view>
+        <view class="contact-item">
+          <view class="contact-icon"><text class="iconfont icon-email"></text></view>
+          <text class="contact-title">电子邮箱</text>
+          <text class="contact-desc">7x24小时接收您的信息</text>
+          <text class="contact-value">contact@agri-platform.com</text>
+        </view>
+        <view class="contact-item">
+          <view class="contact-icon"><text class="iconfont icon-location"></text></view>
+          <text class="contact-title">办公地址</text>
+          <text class="contact-desc">周一至周五: 9:00 - 17:30</text>
+          <text class="contact-value">北京市海淀区农业大道100号</text>
+        </view>
+      </view>
+      
+      <view class="partners-container">
+        <text class="partner-title">合作伙伴</text>
+        <view class="partner-grid">
+          <view class="partner-item"><text>农业农村部</text></view>
+          <view class="partner-item"><text>省农业厅</text></view>
+          <view class="partner-item"><text>农产品协会</text></view>
+          <view class="partner-item"><text>农业科技院</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Footer Section -->
+  <view class="footer bg-primary">
+    <view class="container">
+      <view class="footer-grid">
+        <view class="footer-column">
+          <text class="footer-title">农产品供需信息共享平台</text>
+          <text class="footer-desc">本平台旨在促进农业信息透明化，减少中间环节，降低农产品流通成本，保障农民利益和市场稳定。</text>
+        </view>
+        <view class="footer-column">
+          <text class="footer-title">快速链接</text>
+          <view class="footer-links">
+            <text class="footer-link" bindtap="navigateTo" data-page="index">首页</text>
+            <text class="footer-link" bindtap="navigateTo" data-page="supply">供应信息</text>
+            <text class="footer-link" bindtap="navigateTo" data-page="demand">需求信息</text>
+            <text class="footer-link" bindtap="navigateTo" data-page="publish">信息发布</text>
+            <text class="footer-link" bindtap="navigateTo" data-page="contact">联系我们</text>
+          </view>
+        </view>
+        <view class="footer-column">
+          <text class="footer-title">关注我们</text>
+          <view class="social-links">
+            <text class="social-icon iconfont icon-wechat"></text>
+            <text class="social-icon iconfont icon-weibo"></text>
+            <text class="social-icon iconfont icon-qq"></text>
+          </view>
+          <text class="footer-desc">扫描二维码关注公众号获取更多信息</text>
+        </view>
+      </view>
+      <view class="copyright">
+        <text>© 2023 农产品供需信息共享平台 版权所有</text>
+      </view>
+    </view>
+  </view>
+</view>

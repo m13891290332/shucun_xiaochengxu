@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- 添加jQuery库 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 添加Swiper库 -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .header {
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            background: rgba(4, 62, 107, 0.8);
+            height: 140px;
+            transition: All 0.4s ease-in-out;
+        }
+
+        .header.on1 {
+            top: -140px;
+        }
+
+        .header.on {
+            background: rgba(4, 62, 107, 0.8);
+        }
+
+        .headerbox {
+            width: 1300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo {
+            width: 155px;
+            float: left;
+            padding-top: 39px;
+        }
+
+        .logo img {
+            width: 100%;
+        }
+
+        .nav {
+            position: fixed;
+            width: 200px;
+            background: #033c67;
+            height: calc(100% - 60px);
+            top: 60px;
+            left: -200px;
+            z-index: 101;
+            transition: left 0.3s ease;
+        }
+
+        .nav ul li:nth-child(2) dt {
+            width: 20% !important;
+        }
+
+        .nav li {
+            float: left;
+            font-size: 20px;
+            color: #b7c6d4;
+            line-height: 140px;
+        }
+
+        .nav a {
+            display: inline-block;
+            padding: 0 52px;
+            color: #b7c6d4;
+            letter-spacing: 10px;
+        }
+
+        /*.nav .on a{color: #fff; font-weight: bold;}*/
+        .nav li:hover {
+            color: rgba(0, 138, 255, 0.7);
+            font-weight: bold;
+        }
+
+        .nav li:hover a {
+            color: #fff;
+        }
+
+        .nav ul li:last-child {
+            position: relative;
+        }
+
+        .nav ul li .sub {
+            padding: 0 40px;
+        }
+
+        .nav ul li .sub dt {
+            width: 50%;
+        }
+
+        .sub {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 140px;
+            left: 0;
+            background: rgba(4, 62, 107, 0.8);
+            z-index: 100;
+            display: none;
+        }
+
+        .sub dl {
+            overflow: hidden;
+        }
+
+        .sub dt {
+            width: 20%;
+            text-align: center;
+            float: left;
+        }
+
+        .sub dt a {
+            display: block;
+            font-size: 20px;
+            color: #fff;
+            font-weight: 400;
+            padding: 0;
+            opacity: 0.7;
+        }
+
+        .sub dt a:hover img {
+            background: rgba(255, 255, 255, 0.23);
+        }
+
+        .sub dt a:hover {
+            opacity: 1;
+        }
+
+        .sub dt img {
+            display: inline-block;
+            vertical-align: middle;
+            margin: -3px 15px 0 0;
+            transition: All 0.4s ease-in-out;
+        }
+
+        .sub.sub1 {
+            width: 610px;
+            left: auto;
+            right: 0;
+        }
+
+        .tcbj {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            top: 0;
+            left: 0;
+            z-index: 105;
+            display: none;
+        }
+
+        .nav a {
+            padding: 0 20px;
+        }
+
+        .logo {
+            padding-top: 10px;
+            width: 100px;
+        }
+
+        .dhbnt {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 3%;
+            top: 15px;
+            background: url(../images/d1.png) no-repeat center center;
+            background-size: 20px 20px;
+        }
+
+        .dhbnt.on {
+            background: url(../images/d2.png) no-repeat center center;
+            background-size: 20px 20px;
+        }
+
+        .nav li {
+            width: 100%;
+            float: none;
+            line-height: 50px;
+            border-bottom: 1px solid #022e4e;
+        }
+
+        .nav b {
+            display: none;
+        }
+
+        .sub {
+            position: static;
+        }
+
+        .nav a {
+            width: 100%;
+        }
+
+        .sub dt {
+            float: none;
+            width: 100%;
+            padding: 5px 0;
+        }
+
+        .sub dt a {
+            font-size: 16px;
+        }
+
+        .sub dt img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .sub.sub1 {
+            width: 100%;
+        }
+
+        .sub.sub1 dt {
+            float: none;
+            width: 100%;
+        }
+
+        .nav ul li .sub {
+            float: none;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .nav ul li .sub dt {
+            width: 100% !important;
+        }
+
+        /* 添加主体内容区域样式 */
+        .main-content {
+            margin-top: 160px;
+            /* 留出导航栏空间 */
+            padding: 20px;
+            min-height: 1000px;
+            /* 确保有足够的滚动空间 */
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+    <div class="header">
+        <div class="headerbox">
+            <h1 class="logo"><a href="https://www.sdzhicun.cn/"><img
+                        src="/uploads/20220506/png/1da06e9099375f3d4d63a17c89afecc8.png" /></a></h1>
+            <div class="dhbnt"></div>
+            <div class="nav">
+                <ul>
+                    <li class="m on"><a href="/">首页</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">平台</a><b>|</b>
+                        <div class="sub">
+                            <dl>
+                                <dt><a href="/jingji.html"><img src="/index/images/ta_177.png" />智慧经济</a></dt>
+                                <dt><a href="/chanye.html"><img src="/index/images/ta_178.png" />智慧产业</a></dt>
+                                <dt><a href="/shouru.html"><img src="/index/images/ta_179.png" />智慧收入</a></dt>
+                                <dt><a href="/zhushou.html"><img src="/index/images/ta_180.png" />智慧助手</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <!--                <li ><a href="/platform">平台</a><b>|</b></li>-->
+                    <li><a href="/news">资讯</a><b>|</b></li>
+                    <li><a href="/cooperation">合作</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">联系</a>
+                        <div class="sub sub1">
+                            <dl>
+                                <dt><a href="/contactus.html"><img src="/index/images/ta_215.png" />联系我们</a></dt>
+                                <dt><a href="/enter.html"><img src="/index/images/ta_214.png" />关于我们</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <!--<li ><a href="/contactus">联系</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加页面主体内容 -->
+    <div class="main-content">
+        <div class="section">
+            <h2>欢迎访问数村平台</h2>
+            <p>这是一个智慧化平台，提供多种服务和解决方案。</p>
+        </div>
+
+        <div class="section">
+            <h2>智慧经济</h2>
+            <p>关于智慧经济的详细介绍内容...</p>
+        </div>
+
+        <div class="section">
+            <h2>智慧产业</h2>
+            <p>关于智慧产业的详细介绍内容...</p>
+        </div>
+
+        <div class="section">
+            <h2>智慧收入</h2>
+            <p>关于智慧收入的详细介绍内容...</p>
+        </div>
+
+        <div class="section">
+            <h2>智慧助手</h2>
+            <p>关于智慧助手的详细介绍内容...</p>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            // 添加导航按钮点击事件
+            $(".dhbnt").click(function () {
+                $(this).toggleClass("on");
+                if ($(this).hasClass("on")) {
+                    $(".nav").animate({ left: "0" }, 300);
+                } else {
+                    $(".nav").animate({ left: "-200px" }, 300);
+                }
+            });
+
+            // 子菜单点击展开（移动端更适合点击而非hover）
+            $(".m > a").click(function (e) {
+                if ($(window).width() <= 750) {
+                    e.preventDefault();
+                    $(this).next(".sub").slideToggle(300);
+                }
+            });
+
+            // 电脑端hover展开
+            if ($(window).width() > 750) {
+                $(".m").hover(function () {
+                    $(this).find(".sub").stop().slideDown(300);
+                }, function () {
+                    $(this).find(".sub").stop().slideUp(300);
+                });
+            }
+
+            var screenWidth = $(window).width();
+            if (screenWidth > 750) {
+                var swiper1 = new Swiper(".banner .mySwiper", {
+                    spaceBetween: 0,
+                    centeredSlides: true,
+                    loop: true,
+                    speed: 1400,
+                    autoplay: {
+                        delay: 13000,
+                        stopOnLastSlide: false,
+                        disableOnInteraction: true,
+                    },
+                    pagination: {
+                        el: ".banner .swiper-pagination",
+                        clickable: true,
+                    },
+                    /*on: {	
+                             slideChangeTransitionStart: function(){					
+                                     var num = this.activeIndex;					
+                                 if($('.banner .swiper-slide').eq(num).hasClass('videoPlay')){					
+                                            this.autoplay.stop();					
+                                            $('.banner .swiper-slide').eq(num).children().children('video')[0].play					   
+                            },
+                          
+                    },				
+                    }	*/
+                });
+            } else {
+                var swiper1 = new Swiper(".banner .mySwiper", {
+                    spaceBetween: 0,
+                    centeredSlides: true,
+                    loop: true,
+                    speed: 1400,
+                    autoplay: true,
+                    pagination: {
+                        el: ".banner .swiper-pagination",
+                        clickable: true,
+                    },
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>

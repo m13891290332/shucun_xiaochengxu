@@ -1,0 +1,112 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="header">
+    <image class="logo" src="/miniprogram/images/logo_placeholder.png" mode="aspectFit"></image>
+    <text class="title">数村·一站式乡村综合服务平台</text>
+  </view>
+
+  <!-- Banner Swiper -->
+  <swiper class="banner-swiper" indicator-dots="true" autoplay="true" interval="5000" duration="500">
+    <block wx:for="{{bannerImages}}" wx:key="index">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" mode="aspectFill"/>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <!-- 技术背景 Section -->
+  <view class="section">
+    <view class="section-title-container">
+      <image src="/images/title_icon_jsbj.png" class="section-title-icon" mode="aspectFit" />
+      <text class="section-title">技术背景</text>
+    </view>
+    <view class="tab-nav">
+      <block wx:for="{{jsbjTabs}}" wx:key="index">
+        <view class="tab-item {{currentJsBjTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchJsBjTab">{{item.name}}</view>
+      </block>
+    </view>
+    <view class="tab-content">
+      <block wx:for="{{jsbjTabs}}" wx:key="index">
+        <view class="tab-pane" wx:if="{{currentJsBjTab === index}}">
+          <image wx:if="{{item.image}}" src="{{item.image}}" class="tab-pane-image" mode="widthFix" />
+          <text class="tab-pane-text">{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 服务平台 Section -->
+  <view class="section">
+    <view class="section-title-container">
+      <image src="/images/title_icon_fwpt.png" class="section-title-icon" mode="aspectFit" />
+      <text class="section-title">服务平台</text>
+    </view>
+    <view class="service-platform-content">
+      <image src="/images/fwpt_placeholder.png" class="service-platform-image" mode="widthFix" />
+      <text class="service-platform-text">
+        一站式乡村综合服务平台，紧紧围绕"三农"工作，助推乡村振兴。通过将乡村治理、乡村兴业、乡村惠民融合到一个平台，整合多系统功能，实现数据资源向乡村下沉，打造出"N+1"乡村综合服务体系。
+      </text>
+    </view>
+  </view>
+
+  <!-- 核心功能 Section -->
+  <view class="section">
+    <view class="section-title-container">
+      <image src="/images/title_icon_hxgn.png" class="section-title-icon" mode="aspectFit" />
+      <text class="section-title">核心功能</text>
+    </view>
+    <view class="tab-nav">
+      <block wx:for="{{hxgnTabs}}" wx:key="index">
+        <view class="tab-item {{currentHxgnTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchHxgnTab">{{item.name}}</view>
+      </block>
+    </view>
+    <view class="tab-content">
+      <block wx:for="{{hxgnTabs}}" wx:key="index">
+        <view class="tab-pane" wx:if="{{currentHxgnTab === index}}">
+          <image wx:if="{{item.image}}" src="{{item.image}}" class="tab-pane-image" mode="widthFix" />
+          <text class="tab-pane-text">{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <text class="nav-title">导航菜单</text>
+  <view class="nav-grid">
+    <navigator url="/pages/index/index" class="nav-item">
+      <text>首页</text>
+    </navigator>
+    <navigator url="/pages/jingji/jingji" class="nav-item">
+      <text>智慧经济</text>
+    </navigator>
+    <navigator url="/pages/chanye/chanye" class="nav-item">
+      <text>智慧产业</text>
+    </navigator>
+    <navigator url="/pages/shouru/shouru" class="nav-item">
+      <text>智慧收入</text>
+    </navigator>
+    <navigator url="/pages/zhushou/zhushou" class="nav-item">
+      <text>智慧助手</text>
+    </navigator>
+    <navigator url="/pages/analysis/analysis" class="nav-item">
+      <text>数据分析</text>
+    </navigator>
+    <navigator url="/pages/gongxu/gongxu" class="nav-item">
+      <text>供需平台</text>
+    </navigator>
+    <navigator url="/pages/lvyou/lvyou" class="nav-item">
+      <text>乡村旅游</text>
+    </navigator>
+    <navigator url="/pages/daikuan/daikuan" class="nav-item">
+      <text>助农贷款</text>
+    </navigator>
+    <navigator url="/pages/news/news" class="nav-item">
+      <text>资讯</text>
+    </navigator>
+    <navigator url="/pages/cooperation/cooperation" class="nav-item">
+      <text>合作</text>
+    </navigator>
+    <navigator url="/pages/contactus/contactus" class="nav-item">
+      <text>关于我们</text>
+    </navigator>
+  </view>
+</view>

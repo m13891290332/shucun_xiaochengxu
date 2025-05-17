@@ -1,0 +1,404 @@
+<scroll-view scroll-y="true" class="page-scroll">
+  <view class="hero-background">
+    <view class="container hero-container">
+      <text class="main-title">智慧经济</text>
+      <text class="sub-title gradient-text">驱动乡村振兴</text>
+      <text class="description">
+        通过数据驱动和人工智能技术，构建创新农业生态系统，释放乡村发展潜能，实现经济高质量增长。
+      </text>
+      <view class="hero-image-placeholder">
+        <image class="hero-image" src="https://agrmeta.com/static/picture/pocture/gbznt.png" mode="aspectFit" />
+        <view class="ai-analysis-card">
+          <view class="card-icon"><text class="iconfont icon-robot"></text></view>
+          <view class="card-content">
+            <text class="ai-analysis-title">AI智能分析</text>
+            <text class="ai-analysis-desc">实时监测农业生产数据</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据概览 Section -->
+  <view class="section data-overview-section">
+    <view class="container">
+      <text class="section-title">数据概览</text>
+      <text class="section-subtitle">全面呈现智慧乡村建设的核心数据指标</text>
+      <view class="grid-container-overview">
+        <view class="data-card">
+          <view class="card-icon-container bg-blue-light">
+            <text class="iconfont icon-wifi"></text>
+          </view>
+          <text class="data-card-title">数字化农村覆盖率</text>
+          <text class="data-card-number">92%</text>
+          <text class="data-card-growth"><text class="iconfont icon-arrow-up"></text> 较上年增长 8.4%</text>
+          <view class="progress-bar-placeholder"><view class="progress-fill" style="width: 92%;"></view></view>
+        </view>
+
+        <view class="data-card">
+          <view class="card-icon-container bg-purple-light">
+            <text class="iconfont icon-chip"></text>
+          </view>
+          <text class="data-card-title">AI农业应用普及率</text>
+          <text class="data-card-number">63%</text>
+          <text class="data-card-growth"><text class="iconfont icon-arrow-up"></text> 较上年增长 15.2%</text>
+          <view class="progress-bar-placeholder"><view class="progress-fill" style="width: 63%;"></view></view>
+        </view>
+
+        <view class="data-card">
+          <view class="card-icon-container bg-green-light">
+            <text class="iconfont icon-project"></text>
+          </view>
+          <text class="data-card-title">数据平台项目数</text>
+          <text class="data-card-number">2,500+</text>
+          <text class="data-card-growth"><text class="iconfont icon-arrow-up"></text> 年增长率 24.6%</text>
+          <view class="progress-bar-placeholder"><view class="progress-fill" style="width: 80%;"></view></view>
+        </view>
+
+        <view class="data-card">
+          <view class="card-icon-container bg-yellow-light">
+            <text class="iconfont icon-plant"></text>
+          </view>
+          <text class="data-card-title">农产效益提升</text>
+          <text class="data-card-number">38%</text>
+          <text class="data-card-growth"><text class="iconfont icon-arrow-up"></text> 较传统农业</text>
+          <view class="progress-bar-placeholder"><view class="progress-fill" style="width: 38%;"></view></view>
+        </view>
+      </view>
+
+      <view class="data-table-container">
+        <text class="table-title">全国智慧农业建设进度</text>
+        <view class="table-header">
+          <text class="th">地区</text>
+          <text class="th">覆盖村庄数</text>
+          <text class="th">数字化程度</text>
+          <text class="th">实施进度</text>
+        </view>
+        <view class="table-row">
+          <text class="td">华东地区</text>
+          <text class="td">12,458</text>
+          <text class="td">87%</text>
+          <text class="td progress-cell">
+            <view class="mini-progress"><view class="mini-progress-fill" style="width: 87%;"></view></view>
+          </text>
+        </view>
+        <view class="table-row">
+          <text class="td">华南地区</text>
+          <text class="td">8,762</text>
+          <text class="td">92%</text>
+          <text class="td progress-cell">
+            <view class="mini-progress"><view class="mini-progress-fill" style="width: 92%;"></view></view>
+          </text>
+        </view>
+        <view class="table-row">
+          <text class="td">华中地区</text>
+          <text class="td">10,438</text>
+          <text class="td">83%</text>
+          <text class="td progress-cell">
+            <view class="mini-progress"><view class="mini-progress-fill" style="width: 83%;"></view></view>
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 经济分析 Section -->
+  <view class="section economic-analysis-section">
+    <view class="container">
+      <text class="section-title">智慧经济分析</text>
+      <text class="section-subtitle">基于大数据分析的乡村经济发展态势</text>
+      
+      <view class="chart-cards">
+        <view class="chart-card">
+          <text class="chart-title">乡村GDP增长趋势</text>
+          <view class="chart-placeholder">
+            <image class="chart-image" src="https://i.imgur.com/mZJf1Ba.png" mode="aspectFit"></image>
+            <view class="chart-legend">
+              <view class="legend-item">
+                <view class="legend-color legend-blue"></view>
+                <text class="legend-text">传统农业GDP</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-green"></view>
+                <text class="legend-text">智慧农业GDP</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="chart-card">
+          <text class="chart-title">产业结构分布</text>
+          <view class="chart-placeholder">
+            <view class="pie-chart-container">
+              <view class="pie-segment segment1"></view>
+              <view class="pie-segment segment2"></view>
+              <view class="pie-segment segment3"></view>
+              <view class="pie-segment segment4"></view>
+              <view class="pie-center"></view>
+            </view>
+            <view class="chart-legend">
+              <view class="legend-item">
+                <view class="legend-color legend-red"></view>
+                <text class="legend-text">智慧种植 32%</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-yellow"></view>
+                <text class="legend-text">智慧养殖 26%</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-blue"></view>
+                <text class="legend-text">农产品加工 18%</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-green"></view>
+                <text class="legend-text">乡村电商 14%</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="data-insights">
+        <text class="insights-title">关键洞察</text>
+        <view class="insight-item">
+          <text class="insight-number">38%</text>
+          <text class="insight-desc">智慧农业较传统农业产出效率提升</text>
+        </view>
+        <view class="insight-item">
+          <text class="insight-number">56%</text>
+          <text class="insight-desc">数据驱动后农产品品质提升率</text>
+        </view>
+        <view class="insight-item">
+          <text class="insight-number">2.7倍</text>
+          <text class="insight-desc">AI技术投资回报率较传统农业</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI赋能乡村 Section -->
+  <view class="section ai-empower-section">
+    <view class="container">
+      <text class="section-title">AI赋能乡村</text>
+      <text class="section-subtitle">人工智能如何重塑乡村经济生态</text>
+      <view class="grid-container-ai">
+        <view class="ai-card">
+          <view class="ai-card-icon green-bg">
+            <text class="iconfont icon-leaf"></text>
+          </view>
+          <text class="ai-card-title">精准农业</text>
+          <text class="ai-card-desc">AI算法分析土壤、气候和作物生长数据，优化灌溉和施肥策略，提高作物产量达38%，减少资源浪费</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-chart-line"></text>
+              <text class="stat-text">效率提升 42%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-water"></text>
+              <text class="stat-text">节水 35%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-card">
+          <view class="ai-card-icon blue-bg">
+            <text class="iconfont icon-robot"></text>
+          </view>
+          <text class="ai-card-title">智能病虫害识别</text>
+          <text class="ai-card-desc">结合计算机视觉和深度学习模型，实现对农作物病害的早期识别，准确率达96%，大幅降低农作物损失</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-bug"></text>
+              <text class="stat-text">损失降低 67%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-lab"></text>
+              <text class="stat-text">减少农药 53%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-card">
+          <view class="ai-card-icon purple-bg">
+            <text class="iconfont icon-chart-pie"></text>
+          </view>
+          <text class="ai-card-title">市场预测分析</text>
+          <text class="ai-card-desc">基于大数据分析和AI预测模型，帮助农户了解市场需求趋势，优化种植计划和销售策略，提高收益率</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-coins"></text>
+              <text class="stat-text">收入增长 48%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-target"></text>
+              <text class="stat-text">预测准确率 89%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 案例展示 Section -->
+  <view class="section case-studies-section">
+    <view class="container">
+      <text class="section-title">智慧经济典型案例</text>
+      <text class="section-subtitle">实践中的数据驱动与AI赋能</text>
+      
+      <view class="case-card">
+        <image class="case-image" src="https://www.daqvision.com/hqgw/2023/02/16/4413c651861741ccb516aaf9a61f30d2.png" mode="aspectFill" />
+        <view class="case-content">
+          <view class="case-header">
+            <text class="case-tag">浙江省金华市</text>
+            <text class="case-title">智慧农业大数据平台</text>
+          </view>
+          <text class="case-desc">该平台整合了土壤监测、气象数据、作物生长监测等多维数据，通过AI算法为当地农户提供精准种植指导。实施一年后，农产品产量提高32%，品质提升28%，农药使用量减少45%。</text>
+          <view class="case-stats">
+            <view class="case-stat-item">
+              <text class="iconfont icon-server"></text>
+              <text class="case-stat-text">数据接入点：1,458个</text>
+            </view>
+            <view class="case-stat-item">
+              <text class="iconfont icon-users"></text>
+              <text class="case-stat-text">覆盖农户：12,345户</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="case-card">
+        <image class="case-image" src="https://i-blog.csdnimg.cn/img_convert/4f743fd8d722322beb847b20f6a0b8b1.jpeg" mode="aspectFill" />
+        <view class="case-content">
+          <view class="case-header">
+            <text class="case-tag">山东省烟台市</text>
+            <text class="case-title">数字乡村治理系统</text>
+          </view>
+          <text class="case-desc">该系统基于"知农AI农"平台构建，通过数字孪生技术建立乡村虚拟模型，实现资源配置优化、环境监测和公共服务智能化管理。系统上线后，行政效率提升65%，居民满意度提高38个百分点。</text>
+          <view class="case-stats">
+            <view class="case-stat-item">
+              <text class="iconfont icon-building"></text>
+              <text class="case-stat-text">覆盖村庄：156个</text>
+            </view>
+            <view class="case-stat-item">
+              <text class="iconfont icon-setting"></text>
+              <text class="case-stat-text">智能决策支持：93%准确率</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="case-card">
+        <image class="case-image" src="https://www.cdcbj.com/agriculture/village/images/lunbo5.jpg" mode="aspectFill" />
+        <view class="case-content">
+          <view class="case-header">
+            <text class="case-tag">福建省福州市</text>
+            <text class="case-title">海洋牧场智能平台</text>
+          </view>
+          <text class="case-desc">该平台结合水质监测设备和AI分析系统，实现海洋养殖环境的智能监测和预警。系统通过分析水质参数和生物活动数据，自动调控养殖条件，有效提高了海产品质量和产量。</text>
+          <view class="case-stats">
+            <view class="case-stat-item">
+              <text class="iconfont icon-fish"></text>
+              <text class="case-stat-text">产量提升：46%</text>
+            </view>
+            <view class="case-stat-item">
+              <text class="iconfont icon-water"></text>
+              <text class="case-stat-text">水质监测点：248个</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 发展趋势 Section -->
+  <view class="section trends-section">
+    <view class="container">
+      <text class="section-title">发展趋势</text>
+      <text class="section-subtitle">前瞻技术引领乡村经济新篇章</text>
+      
+      <view class="trend-timeline">
+        <view class="trend-item">
+          <view class="trend-dot blue-bg"></view>
+          <view class="trend-content">
+            <text class="trend-title">1. AI与物联网深度融合</text>
+            <text class="trend-desc">随着5G技术的普及和AI算法的不断优化，物联网设备与人工智能的深度融合将为乡村智慧经济带来革命性变化。智能传感器网络将实现农田、养殖场、加工厂等全环节的实时监测和自动化控制。</text>
+            <view class="trend-tags">
+              <text class="trend-tag">边缘计算</text>
+              <text class="trend-tag">实时决策</text>
+              <text class="trend-tag">自主控制</text>
+            </view>
+            <view class="trend-stat">
+              <text class="iconfont icon-chart-line"></text>
+              <text class="trend-stat-text">预计到2027年，农业物联网设备将达到7500万个，年复合增长率42.3%</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="trend-item">
+          <view class="trend-dot green-bg"></view>
+          <view class="trend-content">
+            <text class="trend-title">2. 区块链驱动的农产品溯源体系</text>
+            <text class="trend-desc">区块链技术将构建从生产到销售的全链条透明溯源系统，重塑农产品价值链。消费者可以通过扫码了解产品的完整生产过程，包括种植环境、用药记录和质量检测结果，建立农产品品牌信任体系。</text>
+            <view class="trend-tags">
+              <text class="trend-tag">不可篡改</text>
+              <text class="trend-tag">信息共享</text>
+              <text class="trend-tag">质量认证</text>
+            </view>
+            <view class="trend-stat">
+              <text class="iconfont icon-chart-line"></text>
+              <text class="trend-stat-text">农产品因区块链溯源实现的溢价率平均提升36%</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="trend-item">
+          <view class="trend-dot purple-bg"></view>
+          <view class="trend-content">
+            <text class="trend-title">3. 数字孪生乡村治理</text>
+            <text class="trend-desc">通过构建乡村的数字孪生模型，将物理世界与数字世界深度融合，实现对乡村治理、资源分配和基础设施的精细化管理。未来，乡村决策者可以在虚拟环境中预先评估政策效果和规划方案。</text>
+            <view class="trend-tags">
+              <text class="trend-tag">虚实结合</text>
+              <text class="trend-tag">动态监测</text>
+              <text class="trend-tag">资源协同</text>
+            </view>
+            <view class="trend-stat">
+              <text class="iconfont icon-chart-line"></text>
+              <text class="trend-stat-text">数字孪生技术应用可提升乡村规划效率54%，减少资源浪费28%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系我们 Section -->
+  <view class="section contact-section">
+    <view class="container">
+      <view class="contact-card">
+        <view class="contact-content">
+          <text class="contact-title">深入了解智慧经济解决方案</text>
+          <text class="contact-desc">我们致力于通过数据和AI技术推动乡村智慧经济发展，为您提供全方位的技术支持和咨询服务。</text>
+          <view class="contact-buttons">
+            <button class="primary-button">联系我们</button>
+            <button class="outline-button">下载白皮书</button>
+          </view>
+        </view>
+        <image class="contact-image" src="https://pic1.zhimg.com/v2-851f8792cc5bda2269a989cfcc25e3f8_1440w.jpg" mode="aspectFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer-section">
+    <view class="container">
+      <text class="footer-logo">智慧经济 <text class="accent-text">数据中心</text></text>
+      <text class="footer-desc">致力于通过大数据、人工智能和物联网技术赋能乡村振兴，推动乡村经济高质量发展</text>
+      <view class="footer-links">
+        <navigator url="/pages/index/index" class="footer-link">返回首页</navigator>
+        <text class="footer-link">关于我们</text>
+        <text class="footer-link">解决方案</text>
+        <text class="footer-link">联系我们</text>
+      </view>
+      <text class="copyright">© 2025 智慧经济数据中心 版权所有</text>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,210 @@
+<!--pages/zhushou/zhushou.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <view class="header-content">
+      <view class="icon-wrapper">
+        <text class="iconfont icon-robot"></text>
+      </view>
+      <view class="title">
+        <text>乡村振兴智能体分析平台</text>
+      </view>
+    </view>
+    <view class="button-group">
+      <button class="btn btn-primary" bindtap="importData">数据导入</button>
+      <button class="btn btn-outline" bindtap="showSettings">
+        <text class="iconfont icon-setting"></text>设置
+      </button>
+    </view>
+  </view>
+
+  <!-- 主体内容区域 -->
+  <view class="main-content">
+    <!-- 数据分析结果 -->
+    <view class="card fade-in">
+      <view class="card-header">
+        <view class="icon-circle">
+          <text class="iconfont icon-chart-line"></text>
+        </view>
+        <text class="card-title">数据分析结果</text>
+      </view>
+      
+      <view class="card-body">
+        <view class="mb-4">
+          <text class="analysis-title">碧水村发展分析报告</text>
+          <view id="analysis-text" class="analysis-content">{{analysisText}}</view>
+          <view class="loader" wx:if="{{isLoading}}"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 原始数据表格 -->
+    <view class="card fade-in {{showDataTable ? '' : 'hidden'}}">
+      <view class="card-header" bindtap="toggleDataTable">
+        <view class="icon-circle">
+          <text class="iconfont icon-database"></text>
+        </view>
+        <text class="card-title">原始数据</text>
+      </view>
+      
+      <view class="card-body" wx:if="{{showDataTable}}">
+        <scroll-view scroll-x="true" class="table-container">
+          <view class="data-table">
+            <view class="table-header">
+              <view class="th">指标类别</view>
+              <view class="th">指标名称</view>
+              <view class="th">2021年</view>
+              <view class="th">2022年</view>
+              <view class="th">2023年</view>
+            </view>
+            
+            <view class="table-body">
+              <!-- 经济发展水平 -->
+              <view class="tr" wx:for="{{economicData.development}}" wx:key="index">
+                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.development.length}};">经济发展水平</view>
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.y2021}}</view>
+                <view class="td">{{item.y2022}}</view>
+                <view class="td">{{item.y2023}}</view>
+              </view>
+              
+              <!-- 经济增长速度 -->
+              <view class="tr" wx:for="{{economicData.growth}}" wx:key="index">
+                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.growth.length}};">经济增长速度</view>
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.y2021}}</view>
+                <view class="td">{{item.y2022}}</view>
+                <view class="td">{{item.y2023}}</view>
+              </view>
+              
+              <!-- 产业结构升级 -->
+              <view class="tr" wx:for="{{economicData.industry}}" wx:key="index">
+                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.industry.length}};">产业结构升级</view>
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.y2021}}</view>
+                <view class="td">{{item.y2022}}</view>
+                <view class="td">{{item.y2023}}</view>
+              </view>
+              
+              <!-- 人均可支配收入 -->
+              <view class="tr" wx:for="{{economicData.income}}" wx:key="index">
+                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.income.length}};">人均可支配收入</view>
+                <view class="td">{{item.name}}</view>
+                <view class="td">{{item.y2021}}</view>
+                <view class="td">{{item.y2022}}</view>
+                <view class="td">{{item.y2023}}</view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <!-- 数据可视化图表 -->
+    <view class="card fade-in {{showCharts ? '' : 'hidden'}}">
+      <view class="card-header" bindtap="toggleCharts">
+        <view class="icon-circle">
+          <text class="iconfont icon-chart-pie"></text>
+        </view>
+        <text class="card-title">数据可视化分析</text>
+      </view>
+      
+      <view class="card-body" wx:if="{{showCharts}}">
+        <view class="chart-tabs">
+          <view class="chart-tab {{currentChart === 'gdp' ? 'active' : ''}}" bindtap="switchChart" data-chart="gdp">地区生产总值分析</view>
+          <view class="chart-tab {{currentChart === 'income' ? 'active' : ''}}" bindtap="switchChart" data-chart="income">居民收入分析</view>
+          <view class="chart-tab {{currentChart === 'industry' ? 'active' : ''}}" bindtap="switchChart" data-chart="industry">产业结构分析</view>
+          <view class="chart-tab {{currentChart === 'growth' ? 'active' : ''}}" bindtap="switchChart" data-chart="growth">增速对比分析</view>
+        </view>
+        
+        <view class="chart-panels">
+          <view class="chart-panel {{currentChart === 'gdp' ? '' : 'hidden'}}">
+            <view class="chart-grid">
+              <view class="dashboard-card">
+                <text class="chart-title">地区生产总值趋势(亿元)</text>
+                <ec-canvas id="gdpTrendChart" canvas-id="gdpTrendChart" ec="{{ gdpTrendEc }}"></ec-canvas>
+              </view>
+              <view class="dashboard-card">
+                <text class="chart-title">地区生产总值构成(2023年)</text>
+                <ec-canvas id="gdpCompositionChart" canvas-id="gdpCompositionChart" ec="{{ gdpCompositionEc }}"></ec-canvas>
+              </view>
+            </view>
+          </view>
+          
+          <view class="chart-panel {{currentChart === 'income' ? '' : 'hidden'}}">
+            <view class="chart-grid">
+              <view class="dashboard-card">
+                <text class="chart-title">城乡收入对比(元)</text>
+                <ec-canvas id="incomeComparisonChart" canvas-id="incomeComparisonChart" ec="{{ incomeComparisonEc }}"></ec-canvas>
+              </view>
+              <view class="dashboard-card">
+                <text class="chart-title">居民收入增长率(%)</text>
+                <ec-canvas id="incomeGrowthChart" canvas-id="incomeGrowthChart" ec="{{ incomeGrowthEc }}"></ec-canvas>
+              </view>
+            </view>
+          </view>
+          
+          <view class="chart-panel {{currentChart === 'industry' ? '' : 'hidden'}}">
+            <view class="chart-grid">
+              <view class="dashboard-card">
+                <text class="chart-title">产业结构变化(%)</text>
+                <ec-canvas id="industryStructureChart" canvas-id="industryStructureChart" ec="{{ industryStructureEc }}"></ec-canvas>
+              </view>
+              <view class="dashboard-card">
+                <text class="chart-title">农业产业化经营率变化(%)</text>
+                <ec-canvas id="agricultureRateChart" canvas-id="agricultureRateChart" ec="{{ agricultureRateEc }}"></ec-canvas>
+              </view>
+            </view>
+          </view>
+          
+          <view class="chart-panel {{currentChart === 'growth' ? '' : 'hidden'}}">
+            <view class="chart-grid">
+              <view class="dashboard-card">
+                <text class="chart-title">各项增速对比(2023年)</text>
+                <ec-canvas id="growthComparisonChart" canvas-id="growthComparisonChart" ec="{{ growthComparisonEc }}"></ec-canvas>
+              </view>
+              <view class="dashboard-card">
+                <text class="chart-title">固定资产投资与GDP增速关系</text>
+                <ec-canvas id="investmentGdpChart" canvas-id="investmentGdpChart" ec="{{ investmentGdpEc }}"></ec-canvas>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 聊天交互区域 -->
+    <view class="chat-container fade-in">
+      <view class="chat-header">
+        <view class="icon-circle">
+          <text class="iconfont icon-comments"></text>
+        </view>
+        <text class="chat-title">智能助手对话</text>
+      </view>
+      
+      <scroll-view scroll-y="true" class="chat-history" scroll-top="{{scrollTop}}">
+        <view class="message-list">
+          <view class="message-item" wx:for="{{chatHistory}}" wx:key="index">
+            <view class="avatar {{item.isUser ? 'user-avatar' : 'ai-avatar'}}">
+              <text class="iconfont {{item.isUser ? 'icon-user' : 'icon-robot'}}"></text>
+            </view>
+            <view class="message-bubble {{item.isUser ? 'user-message' : 'ai-message'}}">
+              <text>{{item.message}}</text>
+              <view class="thinking-indicator" wx:if="{{item.thinking}}">
+                <view class="loader-small"></view>
+                <text class="thinking-text">正在分析数据...</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      
+      <view class="chat-input-area">
+        <input type="text" class="chat-input" value="{{inputMessage}}" bindinput="onInputChange" placeholder="请输入您的问题..." confirm-type="send" bindconfirm="sendMessage"/>
+        <button class="send-btn" bindtap="sendMessage">
+          <text class="iconfont icon-send"></text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

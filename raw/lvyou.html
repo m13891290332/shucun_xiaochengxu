@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山西大同特色乡村旅游智能分析</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        :root {
+            --deep-blue: #0a264a;
+            --mid-blue: #1a3a6c;
+            --light-blue: #3a5998;
+            --accent-blue: #5b7ec2;
+            --highlight: #ffd700;
+        }
+        
+        body {
+            background-color: var(--deep-blue);
+            color: #fff;
+            font-family: 'Noto Sans SC', sans-serif, system-ui;
+        }
+        
+        .section-title {
+            border-left: 4px solid var(--highlight);
+            padding-left: 1rem;
+        }
+        
+        .card {
+            background-color: var(--mid-blue);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .resource-icon {
+            background-color: var(--light-blue);
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .data-highlight {
+            color: var(--highlight);
+            font-weight: bold;
+        }
+        
+        .suggestion-card {
+            border-left: 3px solid var(--accent-blue);
+            background-color: rgba(26, 58, 108, 0.5);
+        }
+        
+        .chart-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        #map-container {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--mid-blue);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stats-card {
+            background-color: var(--mid-blue);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-value {
+            height: 100%;
+            background-color: var(--highlight);
+            border-radius: 3px;
+        }
+        
+        .attraction-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 200px;
+        }
+        
+        .attraction-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+        
+        .tag {
+            background-color: var(--accent-blue);
+            padding: 0.2rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-banner {
+            background: linear-gradient(120deg, var(--deep-blue), var(--mid-blue));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://lh3.googleusercontent.com/gps-cs-s/AC9h4np5J1HN3eqReG1t4V5AgW5eNbRq449EViBw-R16QZuY8A-6lcde_hk4E7MEAykGbrxhsU6qVBlQrmFZQXf-voYXXU4Y-3FRmEkrleO6cZGzk6QfFodZRbEobgGHU__7mGUbbFeK0A=w80-h119-k-no') no-repeat center center;
+            background-size: cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline {
+            position: relative;
+            margin-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 10px;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent-blue);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: -38px;
+            top: 5px;
+            border-radius: 50%;
+            background-color: var(--highlight);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 头部 Banner -->
+        <div class="header-banner rounded-lg mb-8 p-8">
+            <div class="header-content">
+                <h1 class="text-4xl font-bold mb-4">山西大同特色乡村旅游智能分析</h1>
+                <p class="text-xl opacity-80 mb-6">AI智能分析当地旅游业发展可能路径，挖掘大同特色乡村旅游潜力</p>
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="bg-white/10 px-4 py-2 rounded-full">
+                        <span class="opacity-70">总人口</span>
+                        <span class="ml-2 data-highlight">307.9万</span>
+                    </div>
+                    <div class="bg-white/10 px-4 py-2 rounded-full">
+                        <span class="opacity-70">城镇化率</span>
+                        <span class="ml-2 data-highlight">74.4%</span>
+                    </div>
+                    <div class="bg-white/10 px-4 py-2 rounded-full">
+                        <span class="opacity-70">年接待游客</span>
+                        <span class="ml-2 data-highlight">35.06万人次</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大同概况 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">大同概况</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">地理位置</h3>
+                    <p class="opacity-80 mb-3">大同市位于山西省北部，是中国晋冀蒙交界地区中心城市之一，总面积14176平方千米。战略位置重要，自古为"北方锁钥"。</p>
+                    <div class="mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span>地理优势利用率</span>
+                            <span>62%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" style="width: 62%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">人口分布</h3>
+                    <p class="opacity-80 mb-3">截至2023年，大同市常住人口<span class="data-highlight">307.9万人</span>，城镇化率<span class="data-highlight">74.4%</span>，比上年提高0.7个百分点。</p>
+                    <div class="chart-container mt-4">
+                        <canvas id="populationChart" height="150"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">产业资源</h3>
+                    <p class="opacity-80 mb-3">大同矿产资源丰富，以煤炭为主的能源产业是支柱产业。近年来新能源发展迅速，风电装机容量423.2万千瓦，光电装机容量516.7万千瓦。</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <span class="tag">煤炭资源</span>
+                        <span class="tag">风能</span>
+                        <span class="tag">太阳能</span>
+                        <span class="tag">旅游业</span>
+                        <span class="tag">生态农业</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色乡村旅游资源 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">特色乡村旅游资源</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card overflow-hidden">
+                    <div class="attraction-card">
+                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npRIp5-PtftxFd2G6QYtwYlnspZyENUvR-a0rF0zXxUQAW0EYhD2OZdN7arwExP46m-979MLL3ZvFPhs4KVvYlJTKq86jwPGKKTriRI0DOmUFNwDmw6TQ3p7LSq9ASuyGCExZMQ=w138-h92-k-no" alt="悬空寺" class="w-full h-full object-cover">
+                        <div class="attraction-info">
+                            <h3 class="text-lg font-bold">悬空寺</h3>
+                            <p class="text-sm opacity-80">古老的寺庙建于悬崖峭壁之上，融合佛、道、儒三教</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm opacity-70">游客满意度</span>
+                            <span class="text-sm font-semibold">4.7/5.0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" style="width: 94%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card overflow-hidden">
+                    <div class="attraction-card">
+                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4no1RUkybprKUKMdZs__iOGWmfcCWhfN8KfB5KpSiEDJRvEDmzLwo1KLEvXXG8J8bMYMhhs9ndDt9527jPMzZ-ZxoTtN0WnZX9v1yxx0HtfhQ1497C2-SYyWJ2Q_WZoaaKchLQxn=w122-h92-k-no" alt="云冈石窟博物馆" class="w-full h-full object-cover">
+                        <div class="attraction-info">
+                            <h3 class="text-lg font-bold">云冈石窟博物馆</h3>
+                            <p class="text-sm opacity-80">中国三大石窟之一，北魏时期佛教艺术的经典之作</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm opacity-70">游客满意度</span>
+                            <span class="text-sm font-semibold">4.6/5.0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card overflow-hidden">
+                    <div class="attraction-card">
+                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npFgHGsRsDE7H-YZgFHswi5zglJdaegEZ3WbkeoQkoerys3mxLxVeSfImSlB6ytEzAk2wqp5FsTHhv_6fYtFUE2lWp2GeEsCzrrMKAqlIADv3VvNszFYtfIxyUemR917Cc7YPgcxQ=w92-h92-k-no" alt="大同火山群" class="w-full h-full object-cover">
+                        <div class="attraction-info">
+                            <h3 class="text-lg font-bold">大同火山群</h3>
+                            <p class="text-sm opacity-80">东亚大陆稀有的自然遗迹，独特的地质景观</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm opacity-70">游客满意度</span>
+                            <span class="text-sm font-semibold">4.0/5.0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card overflow-hidden">
+                    <div class="attraction-card">
+                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nplyZeBVg4c8Ik6Qor8XO8MMKasVj1-Qiem3elAT-tNAJ2kSgTksKPlmqT8qFFYBBZSUjQrGwa3xnaK8W-mMZUz_DkdPxcbGCmTrjfaHDT8_utfet8FEPYvH6IvurGTVZ1dzDAOoA=w138-h92-k-no" alt="恒山" class="w-full h-full object-cover">
+                        <div class="attraction-info">
+                            <h3 class="text-lg font-bold">北岳恒山景区</h3>
+                            <p class="text-sm opacity-80">五岳之一，风景秀丽，文化底蕴深厚</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm opacity-70">游客满意度</span>
+                            <span class="text-sm font-semibold">4.2/5.0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" style="width: 84%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">乡村旅游精品线路</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">文化古都线路</h4>
+                                <p class="text-sm opacity-80">云冈石窟→九龙壁→华严寺→古城墙→特色农家乐</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">民俗风情线路</h4>
+                                <p class="text-sm opacity-80">唐家堡村→大泉山村→民俗文化体验→农事活动体验</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">长城文化感悟线路</h4>
+                                <p class="text-sm opacity-80">镇羌堡→拒门堡→拒墙堡→助马堡→农家特色美食</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">休闲度假线路</h4>
+                                <p class="text-sm opacity-80">灵丘县乡村民宿→生态农业体验园→温泉度假→传统手工艺学习</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">乡村田园线路</h4>
+                                <p class="text-sm opacity-80">忘忧花海→有机农场→汉白玉村→传统农耕文化体验</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4 class="font-semibold">红色文化线路</h4>
+                                <p class="text-sm opacity-80">平型关战役遗址→革命纪念馆→乡村特色民宿→农家美食</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-xl font-semibold mb-4">乡村旅游特色资源</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">传统民居</h4>
+                        <p class="text-sm opacity-70">北方特色窑洞、四合院</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">特色美食</h4>
+                        <p class="text-sm opacity-70">刀削面、莜面栲栳栳</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">传统工艺</h4>
+                        <p class="text-sm opacity-70">剪纸、年画、陶瓷</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">民俗活动</h4>
+                        <p class="text-sm opacity-70">社火、庙会、秧歌</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">生态资源</h4>
+                        <p class="text-sm opacity-70">火山景观、黄花产业</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="resource-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-medium">特色农产品</h4>
+                        <p class="text-sm opacity-70">大同黄花、马铃薯</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 乡村旅游现状分析 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">乡村旅游现状分析</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">旅游资源开发现状</h3>
+                    <div class="chart-container">
+                        <canvas id="resourceDevelopmentChart" height="250"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">旅游接待能力</h3>
+                    <div class="chart-container">
+                        <div id="tourismCapacityChart" style="height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">优势</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>丰富的历史文化资源，包括云冈石窟、悬空寺等世界级旅游资源</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>独特的地质景观，如大同火山群</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>良好的交通条件，高铁网络完善</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">劣势</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>乡村旅游基础设施有待完善</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>旅游产品多以观光为主，体验型、互动型产品不足</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>季节性明显，冬季接待能力不足</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4">发展趋势</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span>乡村民宿和特色农家乐快速发展</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span>特色农产品与旅游业态结合日益紧密</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span>文旅+科技融合趋势明显</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 乡村旅游地图 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">乡村旅游资源分布</h2>
+            <div class="card p-6">
+                <div id="map-container">
+                    <div id="touristMap" style="height: 100%;"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="bg-white/5 rounded p-3">
+                        <h4 class="font-semibold">北部山区</h4>
+                        <p class="text-sm opacity-70">悬空寺、恒山风景区、汉白玉村</p>
+                    </div>
+                    <div class="bg-white/5 rounded p-3">
+                        <h4 class="font-semibold">中部平原</h4>
+                        <p class="text-sm opacity-70">云冈石窟、古城区、休闲农业观光园</p>
+                    </div>
+                    <div class="bg-white/5 rounded p-3">
+                        <h4 class="font-semibold">南部丘陵</h4>
+                        <p class="text-sm opacity-70">火山景观区、大泉山村、唐家堡村</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI智能分析建议 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">AI智能分析旅游业发展建议</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-opacity-20 bg-blue-500 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">提升产品层次与创新</h3>
+                    </div>
+                    <div class="space-y-3 ml-14">
+                        <p class="suggestion-card p-3">开发多样化主题乡村旅游产品，如"农耕文化体验"、"民俗技艺传承"等特色项目</p>
+                        <p class="suggestion-card p-3">打造"四季皆宜"的旅游产品，减弱季节性影响，如冬季温泉、滑雪与民俗体验相结合</p>
+                        <p class="suggestion-card p-3">将大同特色农产品（如黄花、马铃薯等）融入乡村旅游体验中，形成"旅游+农业"融合发展模式</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-opacity-20 bg-green-500 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">产业融合发展</h3>
+                    </div>
+                    <div class="space-y-3 ml-14">
+                        <p class="suggestion-card p-3">推动"文旅+康养"融合发展，利用大同优质的生态环境，打造慢生活乡村度假产品</p>
+                        <p class="suggestion-card p-3">推动"文旅+体育"融合，开发户外运动与乡村旅游相结合的特色产品</p>
+                        <p class="suggestion-card p-3">积极发展"夜经济"，设计乡村夜游产品，延长游客停留时间</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-opacity-20 bg-purple-500 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">基础设施与服务提升</h3>
+                    </div>
+                    <div class="space-y-3 ml-14">
+                        <p class="suggestion-card p-3">完善乡村旅游基础设施，重点提升卫生间、餐饮设施、停车场等公共设施标准</p>
+                        <p class="suggestion-card p-3">培育乡村民宿品牌，引导高端民宿和特色民宿集群发展</p>
+                        <p class="suggestion-card p-3">培训乡村旅游从业人员，提高服务质量和管理水平</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-opacity-20 bg-yellow-500 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">营销与数字化转型</h3>
+                    </div>
+                    <div class="space-y-3 ml-14">
+                        <p class="suggestion-card p-3">开发乡村旅游智慧平台，实现线上预订、导游导览、信息查询等功能</p>
+                        <p class="suggestion-card p-3">利用短视频、直播等新媒体手段，加强乡村旅游宣传推广</p>
+                        <p class="suggestion-card p-3">建立大数据分析系统，实现精准营销和服务</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实施路径 -->
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold mb-6 section-title">实施路径与时间表</h2>
+            <div class="card p-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="py-3 px-4 text-left">阶段</th>
+                                <th class="py-3 px-4 text-left">时间</th>
+                                <th class="py-3 px-4 text-left">重点任务</th>
+                                <th class="py-3 px-4 text-left">预期成果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-white/10">
+                                <td class="py-3 px-4">短期</td>
+                                <td class="py-3 px-4">1-2年</td>
+                                <td class="py-3 px-4">
+                                    <p>1. 完善基础设施</p>
+                                    <p>2. 开发特色乡村旅游产品</p>
+                                    <p>3. 培训乡村旅游从业人员</p>
+                                </td>
+                                <td class="py-3 px-4">每县区打造1-2个乡村旅游示范点，接待游客年增长20%</td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="py-3 px-4">中期</td>
+                                <td class="py-3 px-4">3-5年</td>
+                                <td class="py-3 px-4">
+                                    <p>1. 培育乡村旅游特色品牌</p>
+                                    <p>2. 构建四季均衡的乡村旅游产品体系</p>
+                                    <p>3. 推动农旅融合深度发展</p>
+                                </td>
+                                <td class="py-3 px-4">打造3-5条精品乡村旅游路线，乡村旅游收入占全市旅游总收入30%以上</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">长期</td>
+                                <td class="py-3 px-4">5-10年</td>
+                                <td class="py-3 px-4">
+                                    <p>1. 建设乡村旅游产业集群</p>
+                                    <p>2. 打造全国知名的乡村旅游目的地</p>
+                                    <p>3. 推动乡村振兴与旅游业高质量发展</p>
+                                </td>
+                                <td class="py-3 px-4">形成"一村一品、一镇一韵"的乡村旅游发展格局，成为全国乡村旅游示范区</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部信息 -->
+        <footer class="text-center text-sm opacity-70 py-8">
+            <p>© 2025 山西大同特色乡村旅游智能分析平台 | 数据来源：大同市统计局、文旅局</p>
+        </footer>
+    </div>
+
+    <script>
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 人口分布饼图
+            const populationCtx = document.getElementById('populationChart').getContext('2d');
+            new Chart(populationCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['城镇人口', '农村人口'],
+                    datasets: [{
+                        data: [74.4, 25.6],
+                        backgroundColor: ['#5b7ec2', '#1a3a6c'],
+                        borderColor: '#0a264a',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#fff',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '城乡人口分布比例(%)',
+                            color: '#fff',
+                            font: {
+                                size: 14
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 资源开发现状雷达图
+            const resourceDevCtx = document.getElementById('resourceDevelopmentChart').getContext('2d');
+            new Chart(resourceDevCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['历史文化', '自然景观', '乡村民宿', '特色美食', '民俗活动', '农产品开发'],
+                    datasets: [{
+                        label: '资源开发水平',
+                        data: [85, 72, 58, 65, 53, 70],
+                        backgroundColor: 'rgba(91, 126, 194, 0.3)',
+                        borderColor: '#5b7ec2',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffd700'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            },
+                            pointLabels: {
+                                color: '#fff',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#fff'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 旅游接待能力柱状图
+            const capacityChart = echarts.init(document.getElementById('tourismCapacityChart'));
+            capacityChart.setOption({
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['住宿容量', '餐饮接待', '交通便利度', '导游服务'],
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    bottom: 0
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['核心景区', '乡村民宿', '特色村镇'],
+                        axisLabel: {
+                            color: '#fff'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        max: 100,
+                        axisLabel: {
+                            color: '#fff'
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '住宿容量',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [85, 62, 45],
+                        itemStyle: {
+                            color: '#3a5998'
+                        }
+                    },
+                    {
+                        name: '餐饮接待',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [78, 58, 50],
+                        itemStyle: {
+                            color: '#5b7ec2'
+                        }
+                    },
+                    {
+                        name: '交通便利度',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [82, 48, 42],
+                        itemStyle: {
+                            color: '#8da9e6'
+                        }
+                    },
+                    {
+                        name: '导游服务',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [75, 35, 30],
+                        itemStyle: {
+                            color: '#a8c0ff'
+                        }
+                    }
+                ]
+            });
+
+            // 旅游资源分布地图
+            const touristMap = echarts.init(document.getElementById('touristMap'));
+            touristMap.setOption({
+                backgroundColor: 'transparent',
+                title: {
+                    text: '大同乡村旅游资源分布',
+                    left: 'center',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                geo: {
+                    map: '',
+                    roam: true,
+                    center: [113.3, 40.1],
+                    zoom: 1.2,
+                    label: {
+                        normal: {
+                            show: false
+                        },
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#102c57',
+                            borderColor: '#2a5caa'
+                        },
+                        emphasis: {
+                            areaColor: '#2a5caa'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: [
+                            {name: '云冈石窟', value: [113.13, 40.11, 90]},
+                            {name: '悬空寺', value: [113.71, 39.66, 85]},
+                            {name: '华严寺', value: [113.30, 40.09, 60]},
+                            {name: '大同火山群', value: [113.63, 40.11, 50]},
+                            {name: '恒山景区', value: [113.73, 39.67, 70]},
+                            {name: '大泉山村', value: [113.45, 40.24, 30]},
+                            {name: '唐家堡村', value: [113.35, 40.18, 35]},
+                            {name: '灵丘桃花山', value: [114.01, 39.34, 40]}
+                        ],
+                        symbolSize: function (val) {
+                            return val[2] / 10;
+                        },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke'
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'right',
+                                formatter: '{b}',
+                                color: '#fff'
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#ffd700',
+                                shadowBlur: 10,
+                                shadowColor: '#ffd700'
+                            }
+                        },
+                        zlevel: 1
+                    }
+                ]
+            });
+
+            // 响应窗口大小变化，重新渲染图表
+            window.addEventListener('resize', function() {
+                capacityChart.resize();
+                touristMap.resize();
+            });
+        });
+    </script>
+</body>
+</html>

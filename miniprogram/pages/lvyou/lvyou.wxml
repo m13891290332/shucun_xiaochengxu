@@ -1,0 +1,216 @@
+<!--pages/lvyou/lvyou.wxml-->
+<view class="container">
+  <!-- 头部 Banner -->
+  <view class="header-banner">
+    <view class="header-content">
+      <text class="title">山西大同特色乡村旅游智能分析</text>
+      <text class="subtitle">AI智能分析当地旅游业发展可能路径，挖掘大同特色乡村旅游潜力</text>
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-label">总人口</text>
+          <text class="stat-value">307.9万</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-label">城镇化率</text>
+          <text class="stat-value">74.4%</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-label">年接待游客</text>
+          <text class="stat-value">35.06万人次</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 大同概况 -->
+  <view class="section">
+    <view class="section-title">大同概况</view>
+    <view class="grid">
+      <view class="card">
+        <text class="card-title">地理位置</text>
+        <text class="card-text">大同市位于山西省北部，是中国晋冀蒙交界地区中心城市之一，总面积14176平方千米。战略位置重要，自古为"北方锁钥"。</text>
+        <view class="progress-container">
+          <text>地理优势利用率</text>
+          <text>62%</text>
+          <view class="progress-bar">
+            <view class="progress-value" style="width: 62%;"></view>
+          </view>
+        </view>
+      </view>
+      <view class="card">
+        <text class="card-title">人口分布</text>
+        <text class="card-text">截至2023年，大同市常住人口<text class="highlight">307.9万人</text>，城镇化率<text class="highlight">74.4%</text>，比上年提高0.7个百分点。</text>
+        <view class="chart-container">
+          <canvas canvas-id="populationChart" class="canvas"></canvas>
+        </view>
+      </view>
+      <view class="card">
+        <text class="card-title">产业资源</text>
+        <text class="card-text">大同矿产资源丰富，以煤炭为主的能源产业是支柱产业。近年来新能源发展迅速，风电装机容量423.2万千瓦，光电装机容量516.7万千瓦。</text>
+        <view class="tag-container">
+          <text class="tag">煤炭资源</text>
+          <text class="tag">风能</text>
+          <text class="tag">太阳能</text>
+          <text class="tag">旅游业</text>
+          <text class="tag">生态农业</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 特色乡村旅游资源 -->
+  <view class="section">
+    <view class="section-title">特色乡村旅游资源</view>
+    <view class="attractions-grid">
+      <view class="attraction-card" wx:for="{{attractions}}" wx:key="name">
+        <image class="attraction-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="attraction-info">
+          <text class="attraction-name">{{item.name}}</text>
+          <text class="attraction-desc">{{item.desc}}</text>
+        </view>
+        <view class="attraction-rating">
+          <view class="rating-row">
+            <text>游客满意度</text>
+            <text>{{item.rating}}/5.0</text>
+          </view>
+          <view class="progress-bar">
+            <view class="progress-value" style="width: {{item.percentage}}%;"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card mt-20">
+      <text class="card-title">乡村旅游精品线路</text>
+      <view class="timeline-container">
+        <view class="timeline" wx:for="{{tourRoutes}}" wx:key="name">
+          <text class="timeline-title">{{item.name}}</text>
+          <text class="timeline-desc">{{item.route}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card mt-20">
+      <text class="card-title">乡村旅游特色资源</text>
+      <view class="resource-grid">
+        <view class="resource-item" wx:for="{{resources}}" wx:key="name">
+          <view class="resource-icon">
+            <text class="{{item.icon}}"></text>
+          </view>
+          <text class="resource-name">{{item.name}}</text>
+          <text class="resource-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 乡村旅游现状分析 -->
+  <view class="section">
+    <view class="section-title">乡村旅游现状分析</view>
+    <view class="chart-cards">
+      <view class="card">
+        <text class="card-title">旅游资源开发现状</text>
+        <view class="chart-container">
+          <canvas canvas-id="resourceChart" class="canvas"></canvas>
+        </view>
+      </view>
+      <view class="card">
+        <text class="card-title">旅游接待能力</text>
+        <view class="chart-container">
+          <canvas canvas-id="capacityChart" class="canvas"></canvas>
+        </view>
+      </view>
+    </view>
+
+    <view class="analysis-grid">
+      <view class="card">
+        <text class="card-title">优势</text>
+        <view class="list-item" wx:for="{{advantages}}" wx:key="*this">
+          <text class="list-icon">✓</text>
+          <text class="list-text">{{item}}</text>
+        </view>
+      </view>
+      <view class="card">
+        <text class="card-title">劣势</text>
+        <view class="list-item" wx:for="{{disadvantages}}" wx:key="*this">
+          <text class="list-icon">✗</text>
+          <text class="list-text">{{item}}</text>
+        </view>
+      </view>
+      <view class="card">
+        <text class="card-title">发展趋势</text>
+        <view class="list-item" wx:for="{{trends}}" wx:key="*this">
+          <text class="list-icon">↗</text>
+          <text class="list-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 乡村旅游资源分布 -->
+  <view class="section">
+    <view class="section-title">乡村旅游资源分布</view>
+    <view class="card">
+      <view class="map-container">
+        <map id="touristMap" 
+             latitude="{{mapCenter.latitude}}" 
+             longitude="{{mapCenter.longitude}}" 
+             markers="{{mapMarkers}}" 
+             scale="10" 
+             style="width: 100%; height: 300px;"></map>
+      </view>
+      <view class="region-grid">
+        <view class="region-item" wx:for="{{regions}}" wx:key="name">
+          <text class="region-name">{{item.name}}</text>
+          <text class="region-desc">{{item.attractions}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI智能分析建议 -->
+  <view class="section">
+    <view class="section-title">AI智能分析旅游业发展建议</view>
+    <view class="suggestion-grid">
+      <view class="card" wx:for="{{suggestions}}" wx:key="title">
+        <view class="suggestion-header">
+          <view class="suggestion-icon {{item.iconClass}}"></view>
+          <text class="suggestion-title">{{item.title}}</text>
+        </view>
+        <view class="suggestion-list">
+          <view class="suggestion-item" wx:for="{{item.items}}" wx:for-item="subItem" wx:key="*this">
+            <text>{{subItem}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实施路径 -->
+  <view class="section">
+    <view class="section-title">实施路径与时间表</view>
+    <view class="card">
+      <view class="table">
+        <view class="table-header">
+          <view class="table-cell">阶段</view>
+          <view class="table-cell">时间</view>
+          <view class="table-cell">重点任务</view>
+          <view class="table-cell">预期成果</view>
+        </view>
+        <view class="table-row" wx:for="{{implementation}}" wx:key="stage">
+          <view class="table-cell">{{item.stage}}</view>
+          <view class="table-cell">{{item.time}}</view>
+          <view class="table-cell">
+            <text wx:for="{{item.tasks}}" wx:for-item="task" wx:key="*this">{{index+1}}. {{task}}\n</text>
+          </view>
+          <view class="table-cell">{{item.outcome}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text>© 2025 山西大同特色乡村旅游智能分析平台 | 数据来源：大同市统计局、文旅局</text>
+  </view>
+</view>

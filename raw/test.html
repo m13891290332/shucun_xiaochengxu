@@ -1,0 +1,389 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- 添加jQuery库 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 添加Swiper库 -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+</head>
+
+<body>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* 列表样式 - 隐藏原点 */
+        ul,
+        li {
+            list-style: none;
+        }
+
+        /* 头部样式 */
+        .header {
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            background-color: #043e6b;
+            background-opacity: 0.8;
+            height: 140px;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .header.translate-y-140 {
+            transform: translateY(-140px);
+        }
+
+        .headerbox {
+            width: 1300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Logo样式 */
+        .logo {
+            width: 155px;
+            float: left;
+            padding-top: 39px;
+        }
+
+        .logo img {
+            width: 100%;
+        }
+
+        /* 移动端菜单按钮 */
+        .dhbnt {
+            position: absolute;
+            right: 3%;
+            top: 15px;
+            width: 30px;
+            height: 30px;
+            background-image: url('../images/d1.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 20px 20px;
+        }
+
+        .dhbnt.on {
+            background-image: url('../images/d2.png');
+        }
+
+        /* 导航菜单 */
+        .nav {
+            position: fixed;
+            top: 60px;
+            width: 200px;
+            height: calc(100% - 60px);
+            background-color: #033c67;
+            left: -200px;
+            transition: all 0.3s;
+        }
+
+        .nav.open {
+            left: 0;
+        }
+
+        /* 导航菜单项 */
+        .nav ul li {
+            width: 100%;
+            float: none;
+            color: #b7c6d4;
+            line-height: 50px;
+            border-bottom: 1px solid #022e4e;
+        }
+
+        .nav ul li a {
+            display: block;
+            padding: 0 20px;
+            color: #b7c6d4;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .nav ul li a:hover {
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav ul li b {
+            display: none;
+        }
+
+        /* 子菜单 */
+        .sub {
+            display: none;
+            width: 100%;
+            background-color: #043e6b;
+            background-opacity: 0.8;
+            z-index: 100;
+        }
+
+        .sub dl {
+            overflow: hidden;
+        }
+
+        .sub dl dt {
+            width: 100%;
+        }
+
+        .sub dl dt a {
+            display: block;
+            font-size: 20px;
+            color: white;
+            font-weight: normal;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        .sub dl dt a:hover {
+            opacity: 1;
+        }
+
+        .sub dl dt a img {
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: -3px;
+            margin-right: 15px;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .sub dl dt a img:hover {
+            background-color: white;
+            opacity: 0.2;
+        }
+
+        /* 子菜单特殊样式 */
+        .sub1 {
+            width: 100%;
+        }
+
+        /* 媒体查询 - 桌面端 */
+        @media (min-width: 768px) {
+
+            /* 导航菜单 */
+            .nav {
+                position: static;
+                float: right;
+                width: auto;
+                height: auto;
+                background-color: transparent;
+                top: auto;
+            }
+
+            .dhbnt {
+                display: none;
+            }
+
+            .nav ul {
+                display: flex;
+            }
+
+            .nav ul li {
+                float: left;
+                font-size: 20px;
+                line-height: 140px;
+                border: none;
+                width: auto;
+            }
+
+            .nav ul li a {
+                display: inline-block;
+                padding: 0 52px;
+                letter-spacing: 10px;
+                width: auto;
+            }
+
+            .nav ul li b {
+                display: inline;
+            }
+
+            /* 子菜单桌面样式 */
+            .sub {
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                top: 140px;
+                left: 0;
+            }
+
+            .sub dl dt {
+                width: 20%;
+                text-align: center;
+                float: left;
+                padding: 15px 0;
+            }
+
+            .sub dl dt a {
+                white-space: nowrap;
+                overflow: visible;
+                text-overflow: clip;
+            }
+
+            /* 联系子菜单特殊样式 */
+            .sub1 {
+                position: absolute;
+                width: 610px;
+                right: 0;
+                left: auto;
+            }
+
+            .sub1 dl dt {
+                width: 50%;
+            }
+        }
+
+        /* 遮罩层 */
+        .mask {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0.7;
+            top: 0;
+            left: 0;
+            z-index: 105;
+        }
+    </style>
+    <div class="header">
+        <div class="headerbox">
+            <h1 class="logo"><a href="/"><img src="/uploads/20220506/png/1da06e9099375f3d4d63a17c89afecc8.png" /></a>
+            </h1>
+            <div class="dhbnt"></div>
+            <div class="nav">
+                <ul>
+                    <li class="m on"><a href="/">首页</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">平台</a><b>|</b>
+                        <div class="sub">
+                            <dl>
+                                <dt><a href="/jingji.html"><img src="/index/images/ta_177.png" />智慧经济</a></dt>
+                                <dt><a href="/chanye.html"><img src="/index/images/ta_178.png" />智慧产业</a></dt>
+                                <dt><a href="/shouru.html"><img src="/index/images/ta_179.png" />智慧收入</a></dt>
+                                <dt><a href="/zhushou.html"><img src="/index/images/ta_180.png" />智慧助手</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <!--                <li ><a href="/platform">平台</a><b>|</b></li>-->
+                    <li><a href="/news">资讯</a><b>|</b></li>
+                    <li><a href="/cooperation">合作</a><b>|</b></li>
+                    <li class="m">
+                        <a href="javascript:void(0);">联系</a>
+                        <div class="sub sub1">
+                            <dl>
+                                <dt><a href="/contactus.html"><img src="/index/images/ta_215.png" />联系我们</a></dt>
+                                <dt><a href="/enter.html"><img src="/index/images/ta_214.png" />关于我们</a></dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <!--<li ><a href="/contactus">联系</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            // 添加导航按钮点击事件
+            $(".dhbnt").click(function () {
+                $(this).toggleClass("on");
+                if ($(this).hasClass("on")) {
+                    $(".nav").animate({ left: "0" }, 300);
+                } else {
+                    $(".nav").animate({ left: "-200px" }, 300);
+                }
+            });
+
+            // 子菜单点击展开（移动端更适合点击而非hover）
+            $(".m > a").click(function (e) {
+                if ($(window).width() <= 750) {
+                    e.preventDefault();
+                    $(this).next(".sub").slideToggle(300);
+                }
+            });
+
+            // 电脑端hover展开
+            if ($(window).width() > 750) {
+                $(".m").hover(function () {
+                    $(this).find(".sub").stop().slideDown(300);
+                }, function () {
+                    $(this).find(".sub").stop().slideUp(300);
+                });
+            }
+
+            // 处理滚动效果
+            let prevScrollPos = window.scrollY;
+            $(window).scroll(function () {
+                const currentScrollPos = window.scrollY;
+
+                // 处理导航栏隐藏/显示
+                if (prevScrollPos <= currentScrollPos) {
+                    $(".header").addClass("translate-y-140");
+                } else {
+                    $(".header").removeClass("translate-y-140");
+                }
+
+                // 根据滚动位置调整背景透明度
+                if (currentScrollPos > 100) {
+                    $(".header").css("background-opacity", "0.8");
+                } else {
+                    $(".header").css("background-opacity", "1");
+                }
+
+                prevScrollPos = currentScrollPos;
+            });
+
+            var screenWidth = $(window).width();
+            if (screenWidth > 750) {
+                var swiper1 = new Swiper(".banner .mySwiper", {
+                    spaceBetween: 0,
+                    centeredSlides: true,
+                    loop: true,
+                    speed: 1400,
+                    autoplay: {
+                        delay: 13000,
+                        stopOnLastSlide: false,
+                        disableOnInteraction: true,
+                    },
+                    pagination: {
+                        el: ".banner .swiper-pagination",
+                        clickable: true,
+                    },
+                    /*on: {	
+                             slideChangeTransitionStart: function(){					
+                                     var num = this.activeIndex;					
+                                 if($('.banner .swiper-slide').eq(num).hasClass('videoPlay')){					
+                                            this.autoplay.stop();					
+                                            $('.banner .swiper-slide').eq(num).children().children('video')[0].play					   
+                            },
+                          
+                    },				
+                    }	*/
+                });
+            } else {
+                var swiper1 = new Swiper(".banner .mySwiper", {
+                    spaceBetween: 0,
+                    centeredSlides: true,
+                    loop: true,
+                    speed: 1400,
+                    autoplay: true,
+                    pagination: {
+                        el: ".banner .swiper-pagination",
+                        clickable: true,
+                    },
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>

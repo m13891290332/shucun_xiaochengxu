@@ -1,0 +1,217 @@
+<view class="container {{animated ? 'animated' : ''}}">
+  <!-- 返回按钮 -->
+  <navigator url="/pages/index/index" class="back-button" hover-class="back-button-hover">
+    <image src="/miniprogram/images/back-icon.png" class="back-icon" mode="aspectFit"></image>
+    <text>返回首页</text>
+  </navigator>
+  
+  <!-- Banner区域 -->
+  <view class="banner">
+    <view class="banner-overlay">
+      <view class="banner-content">
+        <view class="banner-title-group">
+          <text class="banner-title">{{bannerTitle}}</text>
+          <text class="banner-subtitle">{{bannerSubtitle}}</text>
+        </view>
+        <text class="banner-desc">{{bannerDesc}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 数据维度展示区域 -->
+  <view class="section data-section">
+    <view class="section-header">
+      <text class="section-title">数据维度</text>
+      <text class="section-subtitle">DATA DIMENSIONS</text>
+    </view>
+    
+    <view class="data-dimensions">
+      <block wx:for="{{dimensions}}" wx:key="title">
+        <view class="dimension-card">
+          <view class="dimension-icon">
+            <image src="{{item.icon}}" mode="aspectFit"></image>
+          </view>
+          <text class="dimension-title">{{item.title}}</text>
+          <text class="dimension-desc">{{item.desc}}</text>
+          <view class="dimension-stats">
+            <block wx:for="{{item.stats}}" wx:for-item="stat" wx:key="label">
+              <view class="stat-item">
+                <text class="stat-value">{{stat.value}}</text>
+                <text class="stat-label">{{stat.label}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 数据表格展示 -->
+  <view class="section table-section">
+    <view class="section-header">
+      <text class="section-title">乡村产业发展指标监测</text>
+    </view>
+    
+    <view class="data-table-container">
+      <view class="table-header">
+        <view class="table-controls">
+          <view class="table-control {{activeDataType === 'quarter' ? 'active' : ''}}" 
+                bindtap="switchDataType" data-type="quarter">季度数据</view>
+          <view class="table-control {{activeDataType === 'annual' ? 'active' : ''}}" 
+                bindtap="switchDataType" data-type="annual">年度数据</view>
+        </view>
+      </view>
+      
+      <view class="responsive-table">
+        <!-- 表头 -->
+        <view class="table-row table-head">
+          <view class="table-cell" style="width:30%">指标名称</view>
+          <view class="table-cell" style="width:20%">当前值</view>
+          <view class="table-cell" style="width:20%">同比增长</view>
+          <view class="table-cell" style="width:30%">状态</view>
+        </view>
+        
+        <!-- 表格内容 -->
+        <block wx:for="{{tableData}}" wx:key="name">
+          <view class="table-row">
+            <view class="table-cell" style="width:30%">{{item.name}}</view>
+            <view class="table-cell" style="width:20%">{{item.value}}</view>
+            <view class="table-cell" style="width:20%">{{item.growth}}</view>
+            <view class="table-cell" style="width:30%">
+              <view class="progress-bar">
+                <view class="progress-fill" style="width:{{item.progress}}"></view>
+              </view>
+              <text class="data-tag tag-{{item.type}}">{{item.status}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 数据可视化区域 -->
+  <view class="section charts-section">
+    <view class="section-header">
+      <text class="section-title">数据可视化</text>
+      <text class="section-subtitle">DATA VISUALIZATION</text>
+    </view>
+    
+    <view class="charts-container">
+      <view class="chart-box">
+        <view class="chart-header">
+          <view>
+            <text class="chart-title">各省服务业占GDP比重变化趋势</text>
+            <text class="chart-subtitle">2021-2023年三年数据对比</text>
+          </view>
+        </view>
+        <image src="/miniprogram/images/chart1.png" mode="widthFix" class="chart-image"></image>
+      </view>
+      
+      <view class="chart-box">
+        <view class="chart-header">
+          <view>
+            <text class="chart-title">各省农业产业化经营率</text>
+            <text class="chart-subtitle">2021-2023年产业化率变化</text>
+          </view>
+        </view>
+        <image src="/miniprogram/images/chart2.png" mode="widthFix" class="chart-image"></image>
+      </view>
+    </view>
+  </view>
+  
+  <!-- AI经济发展洞察 -->
+  <view class="section ai-section">
+    <view class="section-header">
+      <text class="section-title">AI经济发展洞察</text>
+      <text class="section-subtitle">AI ECONOMIC INSIGHTS</text>
+    </view>
+    
+    <view class="ai-grid">
+      <view class="ai-info">
+        <text class="ai-title">{{aiInsights.title}}</text>
+        <text class="ai-subtitle">{{aiInsights.subtitle}}</text>
+        <text class="ai-desc">{{aiInsights.desc}}</text>
+        
+        <view class="ai-features">
+          <block wx:for="{{aiInsights.features}}" wx:key="text">
+            <view class="ai-feature">
+              <view class="feature-icon">
+                <image src="{{item.icon}}" mode="aspectFit"></image>
+              </view>
+              <text class="feature-text">{{item.text}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <view class="ai-visual">
+        <view class="ai-image-container">
+          <image src="/miniprogram/images/ai-visual.jpg" mode="aspectFill" class="ai-image"></image>
+        </view>
+        <view class="ai-stats">
+          <block wx:for="{{aiInsights.stats}}" wx:key="label">
+            <view class="ai-stat-item">
+              <text class="ai-stat-value">{{item.value}}</text>
+              <text class="ai-stat-label">{{item.label}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 特色功能区域 -->
+  <view class="section feature-section">
+    <view class="section-header">
+      <text class="section-title">特色功能</text>
+      <text class="section-subtitle">SPECIAL FEATURES</text>
+    </view>
+    
+    <view class="feature-cards">
+      <block wx:for="{{features}}" wx:key="title">
+        <view class="feature-card {{index % 2 !== 0 ? 'reverse' : ''}}">
+          <view class="feature-content">
+            <view class="feature-icon">
+              <image src="{{item.icon}}" mode="aspectFit"></image>
+            </view>
+            <text class="feature-title">{{item.title}}</text>
+            <text class="feature-desc">{{item.desc}}</text>
+            
+            <view class="feature-highlights">
+              <block wx:for="{{item.highlights}}" wx:for-item="highlight" wx:key="*this">
+                <view class="highlight-item">
+                  <view class="highlight-icon"></view>
+                  <text class="highlight-text">{{highlight}}</text>
+                </view>
+              </block>
+            </view>
+            
+            <view class="feature-metrics">
+              <block wx:for="{{item.metrics}}" wx:for-item="metric" wx:key="label">
+                <view class="metric-item">
+                  <text class="metric-value">{{metric.value}}</text>
+                  <text class="metric-label">{{metric.label}}</text>
+                </view>
+              </block>
+            </view>
+            
+            <view class="feature-button" bindtap="navigateToFeature" data-url="{{item.url}}">
+              <text>查看详情</text>
+              <view class="button-arrow"></view>
+            </view>
+          </view>
+          <view class="feature-image">
+            <image src="/miniprogram/images/feature{{index+1}}.jpg" mode="aspectFill"></image>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 页脚 -->
+  <view class="footer">
+    <image src="/miniprogram/images/logo_placeholder.png" class="footer-logo" mode="aspectFit"></image>
+    <text class="footer-text">© 数村 ZHI CUN</text>
+    <text class="footer-desc">一站式乡村综合服务平台</text>
+  </view>
+</view>

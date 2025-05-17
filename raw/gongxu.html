@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农产品供需信息共享平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0a2463;
+            --secondary-color: #1e3d7b;
+            --accent-color: #3e6ed4;
+            --light-accent: #e6efff;
+            --text-on-dark: #ffffff;
+        }
+        body {
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        .bg-primary {
+            background-color: var(--primary-color);
+        }
+        .bg-secondary {
+            background-color: var(--secondary-color);
+        }
+        .bg-accent {
+            background-color: var(--accent-color);
+        }
+        .bg-light-accent {
+            background-color: var(--light-accent);
+        }
+        .text-primary {
+            color: var(--primary-color);
+        }
+        .border-primary {
+            border-color: var(--primary-color);
+        }
+        .platform-section {
+            margin-bottom: 2rem;
+        }
+        .tab-active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .info-card {
+            transition: transform 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        .scroll-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        @media print {
+            .scroll-container {
+                max-height: none;
+                overflow-y: visible;
+            }
+            .tab-content {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="platform-container">
+        <!-- Header Section -->
+        <header class="bg-primary text-white py-6 px-4 rounded-t-lg">
+            <div class="container mx-auto">
+                <h1 class="text-3xl font-bold mb-2">农产品供需信息共享平台</h1>
+                <p class="text-lg">连接政府、企业与农民，共创农业产业链新生态</p>
+            </div>
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="platform-section bg-light-accent py-6 px-4">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="w-full md:w-2/3">
+                        <h2 class="text-2xl font-bold text-primary mb-4">平台介绍</h2>
+                        <p class="mb-3">本平台旨在为政府部门、农业企业和广大农民提供一个直接交流的渠道，发布农产品供给和需求信息，减少中间环节，降低交易成本。</p>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <div class="bg-white rounded-lg p-4 shadow-md flex items-center w-full md:w-auto">
+                                <i class="fas fa-handshake text-accent text-3xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-bold">直接对接</h3>
+                                    <p class="text-sm">减少中间环节</p>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-lg p-4 shadow-md flex items-center w-full md:w-auto">
+                                <i class="fas fa-chart-line text-accent text-3xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-bold">价格稳定</h3>
+                                    <p class="text-sm">降低市场波动</p>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-lg p-4 shadow-md flex items-center w-full md:w-auto">
+                                <i class="fas fa-shield-alt text-accent text-3xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-bold">降低风险</h3>
+                                    <p class="text-sm">提高决策准确性</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/3 mt-6 md:mt-0 flex justify-center">
+                        <div class="bg-secondary text-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-bold mb-3">平台数据</h3>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div>
+                                    <div class="text-3xl font-bold">325</div>
+                                    <div class="text-sm">供应信息</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold">278</div>
+                                    <div class="text-sm">需求信息</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold">183</div>
+                                    <div class="text-sm">企业用户</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold">562</div>
+                                    <div class="text-sm">农户用户</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Display Section -->
+        <section class="platform-section bg-white py-6 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-2xl font-bold text-primary mb-4">信息公示栏</h2>
+                
+                <!-- Tabs -->
+                <div class="mb-4 border-b border-gray-200">
+                    <ul class="flex flex-wrap -mb-px" id="infoTabs" role="tablist">
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block py-2 px-4 border-b-2 rounded-t-lg tab-active" id="supply-tab" data-tab="supply" type="button" role="tab">
+                                供应信息
+                            </button>
+                        </li>
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block py-2 px-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="demand-tab" data-tab="demand" type="button" role="tab">
+                                需求信息
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Supply Information -->
+                    <div class="block tab-pane scroll-container" id="supply-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Supply Card 1 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">优质红富士苹果</h3>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">供应中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">山东临沂地区优质红富士苹果，品质上乘，现有库存10吨，欢迎采购。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">供应商：</span>临沂果业合作社</div>
+                                    <div><span class="font-semibold">价格区间：</span>4.5-5.2元/斤</div>
+                                    <div><span class="font-semibold">供货周期：</span>2023-10-15至2024-02-15</div>
+                                    <div><span class="font-semibold">联系方式：</span>135****8899</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-10</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Supply Card 2 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">有机大米</h3>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">供应中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">黑龙江五常有机稻米，不使用化肥农药，现有新米50吨，可长期供应。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">供应商：</span>五常市绿源米业</div>
+                                    <div><span class="font-semibold">价格区间：</span>15-18元/公斤</div>
+                                    <div><span class="font-semibold">供货周期：</span>2023-09-01至2024-08-31</div>
+                                    <div><span class="font-semibold">联系方式：</span>139****3344</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-09-15</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Supply Card 3 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">新鲜西红柿</h3>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">供应中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">山东寿光温室种植西红柿，口感佳，现摘现发，日供应量5吨。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">供应商：</span>寿光市绿色蔬菜基地</div>
+                                    <div><span class="font-semibold">价格区间：</span>3.2-3.8元/斤</div>
+                                    <div><span class="font-semibold">供货周期：</span>2023-11-01至2024-04-30</div>
+                                    <div><span class="font-semibold">联系方式：</span>186****5577</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-25</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+
+                            <!-- Supply Card 4 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">绿壳鸡蛋</h3>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">供应中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">河南南阳散养土鸡生产的绿壳鸡蛋，富含营养，日产量约300斤。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">供应商：</span>南阳市生态养殖场</div>
+                                    <div><span class="font-semibold">价格区间：</span>2.5-3.0元/个</div>
+                                    <div><span class="font-semibold">供货周期：</span>长期供应</div>
+                                    <div><span class="font-semibold">联系方式：</span>157****2233</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-18</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Demand Information -->
+                    <div class="hidden tab-pane scroll-container" id="demand-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Demand Card 1 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">采购高品质小麦</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">采购中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">需求优质面粉加工小麦，蛋白质含量≥13%，容重≥790g/L，水分≤13%。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">采购方：</span>河南省粮油集团</div>
+                                    <div><span class="font-semibold">采购量：</span>5000吨</div>
+                                    <div><span class="font-semibold">价格参考：</span>1.3-1.4元/斤</div>
+                                    <div><span class="font-semibold">联系方式：</span>0371-888****66</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-12</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Demand Card 2 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">有机蔬菜采购</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">采购中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">长期采购有机认证蔬菜，包括但不限于叶菜类、根茎类、果实类蔬菜，需提供有机认证证书。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">采购方：</span>北京绿色餐饮连锁</div>
+                                    <div><span class="font-semibold">采购量：</span>日需200-300公斤</div>
+                                    <div><span class="font-semibold">价格参考：</span>市场价上浮10-15%</div>
+                                    <div><span class="font-semibold">联系方式：</span>010-666****88</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-05</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Demand Card 3 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">生态鸡蛋采购</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">采购中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">采购散养土鸡蛋，要求新鲜，无污染，可追溯源头，每枚重量在45-55克之间。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">采购方：</span>上海优选食品有限公司</div>
+                                    <div><span class="font-semibold">采购量：</span>周需5000-8000枚</div>
+                                    <div><span class="font-semibold">价格参考：</span>1.8-2.2元/枚</div>
+                                    <div><span class="font-semibold">联系方式：</span>021-555****99</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-20</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Demand Card 4 -->
+                            <div class="info-card bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-primary">水果直供采购</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">采购中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">食品加工企业寻找水果直供商，主要品类包括苹果、香蕉、橙子、草莓等，要求新鲜度高。</p>
+                                <div class="text-sm">
+                                    <div><span class="font-semibold">采购方：</span>广州甜蜜食品有限公司</div>
+                                    <div><span class="font-semibold">采购量：</span>月需60-80吨</div>
+                                    <div><span class="font-semibold">价格参考：</span>以当日批发市场价格为基础协商</div>
+                                    <div><span class="font-semibold">联系方式：</span>020-333****77</div>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">发布时间：2023-10-15</span>
+                                    <button class="text-accent hover:text-primary text-sm font-medium">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <button class="bg-accent text-white py-2 px-6 rounded-md shadow hover:bg-secondary transition duration-300">
+                        查看更多信息
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Information Section -->
+        <section class="platform-section bg-light-accent py-6 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-2xl font-bold text-primary mb-4">信息发布</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <form id="infoForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="infoType">信息类型</label>
+                                    <select id="infoType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent">
+                                        <option value="supply">供应信息</option>
+                                        <option value="demand">需求信息</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="title">标题</label>
+                                    <input type="text" id="title" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="请输入信息标题">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="category">农产品类别</label>
+                                    <select id="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent">
+                                        <option value="">请选择类别</option>
+                                        <option value="grain">粮食作物</option>
+                                        <option value="vegetables">蔬菜水果</option>
+                                        <option value="meat">畜禽肉类</option>
+                                        <option value="aquatic">水产品</option>
+                                        <option value="other">其他</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="quantity">数量/规模</label>
+                                    <div class="flex">
+                                        <input type="text" id="quantity" class="w-2/3 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="请输入数量">
+                                        <select id="unit" class="w-1/3 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-accent focus:border-accent border-l-0">
+                                            <option value="kg">公斤</option>
+                                            <option value="ton">吨</option>
+                                            <option value="piece">个/只</option>
+                                            <option value="jin">斤</option>
+                                            <option value="other">其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="price">价格区间</label>
+                                    <div class="flex items-center">
+                                        <input type="text" id="minPrice" class="w-1/3 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="最低价">
+                                        <div class="px-2">-</div>
+                                        <input type="text" id="maxPrice" class="w-1/3 px-3 py-2 border border-gray-300 focus:outline-none focus:ring-accent focus:border-accent" placeholder="最高价">
+                                        <select id="priceUnit" class="w-1/3 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-accent focus:border-accent border-l-0">
+                                            <option value="per_jin">元/斤</option>
+                                            <option value="per_kg">元/公斤</option>
+                                            <option value="per_ton">元/吨</option>
+                                            <option value="per_piece">元/个</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="period">供需周期</label>
+                                    <div class="flex items-center">
+                                        <input type="date" id="startDate" class="w-1/2 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-accent focus:border-accent">
+                                        <div class="px-2">至</div>
+                                        <input type="date" id="endDate" class="w-1/2 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-accent focus:border-accent">
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="contact">联系方式</label>
+                                    <input type="text" id="contact" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="请输入联系电话或其他联系方式">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="organization">单位/组织</label>
+                                    <input type="text" id="organization" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="请输入单位名称">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1" for="description">详细说明</label>
+                            <textarea id="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent" placeholder="请详细描述产品信息、质量要求或其他重要说明"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="h-4 w-4 text-accent focus:ring-accent border-gray-300 rounded">
+                                <span class="ml-2 text-sm text-gray-600">我已阅读并同意《信息发布协议》和《隐私政策》</span>
+                            </label>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="bg-accent hover:bg-secondary text-white font-medium py-2 px-8 rounded-md shadow transition duration-300">
+                                提交信息
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Cooperation Section -->
+        <section class="platform-section bg-white py-6 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-2xl font-bold text-primary mb-4">联系与合作</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-light-accent p-5 rounded-lg shadow">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-phone text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">联系电话</h3>
+                            <p class="mb-2">工作日: 9:00 - 18:00</p>
+                            <p class="text-lg font-semibold">400-123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-light-accent p-5 rounded-lg shadow">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-envelope text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">电子邮箱</h3>
+                            <p class="mb-2">7x24小时接收您的信息</p>
+                            <p class="text-lg font-semibold">contact@agri-platform.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-light-accent p-5 rounded-lg shadow">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-map-marker-alt text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-primary mb-2">办公地址</h3>
+                            <p class="mb-2">周一至周五: 9:00 - 17:30</p>
+                            <p class="text-lg font-semibold">北京市海淀区农业大道100号</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-light-accent p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold text-primary mb-4">合作伙伴</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-4 rounded border border-gray-200 flex items-center justify-center h-20">
+                            <span class="text-lg font-bold text-primary">农业农村部</span>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-gray-200 flex items-center justify-center h-20">
+                            <span class="text-lg font-bold text-primary">省农业厅</span>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-gray-200 flex items-center justify-center h-20">
+                            <span class="text-lg font-bold text-primary">农产品协会</span>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-gray-200 flex items-center justify-center h-20">
+                            <span class="text-lg font-bold text-primary">农业科技院</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="bg-primary text-white py-6 px-4 rounded-b-lg">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-3">农产品供需信息共享平台</h3>
+                        <p class="text-sm">本平台旨在促进农业信息透明化，减少中间环节，降低农产品流通成本，保障农民利益和市场稳定。</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-3">快速链接</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-accent">首页</a></li>
+                            <li><a href="#" class="hover:text-accent">供应信息</a></li>
+                            <li><a href="#" class="hover:text-accent">需求信息</a></li>
+                            <li><a href="#" class="hover:text-accent">信息发布</a></li>
+                            <li><a href="#" class="hover:text-accent">联系我们</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-3">关注我们</h3>
+                        <div class="flex space-x-4 mb-3">
+                            <a href="#" class="hover:text-accent"><i class="fab fa-weixin text-xl"></i></a>
+                            <a href="#" class="hover:text-accent"><i class="fab fa-weibo text-xl"></i></a>
+                            <a href="#" class="hover:text-accent"><i class="fab fa-qq text-xl"></i></a>
+                        </div>
+                        <p class="text-sm">扫描二维码关注公众号获取更多信息</p>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-blue-700 text-center text-sm">
+                    <p>© 2023 农产品供需信息共享平台 版权所有 | 京ICP备12345678号</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching function
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('[data-tab]');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.dataset.tab;
+                    
+                    // Remove active class from all tabs
+                    document.querySelectorAll('[data-tab]').forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('hover:border-gray-300');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    this.classList.remove('hover:border-gray-300');
+                    
+                    // Hide all tab content
+                    document.querySelectorAll('.tab-pane').forEach(content => {
+                        content.classList.add('hidden');
+                        content.classList.remove('block');
+                    });
+                    
+                    // Show selected content
+                    document.getElementById(`${target}-content`).classList.add('block');
+                    document.getElementById(`${target}-content`).classList.remove('hidden');
+                });
+            });
+            
+            // Form submission
+            document.getElementById('infoForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('信息提交成功！我们的工作人员将尽快审核您的信息。');
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>

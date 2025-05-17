@@ -1,0 +1,534 @@
+/* 页面基础样式 */
+page {
+  background-color: #0a264a;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  padding: 20rpx;
+}
+
+/* 头部 Banner */
+.header-banner {
+  background: linear-gradient(120deg, #0a264a, #1a3a6c);
+  border-radius: 16rpx;
+  margin-bottom: 40rpx;
+  padding: 40rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.8;
+  margin-bottom: 30rpx;
+  display: block;
+}
+
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20rpx;
+}
+
+.stat-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 999rpx;
+  padding: 10rpx 20rpx;
+  margin-right: 20rpx;
+  margin-bottom: 10rpx;
+  display: flex;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.7;
+  margin-right: 10rpx;
+}
+
+.stat-value {
+  font-size: 24rpx;
+  color: #ffd700;
+}
+
+/* 章节样式 */
+.section {
+  margin-bottom: 80rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+  border-left: 8rpx solid #ffd700;
+  padding-left: 20rpx;
+}
+
+/* 卡片样式 */
+.card {
+  background-color: #1a3a6c;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  transition: transform 0.3s ease;
+}
+
+.card:active {
+  transform: translateY(-5rpx);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.card-text {
+  font-size: 26rpx;
+  opacity: 0.8;
+  margin-bottom: 15rpx;
+  display: block;
+}
+
+/* 布局网格 */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.grid .card {
+  width: calc(100% - 60rpx);
+  margin-bottom: 20rpx;
+}
+
+/* 在大屏幕上并排显示 */
+@media (min-width: 768rpx) {
+  .grid .card {
+    width: calc(33.333% - 20rpx);
+  }
+}
+
+/* 进度条 */
+.progress-container {
+  margin-top: 20rpx;
+  width: 100%;
+}
+
+.progress-container text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  margin-bottom: 10rpx;
+}
+
+.progress-bar {
+  height: 12rpx;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-top: 8rpx;
+}
+
+.progress-value {
+  height: 100%;
+  background-color: #ffd700;
+  border-radius: 6rpx;
+}
+
+/* 高亮文本 */
+.highlight {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* 标签样式 */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15rpx;
+}
+
+.tag {
+  background-color: #5b7ec2;
+  padding: 4rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  margin-right: 10rpx;
+  margin-bottom: 10rpx;
+  display: inline-block;
+}
+
+/* 图表容器 */
+.chart-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-top: 20rpx;
+}
+
+.canvas {
+  width: 100%;
+  height: 300rpx;
+}
+
+/* 景点卡片 */
+.attractions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.attraction-card {
+  background-color: #1a3a6c;
+  border-radius: 16rpx;
+  overflow: hidden;
+  width: calc(50% - 10rpx);
+  position: relative;
+}
+
+.attraction-image {
+  width: 100%;
+  height: 200rpx;
+  object-fit: cover;
+}
+
+.attraction-info {
+  padding: 20rpx;
+}
+
+.attraction-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.attraction-desc {
+  font-size: 22rpx;
+  opacity: 0.8;
+  display: block;
+}
+
+.attraction-rating {
+  padding: 10rpx 20rpx 20rpx;
+}
+
+.rating-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 22rpx;
+  margin-bottom: 10rpx;
+}
+
+/* 时间轴 */
+.timeline-container {
+  margin-left: 30rpx;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 30rpx;
+  padding-bottom: 30rpx;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10rpx;
+  bottom: 0;
+  width: 2rpx;
+  background-color: #5b7ec2;
+}
+
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  left: -7rpx;
+  top: 10rpx;
+  border-radius: 50%;
+  background-color: #ffd700;
+}
+
+.timeline-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.timeline-desc {
+  font-size: 24rpx;
+  opacity: 0.8;
+  display: block;
+  margin-top: 6rpx;
+}
+
+/* 资源网格 */
+.resource-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.resource-item {
+  width: calc(33.333% - 14rpx);
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.resource-icon {
+  background-color: #3a5998;
+  height: 120rpx;
+  width: 120rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20rpx;
+}
+
+.resource-name {
+  font-size: 26rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.resource-desc {
+  font-size: 22rpx;
+  opacity: 0.7;
+  display: block;
+}
+
+/* 图表卡片 */
+.chart-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.chart-cards .card {
+  width: calc(100% - 60rpx);
+}
+
+/* 分析网格 */
+.analysis-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.analysis-grid .card {
+  width: calc(100% - 60rpx);
+}
+
+@media (min-width: 768rpx) {
+  .chart-cards .card {
+    width: calc(50% - 10rpx);
+  }
+  
+  .analysis-grid .card {
+    width: calc(33.333% - 14rpx);
+  }
+}
+
+/* 列表项 */
+.list-item {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.list-icon {
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+
+.list-icon.green {
+  color: #4caf50;
+}
+
+.list-icon.red {
+  color: #f44336;
+}
+
+.list-icon.blue {
+  color: #2196f3;
+}
+
+.list-text {
+  flex: 1;
+  font-size: 26rpx;
+}
+
+/* 地图容器 */
+.map-container {
+  width: 100%;
+  height: 600rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+/* 区域网格 */
+.region-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.region-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12rpx;
+  padding: 15rpx;
+  width: calc(100% - 30rpx);
+}
+
+@media (min-width: 768rpx) {
+  .region-item {
+    width: calc(33.333% - 14rpx);
+  }
+}
+
+.region-name {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.region-desc {
+  font-size: 24rpx;
+  opacity: 0.7;
+  display: block;
+}
+
+/* 建议网格 */
+.suggestion-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.suggestion-grid .card {
+  width: calc(100% - 60rpx);
+}
+
+@media (min-width: 768rpx) {
+  .suggestion-grid .card {
+    width: calc(50% - 10rpx);
+  }
+}
+
+.suggestion-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.suggestion-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.suggestion-title {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.suggestion-list {
+  margin-left: 76rpx;
+}
+
+.suggestion-item {
+  background-color: rgba(26, 58, 108, 0.5);
+  border-left: 6rpx solid #5b7ec2;
+  padding: 15rpx;
+  margin-bottom: 15rpx;
+  font-size: 26rpx;
+}
+
+/* 表格样式 */
+.table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-header {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+  border-bottom: 2rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.table-cell {
+  flex: 1;
+  padding: 15rpx;
+  font-size: 26rpx;
+  word-break: break-all;
+}
+
+/* 底部信息 */
+.footer {
+  text-align: center;
+  font-size: 24rpx;
+  opacity: 0.7;
+  padding: 40rpx 0;
+}
+
+/* 边距辅助类 */
+.mt-20 {
+  margin-top: 20rpx;
+}
+
+/* 图标类 */
+.icon-innovation, .icon-industry, .icon-infrastructure, .icon-marketing {
+  font-size: 48rpx;
+  color: #ffd700;
+}
+
+.icon-house, .icon-food, .icon-craft, .icon-culture, .icon-nature, .icon-farm {
+  font-size: 48rpx;
+  color: #fff;
+}

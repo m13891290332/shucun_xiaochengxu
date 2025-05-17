@@ -1,0 +1,4 @@
+/* 
+该CSS文件内容已被移动到ShouruPage.tsx中使用styled-components实现组件样式隔离
+所有样式现在都在各自的组件中定义，避免了全局样式污染
+*/
