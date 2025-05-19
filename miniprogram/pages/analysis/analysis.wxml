@@ -41,27 +41,40 @@
   <!-- 实时价格监控 -->
   <view class="card">
     <text class="card-title">实时价格监控</text>
-    <view class="table">
-      <view class="tr th">
-        <view class="td">品种</view>
-        <view class="td">规格</view>
-        <view class="td">京东价格</view>
-        <view class="td">淘宝价格</view>
-        <view class="td">拼多多价格</view>
-        <view class="td">24小时涨幅</view>
-        <view class="td">最后更新</view>
+    <view class="scroll-hint">
+      <view class="scroll-indicator">
+        <text class="scroll-arrow">←</text>
       </view>
-      <block wx:for="{{priceData}}" wx:key="name">
-        <view class="tr">
-          <view class="td">{{item.name}}</view>
-          <view class="td">{{item.spec}}</view>
-          <view class="td">¥{{item.priceJD}}</view>
-          <view class="td">¥{{item.priceTB}}</view>
-          <view class="td">¥{{item.pricePDD}}</view>
-          <view class="td {{item.change > 0 ? 'price-up' : 'price-down'}}">{{item.changeText}}</view>
-          <view class="td">{{item.updateTime}}</view>
+      <text>左右滑动查看更多价格数据</text>
+      <view class="scroll-indicator">
+        <text class="scroll-arrow">→</text>
+      </view>
+    </view>
+    
+    <view class="table-container" bindscroll="handleTableScroll">
+      <view class="scroll-progress" style="width: {{scrollProgress}}%"></view>
+      <view class="table {{screenWidth < 350 ? 'compact-table' : ''}}">
+        <view class="tr th">
+          <view class="td col-wide">品种</view>
+          <view class="td col-narrow">规格</view>
+          <view class="td">京东价</view>
+          <view class="td">淘宝价</view>
+          <view class="td">拼多多价</view>
+          <view class="td col-narrow">涨幅</view>
+          <view class="td">更新时间</view>
         </view>
-      </block>
+        <block wx:for="{{priceData}}" wx:key="name">
+          <view class="tr">
+            <view class="td col-wide">{{item.name}}</view>
+            <view class="td col-narrow">{{item.spec}}</view>
+            <view class="td">¥{{item.priceJD}}</view>
+            <view class="td">¥{{item.priceTB}}</view>
+            <view class="td">¥{{item.pricePDD}}</view>
+            <view class="td col-narrow {{item.change > 0 ? 'price-up' : 'price-down'}}">{{item.changeText}}</view>
+            <view class="td">{{item.updateTime}}</view>
+          </view>
+        </block>
+      </view>
     </view>
   </view>
 
@@ -81,12 +94,12 @@
       </view>
     </view>
     <view class="chart-container">
-      <ec-canvas id="priceChart" canvas-id="priceChart" ec="{{ ecPriceChart }}"></ec-canvas>
+      <canvas canvas-id="priceChart" class="chart-canvas" bindtouchstart="touchHandler" data-canvas-id="priceChart"></canvas>
     </view>
     
     <view class="analysis-box">
       <view class="analysis-title">
-        <image class="icon" src="/images/info-icon.png"></image>
+        <image class="icon" src="../../images/info-icon.png"></image>
         <text>AI 价格预测分析</text>
       </view>
       <text class="analysis-content">根据历史价格数据和市场供需关系，AI预测未来30天内{{currentProduct}}价格将呈<text class="highlight">{{priceTrend}}</text>，预计涨幅为{{priceChangeRange}}。主要受以下因素影响：</text>
@@ -110,7 +123,7 @@
     
     <view class="dual-column">
       <view class="chart-container">
-        <ec-canvas id="platformChart" canvas-id="platformChart" ec="{{ ecPlatformChart }}"></ec-canvas>
+        <canvas canvas-id="platformChart" class="chart-canvas" bindtouchstart="touchHandler" data-canvas-id="platformChart"></canvas>
       </view>
       <view class="analysis-section">
         <text class="section-title">平台销售分析结果</text>
@@ -139,7 +152,7 @@
           
           <view class="strategy-box">
             <view class="strategy-title">
-              <image class="icon" src="/images/check-icon.png"></image>
+              <image class="icon" src="../../images/check-icon.png"></image>
               <text>推荐销售策略</text>
             </view>
             <text class="strategy-content">根据您的农产品特性和当前市场状况，建议采用<text class="highlight">多平台差异化销售策略</text>：高品质产品重点投放京东，中端产品分配到淘宝，促销和去库存选择拼多多。</text>
@@ -153,13 +166,13 @@
   <view class="card">
     <text class="card-title">智能销售时机推荐</text>
     <view class="chart-container">
-      <ec-canvas id="timingChart" canvas-id="timingChart" ec="{{ ecTimingChart }}"></ec-canvas>
+      <canvas canvas-id="timingChart" class="chart-canvas" bindtouchstart="touchHandler" data-canvas-id="timingChart"></canvas>
     </view>
     
     <view class="timing-grid">
       <view class="timing-item">
         <view class="timing-header">
-          <image class="icon" src="/images/time-icon.png"></image>
+          <image class="icon" src="../../images/time-icon.png"></image>
           <text>最佳销售时段</text>
         </view>
         <text class="timing-text">根据历史交易数据分析，农产品销售高峰期通常为：</text>
@@ -172,7 +185,7 @@
       
       <view class="timing-item">
         <view class="timing-header">
-          <image class="icon" src="/images/event-icon.png"></image>
+          <image class="icon" src="../../images/event-icon.png"></image>
           <text>平台特殊活动</text>
         </view>
         <text class="timing-text">近期平台促销活动预告：</text>
@@ -185,7 +198,7 @@
       
       <view class="timing-item">
         <view class="timing-header">
-          <image class="icon" src="/images/price-icon.png"></image>
+          <image class="icon" src="../../images/price-icon.png"></image>
           <text>定价策略建议</text>
         </view>
         <text class="timing-text">根据当前市场价格和预测趋势：</text>
@@ -204,7 +217,7 @@
     <view class="dual-column">
       <view class="left-column">
         <view class="chart-container">
-          <ec-canvas id="inventoryChart" canvas-id="inventoryChart" ec="{{ ecInventoryChart }}"></ec-canvas>
+          <canvas canvas-id="inventoryChart" class="chart-canvas" bindtouchstart="touchHandler" data-canvas-id="inventoryChart"></canvas>
         </view>
         <view class="recommendation-box">
           <view class="recommendation-title">库存优化建议</view>

@@ -1,4 +1,7 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "数村·一站式乡村综合服务平台"
+  "navigationBarTitleText": "数村·一站式乡村综合服务平台",
+  "disableScroll": false,
+  "enablePullDownRefresh": false,
+  "navigationStyle": "default"
 }

@@ -9,11 +9,14 @@
   box-sizing: border-box;
 }
 
-/* 图标字体支持 */
+/* 引入iconfont图标（全局） */
 @font-face {
-  font-family: 'iconfont';
-  /* 需要将实际的iconfont字体文件放到项目中并调整路径 */
-  src: url('data:application/x-font-woff2;charset=utf-8;base64,d09G...'); /* 这里是Base64编码的字体文件 */
+  font-family: "iconfont";
+  src: url('https://at.alicdn.com/t/font_3104725_thqzlvyb8o.woff2?t=1650427516751') format('woff2'),
+       url('https://at.alicdn.com/t/font_3104725_thqzlvyb8o.woff?t=1650427516751') format('woff'),
+       url('https://at.alicdn.com/t/font_3104725_thqzlvyb8o.ttf?t=1650427516751') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 .iconfont {

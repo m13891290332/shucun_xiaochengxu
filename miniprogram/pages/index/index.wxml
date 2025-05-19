@@ -1,112 +1,218 @@
 <!--index.wxml-->
 <view class="container">
   <view class="header">
-    <image class="logo" src="/miniprogram/images/logo_placeholder.png" mode="aspectFit"></image>
-    <text class="title">数村·一站式乡村综合服务平台</text>
   </view>
 
-  <!-- Banner Swiper -->
-  <swiper class="banner-swiper" indicator-dots="true" autoplay="true" interval="5000" duration="500">
-    <block wx:for="{{bannerImages}}" wx:key="index">
-      <swiper-item>
-        <image src="{{item}}" class="slide-image" mode="aspectFill"/>
-      </swiper-item>
-    </block>
+  <!-- Banner Swiper - 直接使用HTML中的视频和图片 -->
+  <swiper class="banner-swiper" indicator-dots="true" autoplay="true" interval="13000" duration="1400">
+    <swiper-item>
+      <view class="video-container" wx:if="{{isVideoAvailable}}">
+        <video 
+          id="myVideo" 
+          src="/images/index.mp4" 
+          autoplay 
+          loop 
+          muted 
+          show-play-btn="{{false}}"
+          show-center-play-btn="{{false}}" 
+          controls="{{false}}" 
+          objectFit="cover"
+          enable-play-gesture="true"
+          page-gesture="true"
+          initial-time="0"
+          binderror="handleVideoError"
+        ></video>
+      </view>
+      <image wx:else src="/images/index_banner.png" class="slide-image" mode="aspectFill"/>
+    </swiper-item>
+    <swiper-item>
+      <image src="/images/a3.jpg" class="slide-image" mode="aspectFill"/>
+    </swiper-item>
   </swiper>
 
-  <!-- 技术背景 Section -->
-  <view class="section">
-    <view class="section-title-container">
-      <image src="/images/title_icon_jsbj.png" class="section-title-icon" mode="aspectFit" />
-      <text class="section-title">技术背景</text>
+  <!-- 更多精彩按钮 - 与HTML中样式一致 -->
+  <view class="gdjc" bindtap="scrollToContent">
+    <view class="gdjc-inner">
+      <text>更 多 精 彩</text>
+      <view class="nav_template">下滑<b></b></view>
     </view>
-    <view class="tab-nav">
-      <block wx:for="{{jsbjTabs}}" wx:key="index">
-        <view class="tab-item {{currentJsBjTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchJsBjTab">{{item.name}}</view>
-      </block>
+  </view>
+
+  <!-- 技术背景 Section - 对应HTML的jsbj部分 -->
+  <view class="bj1" id="section-1">
+    <view class="jsbj">
+      <view class="jsbj_title">
+        <image src="/images/addnewPic1.png" mode="widthFix" />
+      </view>
+      <view class="jsbj_nr">
+        <view class="jstitle">
+          <view class="tab-list">
+            <block wx:for="{{jsbjTabs}}" wx:key="index">
+              <view class="tab-item {{currentJsBjTab === index ? 'cur' : ''}}" data-index="{{index}}" bindtap="switchJsBjTab">
+                <span>{{item.name}}</span>
+              </view>
+            </block>
+          </view>
+        </view>
+        <view class="jsbox">
+          <block wx:for="{{jsbjTabs}}" wx:key="index">
+            <view class="jsqh" wx:if="{{currentJsBjTab === index}}">
+              <p>{{item.text}}</p>
+              <image src="{{item.image}}" mode="widthFix" />
+            </view>
+          </block>
+        </view>
+      </view>
     </view>
-    <view class="tab-content">
-      <block wx:for="{{jsbjTabs}}" wx:key="index">
-        <view class="tab-pane" wx:if="{{currentJsBjTab === index}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" class="tab-pane-image" mode="widthFix" />
-          <text class="tab-pane-text">{{item.text}}</text>
+  </view>
+
+  <!-- 服务平台 Section - 对应HTML的fwpt部分 -->
+  <view class="bj2">
+    <view class="fwpt">
+      <view class="fwpt_title">
+        <image src="/images/a_11.png?v={{imageTimeStamp}}" mode="widthFix" />
+      </view>
+      <view class="fwpt_nr">
+        <view class="fwpt_left">
+          <p>一站式乡村综合服务平台，紧紧围绕"三农"工作，助推乡村振兴。通过将乡村治理、乡村兴业、乡村惠民融合到一个平台，整合多系统功能，实现数据资源向乡村下沉，打造出"N+1"乡村综合服务体系，致力于真正破解"三农"难题，加快农业农村现代化，弥合城乡数字鸿沟，接续全面推进乡村振兴。</p>
+        </view>
+        <view class="fwpt_right">
+          <image src="/images/szxc_anner.png" mode="widthFix" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 核心功能 Section - 对应HTML中的核心功能部分 -->
+  <view class="wz1300">
+    <view class="jsbj_title">
+      <image src="/images/a_20.png" mode="widthFix" />
+    </view>
+    <view class="nmtext">
+      <p>深入研究乡村治理规律，探索符合"三农"发展特点的乡村治理方法，充分发挥"数字化+乡村治理"能力，整合智慧经济，智慧收入，智慧产业，智慧助手等功能，强化治理效能，调动基层和农民群众的积极性、主动性、创造性，实现社会治理模式的贯彻联动，引领乡村治理能力和水平持续提高。</p>
+    </view>
+    
+    <!-- 功能展示区域 -->
+    <view class="nmshbox">
+      <block wx:for="{{hxgnTabs}}" wx:key="index">
+        <view class="nmsh_nr" style="display: {{currentHxgnTab === index ? 'block' : 'none'}}">
+          <view class="imgbox">
+            <view class="feature-item">
+              <view class="icon-wrapper">
+                <image src="{{item.icon}}" mode="aspectFit" />
+              </view>
+              <view class="bg-image" style="background-image: url('{{item.image}}');">
+                <view class="feature-description">
+                  <text>{{item.text}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
         </view>
       </block>
     </view>
+    
+    <!-- 功能导航 -->
+    <view class="nmsh_tit">
+      <view class="tab-list">
+        <block wx:for="{{hxgnTabs}}" wx:key="index">
+          <view class="tab-item {{currentHxgnTab === index ? 'cur' : ''}}" data-index="{{index}}" bindtap="switchHxgnTab">
+            <span>
+              <b></b>
+              <p>{{item.name}}</p>
+            </span>
+          </view>
+        </block>
+      </view>
+    </view>
   </view>
 
-  <!-- 服务平台 Section -->
-  <view class="section">
-    <view class="section-title-container">
-      <image src="/images/title_icon_fwpt.png" class="section-title-icon" mode="aspectFit" />
-      <text class="section-title">服务平台</text>
-    </view>
-    <view class="service-platform-content">
-      <image src="/images/fwpt_placeholder.png" class="service-platform-image" mode="widthFix" />
-      <text class="service-platform-text">
-        一站式乡村综合服务平台，紧紧围绕"三农"工作，助推乡村振兴。通过将乡村治理、乡村兴业、乡村惠民融合到一个平台，整合多系统功能，实现数据资源向乡村下沉，打造出"N+1"乡村综合服务体系。
-      </text>
-    </view>
-  </view>
-
-  <!-- 核心功能 Section -->
-  <view class="section">
-    <view class="section-title-container">
-      <image src="/images/title_icon_hxgn.png" class="section-title-icon" mode="aspectFit" />
-      <text class="section-title">核心功能</text>
-    </view>
-    <view class="tab-nav">
-      <block wx:for="{{hxgnTabs}}" wx:key="index">
-        <view class="tab-item {{currentHxgnTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchHxgnTab">{{item.name}}</view>
-      </block>
-    </view>
-    <view class="tab-content">
-      <block wx:for="{{hxgnTabs}}" wx:key="index">
-        <view class="tab-pane" wx:if="{{currentHxgnTab === index}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" class="tab-pane-image" mode="widthFix" />
-          <text class="tab-pane-text">{{item.text}}</text>
+  <!-- 多端展示 Section - 对应HTML中的多端展示部分 -->
+  <view class="bj1">
+    <view class="wz1300">
+      <view class="jsbj_title">
+        <image src="/images/a_69.png" mode="widthFix" />
+      </view>
+      <view class="ddzs_nr">
+        <!-- 设备类型选择 -->
+        <view class="ddzs_tit">
+          <view class="tab-list">
+            <block wx:for="{{deviceTabs}}" wx:key="index">
+              <view class="tab-item {{currentDeviceTab === index ? 'cur' : ''}}" data-index="{{index}}" bindtap="switchDeviceTab">
+                <span>{{item.name}}</span>
+              </view>
+            </block>
+          </view>
         </view>
-      </block>
+        
+        <!-- 设备展示内容 -->
+        <view class="ddzs_box">
+          <block wx:for="{{deviceTabs}}" wx:key="index">
+            <view class="sszs_qh" style="display: {{currentDeviceTab === index ? 'flex' : 'none'}}">
+              <view class="sszs_right">
+                <image src="{{item.image}}" mode="widthFix" />
+              </view>
+              <view class="sszs_left">
+                <block wx:for="{{item.features}}" wx:key="featureIndex" wx:for-item="feature">
+                  <view class="feature-list-item">
+                    <view class="feature-title">{{feature.title}}</view>
+                    <view class="feature-desc">{{feature.desc}}</view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
     </view>
   </view>
+</view>
 
-  <text class="nav-title">导航菜单</text>
-  <view class="nav-grid">
-    <navigator url="/pages/index/index" class="nav-item">
+<!-- 浮动菜单按钮 -->
+<view class="menu-button" bindtap="toggleMenu">
+  <image class="menu-icon" src="/images/home2.png" mode="aspectFit"></image>
+  <text class="menu-text">菜单</text>
+</view>
+
+<!-- 弹出菜单遮罩层 -->
+<view class="menu-mask {{isMenuOpen ? 'show' : ''}}" bindtap="closeMenu"></view>
+
+<!-- 弹出菜单 - 使用HTML中的菜单项 -->
+<view class="floating-menu {{isMenuOpen ? 'show' : ''}}">
+  <view class="menu-header">
+    <text class="menu-title">导航菜单</text>
+    <view class="menu-close" bindtap="closeMenu">×</view>
+  </view>
+  <scroll-view scroll-y="true" class="menu-content">
+    <navigator url="/pages/index/index" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>首页</text>
     </navigator>
-    <navigator url="/pages/jingji/jingji" class="nav-item">
+    <navigator url="/pages/jingji/jingji" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>智慧经济</text>
     </navigator>
-    <navigator url="/pages/chanye/chanye" class="nav-item">
+    <navigator url="/pages/chanye/chanye" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>智慧产业</text>
     </navigator>
-    <navigator url="/pages/shouru/shouru" class="nav-item">
+    <navigator url="/pages/shouru/shouru" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>智慧收入</text>
     </navigator>
-    <navigator url="/pages/zhushou/zhushou" class="nav-item">
+    <navigator url="/pages/zhushou/zhushou" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>智慧助手</text>
     </navigator>
-    <navigator url="/pages/analysis/analysis" class="nav-item">
+    <navigator url="/pages/analysis/analysis" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>数据分析</text>
     </navigator>
-    <navigator url="/pages/gongxu/gongxu" class="nav-item">
-      <text>供需平台</text>
-    </navigator>
-    <navigator url="/pages/lvyou/lvyou" class="nav-item">
-      <text>乡村旅游</text>
-    </navigator>
-    <navigator url="/pages/daikuan/daikuan" class="nav-item">
+    <navigator url="/pages/daikuan/daikuan" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>助农贷款</text>
     </navigator>
-    <navigator url="/pages/news/news" class="nav-item">
+    <navigator url="/pages/news/news" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>资讯</text>
     </navigator>
-    <navigator url="/pages/cooperation/cooperation" class="nav-item">
+    <navigator url="/pages/cooperation/cooperation" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>合作</text>
     </navigator>
-    <navigator url="/pages/contactus/contactus" class="nav-item">
+    <navigator url="/pages/contactus/contactus" class="menu-item" hover-class="menu-item-hover" bindtap="closeMenu">
       <text>关于我们</text>
     </navigator>
-  </view>
+  </scroll-view>
 </view>

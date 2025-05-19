@@ -2,9 +2,7 @@
   "navigationBarTitleText": "智慧助手",
   "navigationBarBackgroundColor": "#043e6b",
   "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "ec-canvas": "../../ec-canvas/ec-canvas"
-  },
+  "usingComponents": {},
   "disableScroll": false,
   "enablePullDownRefresh": false,
   "backgroundColor": "#0a2342"

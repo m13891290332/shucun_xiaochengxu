@@ -107,7 +107,9 @@ Page({
     priceUnitIndex: 0,
     startDate: '2023-11-01',
     endDate: '2024-11-01',
-    agreePolicy: false
+    agreePolicy: false,
+    isLoading: false, // 加载状态
+    animateItems: true // 控制动画效果
   },
 
   /**
@@ -116,7 +118,8 @@ Page({
   switchTab: function(e) {
     const tab = e.currentTarget.dataset.tab;
     this.setData({
-      activeTab: tab
+      activeTab: tab,
+      animateItems: true // 切换标签时重新触发动画
     });
   },
 
@@ -125,6 +128,9 @@ Page({
    */
   viewDetail: function(e) {
     const id = e.currentTarget.dataset.id;
+    wx.vibrateShort({
+      type: 'medium' // 提供触觉反馈
+    });
     wx.showToast({
       title: '详情功能开发中',
       icon: 'none'
@@ -136,10 +142,74 @@ Page({
    * 加载更多信息
    */
   loadMoreInfo: function() {
-    wx.showToast({
-      title: '加载更多功能开发中',
-      icon: 'none'
+    if(this.data.isLoading) return;
+    
+    this.setData({
+      isLoading: true
     });
+    
+    wx.showLoading({
+      title: '加载中...',
+    });
+    
+    // 模拟异步加载
+    setTimeout(() => {
+      const currentTab = this.data.activeTab;
+      let newItems = [];
+      
+      if(currentTab === 'supply') {
+        // 模拟新增供应信息
+        newItems = [
+          {
+            id: 5,
+            title: '新鲜胡萝卜',
+            status: '供应中',
+            description: '山东寿光基地种植胡萝卜，新鲜可口，富含维生素，日供应量3吨。',
+            supplier: '寿光市蔬菜基地',
+            priceRange: '1.8-2.2元/斤',
+            period: '长期供应',
+            contact: '189****1234',
+            publishTime: '2023-10-28'
+          }
+        ];
+        
+        this.setData({
+          supplyList: [...this.data.supplyList, ...newItems]
+        });
+      } else {
+        // 模拟新增需求信息
+        newItems = [
+          {
+            id: 105,
+            title: '优质土豆采购',
+            status: '采购中',
+            description: '需求膳食纤维丰富的土豆，个头适中，用于薯条生产，要求无绿色部分。',
+            buyer: '南京薯类加工厂',
+            quantity: '每周10吨',
+            priceRef: '2.0-2.5元/斤',
+            contact: '025-123****56',
+            publishTime: '2023-10-22'
+          }
+        ];
+        
+        this.setData({
+          demandList: [...this.data.demandList, ...newItems]
+        });
+      }
+      
+      wx.hideLoading();
+      
+      setTimeout(() => {
+        this.setData({
+          isLoading: false
+        });
+      }, 500);
+      
+      wx.showToast({
+        title: '加载成功',
+        icon: 'success'
+      });
+    }, 1500);
   },
 
   /**
@@ -211,6 +281,9 @@ Page({
       return;
     }
     
+    // 给提交按钮提供触觉反馈
+    wx.vibrateShort();
+    
     wx.showLoading({
       title: '提交中...',
     });
@@ -247,6 +320,29 @@ Page({
   },
 
   /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+    // 添加下拉刷新动画
+    console.log('下拉刷新');
+    
+    // 模拟刷新数据
+    setTimeout(() => {
+      // 重新获取数据或刷新现有数据
+      this.setData({
+        animateItems: true // 重新触发动画
+      });
+      
+      wx.stopPullDownRefresh();
+      
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'success'
+      });
+    }, 1500);
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
@@ -278,13 +374,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-    // ...existing code...
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
     // ...existing code...
   },
 

@@ -1,42 +1,43 @@
 /**index.wxss**/
+/* 全局容器样式 */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 20rpx 20rpx 20rpx; /* Adjusted padding */
+  padding: 0;
   box-sizing: border-box;
-  background-color: #f4f4f4; /* Added a light background for the page */
+  background-color: #f4f4f4;
 }
 
+/* 头部样式 */
 .header {
   display: flex;
-  flex-direction: column; /* Changed to column for better alignment */
+  flex-direction: row;
   align-items: center;
   width: 100%;
-  padding: 30rpx 0; /* Increased padding */
-  background-color: #fff; /* Added background to header */
-  margin-bottom: 0; /* Removed margin-bottom to connect with banner or content */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Added subtle shadow */
+  padding: 20rpx;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
 }
 
 .logo {
-  width: 120rpx; /* Adjusted size */
-  height: 120rpx;
-  margin-bottom: 15rpx; /* Adjusted margin */
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 15rpx;
 }
 
 .title {
-  font-size: 36rpx; /* Adjusted size */
+  font-size: 32rpx;
   font-weight: bold;
   color: #333;
-  text-align: center;
 }
 
-/* Banner Swiper Styles */
+/* Banner轮播样式 - 匹配HTML中的Banner样式 */
 .banner-swiper {
   width: 100%;
-  height: 400rpx; /* Adjust height as needed */
-  margin-bottom: 30rpx;
+  height: 420rpx;
 }
 
 .slide-image {
@@ -44,158 +45,487 @@
   height: 100%;
 }
 
-/* Section Styles */
-.section {
+.video-container {
   width: 100%;
-  background-color: #fff;
-  margin-bottom: 30rpx;
-  border-radius: 15rpx;
-  padding: 30rpx;
-  box-sizing: border-box;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  height: 100%;
+  position: relative;
 }
 
-.section-title-container {
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 更多精彩样式 - 匹配HTML中的gdjc样式 */
+.gdjc {
+  width: 300rpx;
+  margin: -30rpx auto 30rpx;
+  position: relative;
+  z-index: 5;
+  background-color: rgba(255,255,255,0.9);
+  border-radius: 30rpx;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.gdjc-inner {
+  padding: 15rpx 20rpx;
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 25rpx;
-  padding-bottom: 15rpx;
-  border-bottom: 1px solid #eee;
 }
 
-.section-title-icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin-right: 15rpx;
-}
-
-.section-title {
-  font-size: 34rpx;
-  font-weight: bold;
+.gdjc text {
+  font-size: 24rpx;
   color: #333;
 }
 
-/* Tab Navigation Styles */
-.tab-nav {
+.nav_template {
+  font-size: 24rpx;
   display: flex;
-  margin-bottom: 25rpx;
-  border-bottom: 1px solid #ddd;
+  align-items: center;
+  margin-left: 10rpx;
+  color: #666;
+}
+
+.nav_template b {
+  width: 16rpx;
+  height: 16rpx;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #666;
+  transform: rotate(45deg);
+  margin-left: 8rpx;
+  animation: arrowBounce 1.5s infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: rotate(45deg) translateY(0);
+  }
+  40% {
+    transform: rotate(45deg) translateY(8rpx);
+  }
+  60% {
+    transform: rotate(45deg) translateY(4rpx);
+  }
+}
+
+/* 技术背景部分样式 - 匹配HTML中的jsbj样式 */
+.bj1 {
+  width: 100%;
+  background-color: #fff;
+  padding: 30rpx 0;
+}
+
+.jsbj {
+  width: 100%;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+
+.jsbj_title {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.jsbj_title image {
+  width: 60%;
+  max-width: 400rpx;
+}
+
+.jsbj_nr {
+  width: 100%;
+}
+
+.jstitle {
+  margin-bottom: 20rpx;
+}
+
+.tab-list {
+  display: flex;
+  border-bottom: 1px solid #eee;
 }
 
 .tab-item {
   flex: 1;
-  padding: 20rpx 10rpx;
   text-align: center;
+  padding: 20rpx 0;
+  position: relative;
+}
+
+.tab-item span {
   font-size: 28rpx;
-  color: #555;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
+  color: #666;
+}
+
+.tab-item.cur span {
+  color: #0a2463;
+  font-weight: bold;
+}
+
+.tab-item.cur:after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: #0a2463;
+}
+
+.jsbox {
+  width: 100%;
+}
+
+.jsqh {
+  padding: 20rpx 0;
+}
+
+.jsqh p {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.jsqh image {
+  width: 100%;
+  max-width: 650rpx;
+  display: block;
+  margin: 0 auto;
+}
+
+/* 服务平台部分样式 - 匹配HTML中的fwpt样式 */
+.bj2 {
+  width: 100%;
+  background-color: #fff;
+  padding: 30rpx 0;
+  margin-top: 20rpx;
+}
+
+.fwpt {
+  width: 100%;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+
+.fwpt_title {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.fwpt_title image {
+  width: 60%;
+  max-width: 400rpx;
+}
+
+.fwpt_nr {
+  display: flex;
+  flex-direction: column;
+}
+
+.fwpt_left {
+  margin-bottom: 30rpx;
+}
+
+.fwpt_left p {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.fwpt_right image {
+  width: 100%;
+  display: block;
+  border-radius: 8rpx;
+}
+
+/* 核心功能部分样式 - 匹配HTML中的nmsh样式 */
+.wz1300 {
+  width: 100%;
+  padding: 30rpx;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin-top: 20rpx;
+}
+
+.nmtext {
+  margin-bottom: 30rpx;
+}
+
+.nmtext p {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.nmshbox {
+  margin-bottom: 30rpx;
+}
+
+.nmsh_nr {
+  margin-bottom: 20rpx;
+}
+
+.imgbox {
+  width: 100%;
+}
+
+.feature-item {
+  background: #fff;
+  border-radius: 8rpx;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.icon-wrapper {
+  text-align: center;
+  padding: 20rpx 0;
+  background: #f8f9fa;
+}
+
+.icon-wrapper image {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.bg-image {
+  height: 640rpx;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.feature-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx 20rpx;
+  background: rgba(255,255,255,0.95);
+}
+
+.feature-description text {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+.nmsh_tit {
+  margin-top: 20rpx;
+}
+
+.nmsh_tit .tab-list {
+  border-bottom: 0;
+}
+
+.nmsh_tit .tab-item {
+  padding: 10rpx 0;
+}
+
+.nmsh_tit .tab-item span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nmsh_tit .tab-item b {
+  width: 8rpx;
+  height: 8rpx;
+  background: #999;
+  border-radius: 50%;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.nmsh_tit .tab-item.cur b {
+  background: #0a2463;
+}
+
+.nmsh_tit .tab-item.cur:after {
+  display: none;
+}
+
+/* 多端展示部分样式 - 匹配HTML中的ddzs样式 */
+.ddzs_nr {
+  width: 100%;
+}
+
+.ddzs_tit {
+  margin-bottom: 30rpx;
+}
+
+.ddzs_box {
+  width: 100%;
+}
+
+.sszs_qh {
+  display: flex;
+  flex-direction: column;
+}
+
+.sszs_right {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.sszs_right image {
+  width: 100%;
+  border-radius: 8rpx;
+}
+
+.sszs_left {
+  width: 100%;
+}
+
+.feature-list-item {
+  margin-bottom: 20rpx;
+  padding: 15rpx;
+  border-left: 3px solid #0a2463;
+  background-color: #f9f9f9;
+}
+
+.feature-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.feature-desc {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 浮动菜单按钮样式 */
+.menu-button {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #0a2463;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.menu-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 4rpx;
+}
+
+.menu-text {
+  font-size: 18rpx;
+  color: white;
+}
+
+/* 菜单遮罩层样式 */
+.menu-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 101;
+  opacity: 0;
+  visibility: hidden;
   transition: all 0.3s ease;
 }
 
-.tab-item.active {
-  color: #0a2463; /* Theme color */
-  border-bottom: 3px solid #0a2463; /* Theme color */
-  font-weight: bold;
+.menu-mask.show {
+  opacity: 1;
+  visibility: visible;
 }
 
-/* Tab Content Styles */
-.tab-content {
-  min-height: 200rpx; /* Ensure content area has some height */
+/* 弹出菜单样式 */
+.floating-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-top-left-radius: 20rpx;
+  border-top-right-radius: 20rpx;
+  z-index: 102;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
 }
 
-.tab-pane {
+.floating-menu.show {
+  transform: translateY(0);
+}
+
+.menu-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.menu-close {
+  font-size: 36rpx;
+  color: #666;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.tab-pane-image {
-  width: 100%;
-  max-width: 600rpx;
-  height: auto;
-  border-radius: 10rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.menu-content {
+  max-height: 70vh;
+  padding: 10rpx 0;
 }
 
-.tab-pane-text {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.6;
-  text-align: justify;
-}
-
-/* Service Platform Styles */
-.service-platform-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.service-platform-image {
-  width: 100%;
-  max-width: 650rpx;
-  border-radius: 10rpx;
-  margin-bottom: 20rpx;
-}
-
-.service-platform-text {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.6;
-  text-align: justify;
-}
-
-
-.nav-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-top: 20rpx; /* Added margin top */
-  margin-bottom: 20rpx;
-  color: #333; /* Darker color */
-  width: 100%;
-  text-align: center; /* Centered title */
-  padding: 20rpx 0;
-  background-color: #fff;
-  border-radius: 15rpx;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.nav-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 100%;
-  padding: 10rpx; /* Added padding around grid */
-  background-color: #fff; /* Background for the grid container */
-  border-radius: 15rpx;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.nav-item {
-  width: 45%; /* Adjust width for better spacing */
-  background-color: #0a2463; /* Main theme color */
-  color: white;
-  padding: 25rpx; /* Increased padding */
-  margin: 10rpx; /* Consistent margin */
-  border-radius: 10rpx;
-  text-align: center;
+.menu-item {
+  padding: 25rpx 30rpx;
+  border-bottom: 1px solid #f5f5f5;
   font-size: 28rpx;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: background-color 0.3s ease; /* Smooth transition */
+  color: #333;
+  display: flex;
+  align-items: center;
 }
 
-.nav-item:hover {
-  background-color: #1e3d7b; /* Darker shade on hover */
+.menu-item-hover {
+  background-color: #f5f5f5;
 }
 
-/* Remove old styles if not used */
-.usermotto {
-  /* margin-top: 200rpx; */ /* Removed or adjust if still needed elsewhere */
-  /* text-align: center; */
-}
-
-.user-motto {
-  /* color: #aaa; */ /* Removed or adjust */
+/* 适配小屏幕设备 */
+@media screen and (max-width: 375px) {
+  .bg-image {
+    height: 500rpx;
+  }
+  
+  .jsbj_title image,
+  .fwpt_title image {
+    width: 80%;
+  }
+  
+  .feature-title {
+    font-size: 26rpx;
+  }
+  
+  .feature-desc {
+    font-size: 22rpx;
+  }
 }

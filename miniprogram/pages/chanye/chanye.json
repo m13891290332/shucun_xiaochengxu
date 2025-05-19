@@ -1,7 +1,13 @@
 {
   "usingComponents": {},
   "navigationBarTitleText": "智慧产业",
-  "navigationStyle": "custom",
+  "navigationStyle": "default",
+  "navigationBarBackgroundColor": "#030c1f",
+  "navigationBarTextStyle": "white",
   "disableScroll": false,
-  "backgroundColor": "#030c1f"
+  "backgroundColor": "#030c1f",
+  "backgroundColorTop": "#030c1f",
+  "backgroundColorBottom": "#030c1f",
+  "enablePullDownRefresh": false,
+  "onReachBottomDistance": 50
 }

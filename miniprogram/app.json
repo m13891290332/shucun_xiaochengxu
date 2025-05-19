@@ -11,13 +11,16 @@
     "pages/daikuan/daikuan",
     "pages/news/news",
     "pages/cooperation/cooperation",
-    "pages/contactus/contactus"
+    "pages/contactus/contactus",
+    "pages/scenic/detail",
+    "pages/route/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "数村小程序",
     "navigationBarTextStyle": "black"
+
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

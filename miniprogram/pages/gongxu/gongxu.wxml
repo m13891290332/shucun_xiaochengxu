@@ -2,7 +2,7 @@
 <view class="platform-container">
   <!-- Header Section -->
   <view class="header bg-primary text-white">
-    <view class="container">
+    <view class="container animate-fade-in">
       <text class="title">农产品供需信息共享平台</text>
       <text class="subtitle">连接政府、企业与农民，共创农业产业链新生态</text>
     </view>
@@ -16,21 +16,21 @@
           <text class="section-title">平台介绍</text>
           <text class="intro-desc">本平台旨在为政府部门、农业企业和广大农民提供一个直接交流的渠道，发布农产品供给和需求信息，减少中间环节，降低交易成本。</text>
           <view class="feature-boxes">
-            <view class="feature-box">
+            <view class="feature-box tap-effect">
               <view class="feature-icon"><text class="iconfont icon-handshake"></text></view>
               <view class="feature-content">
                 <text class="feature-title">直接对接</text>
                 <text class="feature-desc">减少中间环节</text>
               </view>
             </view>
-            <view class="feature-box">
+            <view class="feature-box tap-effect">
               <view class="feature-icon"><text class="iconfont icon-chart"></text></view>
               <view class="feature-content">
                 <text class="feature-title">价格稳定</text>
                 <text class="feature-desc">降低市场波动</text>
               </view>
             </view>
-            <view class="feature-box">
+            <view class="feature-box tap-effect">
               <view class="feature-icon"><text class="iconfont icon-shield"></text></view>
               <view class="feature-content">
                 <text class="feature-title">降低风险</text>
@@ -39,7 +39,7 @@
             </view>
           </view>
         </view>
-        <view class="platform-stats">
+        <view class="platform-stats tap-effect">
           <text class="stats-title">平台数据</text>
           <view class="stats-grid">
             <view class="stat-item">
@@ -71,8 +71,8 @@
       
       <!-- Tabs -->
       <view class="info-tabs">
-        <view class="tab {{activeTab === 'supply' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="supply">供应信息</view>
-        <view class="tab {{activeTab === 'demand' ? 'tab-active' : ''}}" bindtap="switchTab" data-tab="demand">需求信息</view>
+        <view class="tab {{activeTab === 'supply' ? 'tab-active' : ''}} tap-effect" bindtap="switchTab" data-tab="supply">供应信息</view>
+        <view class="tab {{activeTab === 'demand' ? 'tab-active' : ''}} tap-effect" bindtap="switchTab" data-tab="demand">需求信息</view>
       </view>
       
       <!-- Tab Content -->
@@ -81,7 +81,7 @@
         <view class="tab-pane {{activeTab === 'supply' ? 'show' : 'hide'}}">
           <view class="info-grid">
             <block wx:for="{{supplyList}}" wx:key="id">
-              <view class="info-card">
+              <view class="info-card tap-effect animate-fade-in" style="animation-delay:{{index*0.1}}s">
                 <view class="card-header">
                   <text class="card-title">{{item.title}}</text>
                   <text class="card-status">{{item.status}}</text>
@@ -95,7 +95,7 @@
                 </view>
                 <view class="card-footer">
                   <text class="publish-time">发布时间：{{item.publishTime}}</text>
-                  <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+                  <button class="detail-btn tap-effect" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
                 </view>
               </view>
             </block>
@@ -106,7 +106,7 @@
         <view class="tab-pane {{activeTab === 'demand' ? 'show' : 'hide'}}">
           <view class="info-grid">
             <block wx:for="{{demandList}}" wx:key="id">
-              <view class="info-card">
+              <view class="info-card tap-effect animate-fade-in" style="animation-delay:{{index*0.1}}s">
                 <view class="card-header">
                   <text class="card-title">{{item.title}}</text>
                   <text class="card-status">{{item.status}}</text>
@@ -120,7 +120,7 @@
                 </view>
                 <view class="card-footer">
                   <text class="publish-time">发布时间：{{item.publishTime}}</text>
-                  <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+                  <button class="detail-btn tap-effect" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
                 </view>
               </view>
             </block>
@@ -129,7 +129,7 @@
       </view>
       
       <view class="more-btn-container">
-        <button class="more-btn" bindtap="loadMoreInfo">查看更多信息</button>
+        <button class="more-btn tap-effect" bindtap="loadMoreInfo">查看更多信息</button>
       </view>
     </view>
   </view>

@@ -3,6 +3,7 @@ page {
   background-color: #111827;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
 }
 
 .container {
@@ -14,9 +15,14 @@ page {
   background-color: #1e3a8a;
   padding: 20rpx 30rpx;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .header-title {
@@ -25,15 +31,25 @@ page {
   text-align: center;
 }
 
+.progress-bar {
+  height: 4rpx;
+  background: linear-gradient(90deg, #34c759, #5ac8fa);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: width 0.2s ease;
+}
+
 /* Hero Section 样式 */
 .hero-section {
   background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  height: 100vh;
+  height: 60vh;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 80rpx;
 }
 
 .hero-pattern {
@@ -58,6 +74,9 @@ page {
   font-size: 70rpx;
   font-weight: bold;
   margin-bottom: 24rpx;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .hero-subtitle {
@@ -76,40 +95,72 @@ page {
   padding: 24rpx 48rpx;
   border-radius: 48rpx;
   font-weight: 500;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 8rpx 24rpx rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.apple-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.2);
+}
+
+.btn-arrow {
+  margin-left: 16rpx;
+  width: 24rpx;
+  height: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-down {
+  width: 12rpx;
+  height: 12rpx;
+  border-right: 3rpx solid white;
+  border-bottom: 3rpx solid white;
+  transform: rotate(45deg);
 }
 
 /* 总体概览部分 */
 .section {
   padding: 80rpx 30rpx;
+  position: relative;
+  overflow: hidden;
 }
 
 .bg-dark {
   background-color: #1a202c;
 }
 
-.ai-bg {
-  background: linear-gradient(to bottom, #111827, #1e293b);
+.smart-agriculture-bg {
+  background-image: url('https://i-blog.csdnimg.cn/direct/ea6ac207b6a445c68644407d068fc01a.png');
+  background-size: cover;
+  background-position: center;
   position: relative;
 }
 
-.ai-bg::after {
+.smart-agriculture-bg::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://i-blog.csdnimg.cn/direct/ea6ac207b6a445c68644407d068fc01a.png');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.1;
-  z-index: 0;
+  background: linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.7) 100%);
+  z-index: 1;
+}
+
+.smart-agriculture-content {
+  position: relative;
+  z-index: 2;
 }
 
 .future-bg {
   background: linear-gradient(to bottom, #1a202c, #0f172a);
+  position: relative;
 }
 
 .section-title {
@@ -127,7 +178,7 @@ page {
   left: 0;
   width: 120rpx;
   height: 8rpx;
-  background-color: #5ac8fa;
+  background: linear-gradient(to right, #5ac8fa, #34c759);
   border-radius: 4rpx;
 }
 
@@ -140,11 +191,18 @@ page {
 }
 
 .stat-card {
-  background: rgba(59, 130, 246, 0.2);
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
   border-radius: 24rpx;
   backdrop-filter: blur(16rpx);
   border: 1px solid rgba(59, 130, 246, 0.3);
   padding: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:active {
+  transform: translateY(-5rpx);
+  box-shadow: 0 12rpx 24rpx rgba(0, 0, 0, 0.3);
 }
 
 .stat-label {
@@ -191,72 +249,127 @@ page {
 
 /* 数据卡片样式 */
 .data-card {
-  background-color: rgba(31, 41, 55, 0.8);
+  background: linear-gradient(145deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.8));
   border-radius: 32rpx;
   backdrop-filter: blur(20rpx);
   box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
-  padding: 40rpx;
+  padding: 40rpx 30rpx; /* 调整内边距更适合手机端 */
   margin-bottom: 60rpx;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.data-card:active {
+  transform: translateY(-5rpx);
+  box-shadow: 0 25rpx 70rpx rgba(0, 0, 0, 0.4);
 }
 
 .card-title {
   font-size: 40rpx;
   font-weight: bold;
   margin-bottom: 30rpx;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block; /* 确保渐变效果生效 */
 }
 
 .chart-container {
-  height: 700rpx;
+  position: relative;
+  height: 600rpx; /* 修改高度确保图表能显示 */
   width: 100%;
   margin-bottom: 30rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chart-inner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .chart-large {
-  height: 1000rpx;
+  height: 800rpx; /* 调整高度更适合手机显示 */
 }
 
-.data-source {
-  color: rgba(229, 231, 235, 0.6);
-  font-size: 24rpx;
-  text-align: right;
+.chart-loaded {
+  opacity: 1;
 }
 
-/* 图表网格样式 */
-.chart-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40rpx;
+.chart-loading {
+  background: rgba(31, 41, 55, 0.5);
 }
 
-/* 表格样式 */
-.table-wrapper {
-  overflow-x: auto;
+/* 图表加载中样式优化 */
+.loading-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #34d399;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 图表标题和说明样式 */
+.card-title {
+  font-size: 40rpx;
+  font-weight: bold;
   margin-bottom: 30rpx;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block; /* 确保渐变效果生效 */
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.chart-note {
+  font-size: 26rpx;
+  color: rgba(229, 231, 235, 0.8);
+  margin-bottom: 16rpx;
+  text-align: center;
 }
 
-.tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* 图表图例样式 */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+  justify-content: center;
 }
 
-.header {
-  font-weight: 500;
+.legend-item {
+  display: flex;
+  align-items: center;
 }
 
-.th, .td {
-  padding: 24rpx 30rpx;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.th {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #fff;
+.legend-color {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
 }
 
 /* AI 洞察卡片样式 */
@@ -273,6 +386,13 @@ page {
   padding: 30rpx;
   position: relative;
   z-index: 1;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ai-insight-card:active {
+  transform: translateY(-5rpx);
+  box-shadow: 0 15rpx 35rpx rgba(0, 0, 0, 0.3);
 }
 
 .insight-header {
@@ -290,6 +410,12 @@ page {
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+}
+
+.insight-icon image {
+  width: 40rpx;
+  height: 40rpx;
 }
 
 .robot {
@@ -339,10 +465,23 @@ page {
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
-  background-color: #34d399;
+  background: linear-gradient(145deg, #34d399, #10b981);
   margin-right: 20rpx;
   margin-top: 6rpx;
   flex-shrink: 0;
+  position: relative;
+}
+
+.task-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16rpx;
+  height: 10rpx;
+  border-left: 3rpx solid white;
+  border-bottom: 3rpx solid white;
+  transform: translate(-50%, -60%) rotate(-45deg);
 }
 
 .task-content {
@@ -374,6 +513,28 @@ page {
   margin-bottom: 20rpx;
 }
 
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;
+  margin: 30rpx 0;
+}
+
+.footer-link-item {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
 .footer-source {
   color: rgba(229, 231, 235, 0.6);
   font-size: 28rpx;
@@ -385,19 +546,285 @@ page {
   font-size: 24rpx;
 }
 
-/* 媒体查询 - 用于平板和桌面设备 */
-@media (min-width: 768px) {
-  .stat-cards {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  
-  .chart-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .insight-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* 直接数据展示图表样式 */
+.direct-chart-container {
+  position: relative;
+  height: 500rpx;
+  width: 100%;
+  margin: 30rpx 0;
+  padding-bottom: 60rpx;
+}
+
+/* 年份指示器 */
+.year-indicator {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  left: 10rpx;
+  right: 10rpx;
+}
+
+.year-label {
+  font-size: 22rpx;
+  color: rgba(229, 231, 235, 0.7);
+  transform: rotate(-45deg);
+  transform-origin: top left;
+  margin-left: 10rpx;
+}
+
+/* 柱状图样式 */
+.bar-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 40rpx;
+}
+
+.bar-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  margin: 0 5rpx;
+}
+
+.bar-value {
+  width: 80%;
+  background: linear-gradient(to top, #1e3a8a, #3b82f6);
+  border-radius: 4rpx 4rpx 0 0;
+  position: relative;
+  transition: height 0.5s ease;
+}
+
+.bar-tip {
+  position: absolute;
+  top: -40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(59, 130, 246, 0.7);
+  padding: 4rpx 8rpx;
+  border-radius: 4rpx;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.bar-value:hover .bar-tip {
+  opacity: 1;
+}
+
+/* 增长率折线图 */
+.growth-line {
+  position: absolute;
+  top: 0;
+  left: 20rpx;
+  right: 20rpx;
+  height: 100%;
+  pointer-events: none;
+}
+
+.growth-point {
+  position: absolute;
+  width: 12rpx;
+  height: 12rpx;
+  background-color: #34d399;
+  border-radius: 50%;
+  margin-left: -6rpx;
+  margin-bottom: -6rpx;
+}
+
+.growth-tip {
+  position: absolute;
+  top: -30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  color: #34d399;
+  white-space: nowrap;
+}
+
+/* 修改饼图样式实现 */
+.pie-chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500rpx;
+  margin: 30rpx 0;
+}
+
+.pie-chart {
+  position: relative;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  background-color: rgba(31, 41, 55, 0.8);
+}
+
+/* 重写饼图片段样式 */
+.pie-segment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.segment-1 {
+  background-image: conic-gradient(#3b82f6 0% 42%, transparent 42% 100%);
+}
+
+.segment-2 {
+  background-image: conic-gradient(transparent 0% 42%, #34d399 42% 76.7%, transparent 76.7% 100%);
+}
+
+.segment-3 {
+  background-image: conic-gradient(transparent 0% 76.7%, #fbbf24 76.7% 79.2%, transparent 79.2% 100%);
+}
+
+.segment-4 {
+  background-image: conic-gradient(transparent 0% 79.2%, #f472b6 79.2% 100%);
+}
+
+.pie-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #111827;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #fff;
+}
+
+/* 图表图例样式增强 */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin: 30rpx 0;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-color {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
+}
+
+/* 简易表格样式 */
+.simple-table {
+  width: 100%;
+  border-radius: 12rpx;
+  overflow: hidden;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.simple-table-header {
+  display: flex;
+  background-color: rgba(59, 130, 246, 0.2);
+  font-weight: bold;
+}
+
+.simple-table-row {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.simple-table-row:last-child {
+  border-bottom: none;
+}
+
+.simple-table-row:nth-child(even) {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.simple-table-cell {
+  flex: 1;
+  padding: 20rpx 16rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+
+/* 修复表格样式 */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 30rpx;
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 12rpx;
+}
+
+.table {
+  width: 100%;
+  min-width: 700rpx; /* 缩短最小宽度 */
+  border-collapse: collapse;
+  display: table; /* 使用table布局 */
+}
+
+.tr {
+  display: table-row; /* 使用table-row替换flex */
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tr:last-child {
+  border-bottom: none;
+}
+
+.tr:nth-child(even) {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.th, .td {
+  display: table-cell; /* 使用table-cell替换flex */
+  padding: 20rpx 12rpx; /* 减小内边距 */
+  text-align: center;
+  font-size: 24rpx; /* 减小字体大小 */
+  vertical-align: middle;
+}
+
+.th {
+  font-weight: bold;
+  background-color: rgba(59, 130, 246, 0.2);
+  color: white;
+}
+
+/* 为不同列设置不同的宽度 */
+.th:nth-child(1), .td:nth-child(1) {
+  width: 10%; /* 排名列窄一些 */
+}
+
+.th:nth-child(2), .td:nth-child(2) {
+  width: 15%; /* 省份列 */
+}
+
+.th:nth-child(3), .td:nth-child(3) {
+  width: 25%; /* 收入列宽一些 */
+}
+
+.th:nth-child(4), .td:nth-child(4) {
+  width: 15%; /* 增长率列 */
+}
+
+.th:nth-child(5), .td:nth-child(5),
+.th:nth-child(6), .td:nth-child(6) {
+  width: 17.5%; /* 收入占比列 */
 }
 
 /* 动画效果 */
@@ -412,12 +839,241 @@ page {
   }
 }
 
-.fadeIn {
+.fade-in {
+  opacity: 0;
+  transform: translateY(40rpx);
   animation: fadeIn 0.8s ease forwards;
 }
 
-/* ec-canvas组件样式 */
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.delay-2 {
+  animation-delay: 0.4s;
+}
+
+.delay-3 {
+  animation-delay: 0.6s;
+}
+
+/* 脉冲效果 */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10rpx rgba(52, 199, 89, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* ec-canvas组件样式优化 */
 ec-canvas {
   width: 100%;
   height: 100%;
+  display: block; /* 确保canvas正确显示 */
+}
+
+/* 预测图表样式增强 */
+.forecast-chart {
+  position: relative;
+  height: 500rpx;
+  width: 100%;
+  margin: 30rpx 0;
+  background-color: rgba(31, 41, 55, 0.3);
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+
+.forecast-line {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 60rpx;
+}
+
+.forecast-segment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60rpx);
+}
+
+/* 修改点的样式并增大尺寸 */
+.forecast-point {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-left: -8rpx;
+  margin-bottom: -8rpx;
+  z-index: 5;
+}
+
+.forecast-value {
+  position: absolute;
+  top: -30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rpx 8rpx;
+  border-radius: 4rpx;
+  display: none;
+  z-index: 10;
+}
+
+.forecast-point:active .forecast-value {
+  display: block;
+}
+
+/* 设置各类点的颜色 */
+.history .forecast-point {
+  background-color: #3b82f6;
+  border: 2rpx solid #fff;
+}
+
+.optimistic .forecast-point {
+  background-color: #34d399;
+  border: 2rpx solid #fff;
+}
+
+.neutral .forecast-point {
+  background-color: #fbbf24;
+  border: 2rpx solid #fff;
+}
+
+.conservative .forecast-point {
+  background-color: #f472b6;
+  border: 2rpx solid #fff;
+}
+
+/* 添加线条的实现 */
+.forecast-path {
+  position: absolute;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 历史数据线 */
+.history .forecast-path {
+  left: 0;
+  width: 40%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 3rpx solid #3b82f6;
+  bottom: 255rpx;  /* 与最后一个历史数据点的高度一致 */
+}
+
+/* 乐观预测线 */
+.optimistic .forecast-path {
+  left: 40%;
+  width: 60%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 3rpx solid #34d399;
+  bottom: 255rpx;  /* 与第一个预测点的高度一致 */
+  transform: skewY(12deg);  /* 上升斜率 */
+  transform-origin: left;
+}
+
+/* 中性预测线 */
+.neutral .forecast-path {
+  left: 40%;
+  width: 60%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 3rpx solid #fbbf24;
+  bottom: 255rpx;  /* 与第一个预测点的高度一致 */
+  transform: skewY(8deg);  /* 缓和的上升斜率 */
+  transform-origin: left;
+}
+
+/* 保守预测线 */
+.conservative .forecast-path {
+  left: 40%;
+  width: 60%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 3rpx solid #f472b6;
+  bottom: 255rpx;  /* 与第一个预测点的高度一致 */
+  transform: skewY(5deg);  /* 较小的上升斜率 */
+  transform-origin: left;
+}
+
+.forecast-baseline {
+  position: absolute;
+  bottom: 60rpx;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.forecast-years {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40rpx;
+  display: flex;
+}
+
+.year-mark {
+  position: absolute;
+  font-size: 22rpx;
+  color: rgba(229, 231, 235, 0.7);
+  transform: translateX(-50%);
+}
+
+/* 添加预测说明的样式 */
+.prediction-note {
+  margin-top: 20rpx;
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+
+.note-title {
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.note-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.note-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+
+.note-dot.green {
+  background-color: #34d399;
+}
+
+.note-dot.yellow {
+  background-color: #fbbf24;
+}
+
+.note-dot.pink {
+  background-color: #f472b6;
 }

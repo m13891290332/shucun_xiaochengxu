@@ -1,0 +1,3 @@
+<view class="icon-container {{customClass}}" style="font-size: {{size}}rpx; color: {{color}};">
+  <text class="iconfont {{name}}"></text>
+</view>

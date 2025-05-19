@@ -1,194 +1,4 @@
 // pages/zhushou/zhushou.js
-// 引入echarts
-import * as echarts from '../../ec-canvas/echarts';
-
-// 初始化图表函数
-function initChart(canvas, width, height, dpr) {
-  const chart = echarts.init(canvas, null, {
-    width: width,
-    height: height,
-    devicePixelRatio: dpr
-  });
-  canvas.setChart(chart);
-  return chart;
-}
-
-// 初始化GDP趋势图
-function initGdpTrendChart(chart) {
-  const option = {
-    backgroundColor: 'rgba(0,0,0,0)',
-    color: ['#2a93d5'],
-    tooltip: {
-      trigger: 'axis'
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      top: '15%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: ['2021', '2022', '2023'],
-      axisLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.3)'
-        }
-      },
-      axisLabel: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.3)'
-        }
-      },
-      splitLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.1)'
-        }
-      },
-      axisLabel: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    series: [{
-      name: '地区生产总值(亿元)',
-      type: 'line',
-      smooth: true,
-      data: [42.8, 45.6, 49.7],
-      areaStyle: {
-        opacity: 0.2
-      }
-    }]
-  };
-  chart.setOption(option);
-  return chart;
-}
-
-// 初始化GDP构成饼图
-function initGdpCompositionChart(chart) {
-  const option = {
-    backgroundColor: 'rgba(0,0,0,0)',
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
-    },
-    legend: {
-      orient: 'vertical',
-      right: 10,
-      top: 'center',
-      data: ['第一产业', '第二产业', '第三产业'],
-      textStyle: {
-        color: 'rgba(255, 255, 255, 0.8)'
-      }
-    },
-    series: [{
-      name: '产值构成',
-      type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['40%', '50%'],
-      avoidLabelOverlap: false,
-      label: {
-        show: false
-      },
-      emphasis: {
-        label: {
-          show: true,
-          color: '#fff'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [
-        {value: 17.8, name: '第一产业', itemStyle: {color: '#4bc0c0'}},
-        {value: 10.7, name: '第二产业', itemStyle: {color: '#ff6384'}},
-        {value: 21.2, name: '第三产业', itemStyle: {color: '#36a2eb'}}
-      ]
-    }]
-  };
-  chart.setOption(option);
-  return chart;
-}
-
-// 初始化收入对比图
-function initIncomeComparisonChart(chart) {
-  const option = {
-    backgroundColor: 'rgba(0,0,0,0)',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
-    },
-    legend: {
-      data: ['农村居民人均可支配收入', '城镇居民人均可支配收入'],
-      textStyle: {
-        color: 'rgba(255, 255, 255, 0.8)'
-      },
-      top: 0
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      top: '25%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: ['2021', '2022', '2023'],
-      axisLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.3)'
-        }
-      },
-      axisLabel: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.3)'
-        }
-      },
-      splitLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.1)'
-        }
-      },
-      axisLabel: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    series: [{
-      name: '农村居民人均可支配收入',
-      type: 'bar',
-      data: [18450, 20018, 21780],
-      itemStyle: {
-        color: 'rgba(75, 192, 192, 0.7)'
-      }
-    }, {
-      name: '城镇居民人均可支配收入',
-      type: 'bar',
-      data: [38750, 41850, 45320],
-      itemStyle: {
-        color: 'rgba(54, 162, 235, 0.7)'
-      }
-    }]
-  };
-  chart.setOption(option);
-  return chart;
-}
-
-// 更多图表初始化函数会在实际使用时添加
 
 Page({
   /**
@@ -198,9 +8,13 @@ Page({
     // 分析结果相关
     analysisText: '',
     isLoading: true,
+    showAnalysis: true,
     
     // 数据表格相关
     showDataTable: false,
+    dataExpanded: false,
+    selectedCategoryIndex: 0,
+    dataCategories: ['经济发展水平', '经济增长速度', '产业结构升级', '人均可支配收入'],
     economicData: {
       development: [
         {name: '地区生产总值(亿元)', y2021: '42.8', y2022: '45.6', y2023: '49.7'},
@@ -228,19 +42,11 @@ Page({
     
     // 图表相关
     showCharts: false,
+    chartsExpanded: false,
     currentChart: 'gdp',
-    gdpTrendEc: {
-      onInit: initGdpTrendChart
-    },
-    gdpCompositionEc: {
-      onInit: initGdpCompositionChart
-    },
-    incomeComparisonEc: {
-      onInit: initIncomeComparisonChart
-    },
-    // 其他图表配置会在需要时添加
     
     // 聊天相关
+    chatExpanded: true,
     chatHistory: [
       {
         isUser: false,
@@ -274,6 +80,61 @@ Page({
   },
 
   /**
+   * 切换分析结果显示状态
+   */
+  toggleAnalysis() {
+    this.setData({
+      showAnalysis: !this.data.showAnalysis
+    });
+  },
+
+  /**
+   * 切换数据表格显示状态
+   */
+  toggleDataTable() {
+    this.setData({
+      dataExpanded: !this.data.dataExpanded
+    });
+  },
+
+  /**
+   * 切换图表显示状态
+   */
+  toggleCharts() {
+    this.setData({
+      chartsExpanded: !this.data.chartsExpanded
+    });
+  },
+
+  /**
+   * 切换聊天区域显示状态
+   */
+  toggleChat() {
+    this.setData({
+      chatExpanded: !this.data.chatExpanded
+    });
+  },
+
+  /**
+   * 切换显示的图表
+   */
+  switchChart(e) {
+    const chart = e.currentTarget.dataset.chart;
+    this.setData({
+      currentChart: chart
+    });
+  },
+
+  /**
+   * 数据类别选择变化
+   */
+  onCategoryChange(e) {
+    this.setData({
+      selectedCategoryIndex: e.detail.value
+    });
+  },
+
+  /**
    * 获取分析报告文本
    */
   getAnalysisText() {
@@ -294,34 +155,6 @@ Page({
 2. 加强乡村旅游等服务业发展，提升第三产业比重
 3. 完善农村基础设施建设，吸引更多固定资产投资
 4. 实施技能培训计划，提高农村劳动力素质，增加农民收入`;
-  },
-
-  /**
-   * 切换数据表格显示状态
-   */
-  toggleDataTable() {
-    this.setData({
-      showDataTable: !this.data.showDataTable
-    });
-  },
-
-  /**
-   * 切换图表显示状态
-   */
-  toggleCharts() {
-    this.setData({
-      showCharts: !this.data.showCharts
-    });
-  },
-
-  /**
-   * 切换显示的图表
-   */
-  switchChart(e) {
-    const chart = e.currentTarget.dataset.chart;
-    this.setData({
-      currentChart: chart
-    });
   },
 
   /**
@@ -424,7 +257,8 @@ Page({
   importData() {
     wx.showToast({
       title: '导入功能开发中',
-      icon: 'none'
+      icon: 'none',
+      duration: 2000
     });
   },
 
@@ -434,7 +268,8 @@ Page({
   showSettings() {
     wx.showToast({
       title: '设置功能开发中',
-      icon: 'none'
+      icon: 'none',
+      duration: 2000
     });
   },
 
@@ -442,15 +277,13 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-    // 页面渲染完成后，可以在这里执行其他初始化操作
+    // 页面渲染完成
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    // 页面显示
   }
-
-  // 其他生命周期函数保持不变
 })

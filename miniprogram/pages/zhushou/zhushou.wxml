@@ -1,13 +1,13 @@
 <!--pages/zhushou/zhushou.wxml-->
 <view class="container">
   <!-- 页面标题 -->
-  <view class="header">
+  <view class="nav-header">
     <view class="header-content">
-      <view class="icon-wrapper">
-        <text class="iconfont icon-robot"></text>
+      <view class="logo-container">
+        <text class="iconfont icon-robot text-3xl"></text>
       </view>
-      <view class="title">
-        <text>乡村振兴智能体分析平台</text>
+      <view class="title-container">
+        <text class="header-title">乡村振兴智能体分析平台</text>
       </view>
     </view>
     <view class="button-group">
@@ -21,15 +21,18 @@
   <!-- 主体内容区域 -->
   <view class="main-content">
     <!-- 数据分析结果 -->
-    <view class="card fade-in">
-      <view class="card-header">
+    <view class="glass-effect card fade-in mb-card">
+      <view class="card-header" bindtap="toggleAnalysis">
         <view class="icon-circle">
           <text class="iconfont icon-chart-line"></text>
         </view>
         <text class="card-title">数据分析结果</text>
+        <view class="toggle-icon {{showAnalysis ? 'rotate-180' : ''}}">
+          <text class="iconfont icon-arrow"></text>
+        </view>
       </view>
       
-      <view class="card-body">
+      <view class="card-body {{showAnalysis ? '' : 'hidden'}}">
         <view class="mb-4">
           <text class="analysis-title">碧水村发展分析报告</text>
           <view id="analysis-text" class="analysis-content">{{analysisText}}</view>
@@ -38,134 +41,407 @@
       </view>
     </view>
 
-    <!-- 原始数据表格 -->
-    <view class="card fade-in {{showDataTable ? '' : 'hidden'}}">
+    <!-- 原始数据表格 - 移动端优化 -->
+    <view class="glass-effect card fade-in mb-card {{showDataTable ? '' : 'hidden'}}">
       <view class="card-header" bindtap="toggleDataTable">
         <view class="icon-circle">
           <text class="iconfont icon-database"></text>
         </view>
         <text class="card-title">原始数据</text>
+        <view class="toggle-icon {{dataExpanded ? 'rotate-180' : ''}}">
+          <text class="iconfont icon-arrow"></text>
+        </view>
       </view>
       
-      <view class="card-body" wx:if="{{showDataTable}}">
-        <scroll-view scroll-x="true" class="table-container">
-          <view class="data-table">
-            <view class="table-header">
-              <view class="th">指标类别</view>
-              <view class="th">指标名称</view>
-              <view class="th">2021年</view>
-              <view class="th">2022年</view>
-              <view class="th">2023年</view>
+      <view class="card-body" wx:if="{{dataExpanded}}">
+        <view class="data-selection">
+          <picker bindchange="onCategoryChange" value="{{selectedCategoryIndex}}" range="{{dataCategories}}">
+            <view class="picker-view">
+              <text>{{dataCategories[selectedCategoryIndex]}}</text>
+              <text class="iconfont icon-down"></text>
             </view>
-            
-            <view class="table-body">
-              <!-- 经济发展水平 -->
-              <view class="tr" wx:for="{{economicData.development}}" wx:key="index">
-                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.development.length}};">经济发展水平</view>
-                <view class="td">{{item.name}}</view>
-                <view class="td">{{item.y2021}}</view>
-                <view class="td">{{item.y2022}}</view>
-                <view class="td">{{item.y2023}}</view>
-              </view>
-              
-              <!-- 经济增长速度 -->
-              <view class="tr" wx:for="{{economicData.growth}}" wx:key="index">
-                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.growth.length}};">经济增长速度</view>
-                <view class="td">{{item.name}}</view>
-                <view class="td">{{item.y2021}}</view>
-                <view class="td">{{item.y2022}}</view>
-                <view class="td">{{item.y2023}}</view>
-              </view>
-              
-              <!-- 产业结构升级 -->
-              <view class="tr" wx:for="{{economicData.industry}}" wx:key="index">
-                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.industry.length}};">产业结构升级</view>
-                <view class="td">{{item.name}}</view>
-                <view class="td">{{item.y2021}}</view>
-                <view class="td">{{item.y2022}}</view>
-                <view class="td">{{item.y2023}}</view>
-              </view>
-              
-              <!-- 人均可支配收入 -->
-              <view class="tr" wx:for="{{economicData.income}}" wx:key="index">
-                <view class="td" wx:if="{{index === 0}}" style="grid-row: span {{economicData.income.length}};">人均可支配收入</view>
-                <view class="td">{{item.name}}</view>
-                <view class="td">{{item.y2021}}</view>
-                <view class="td">{{item.y2022}}</view>
-                <view class="td">{{item.y2023}}</view>
-              </view>
+          </picker>
+        </view>
+        
+        <!-- 表格适应移动端 -->
+        <view class="mobile-table">
+          <view class="table-header">
+            <view class="table-row">
+              <view class="table-cell table-cell-header">指标</view>
+              <view class="table-cell table-cell-header">2021年</view>
+              <view class="table-cell table-cell-header">2022年</view>
+              <view class="table-cell table-cell-header">2023年</view>
             </view>
           </view>
-        </scroll-view>
+          
+          <view class="table-body">
+            <block wx:if="{{selectedCategoryIndex == 0}}">
+              <view class="table-row" wx:for="{{economicData.development}}" wx:key="index">
+                <view class="table-cell table-cell-name">{{item.name}}</view>
+                <view class="table-cell">{{item.y2021}}</view>
+                <view class="table-cell">{{item.y2022}}</view>
+                <view class="table-cell">{{item.y2023}}</view>
+              </view>
+            </block>
+            
+            <block wx:elif="{{selectedCategoryIndex == 1}}">
+              <view class="table-row" wx:for="{{economicData.growth}}" wx:key="index">
+                <view class="table-cell table-cell-name">{{item.name}}</view>
+                <view class="table-cell">{{item.y2021}}</view>
+                <view class="table-cell">{{item.y2022}}</view>
+                <view class="table-cell">{{item.y2023}}</view>
+              </view>
+            </block>
+            
+            <block wx:elif="{{selectedCategoryIndex == 2}}">
+              <view class="table-row" wx:for="{{economicData.industry}}" wx:key="index">
+                <view class="table-cell table-cell-name">{{item.name}}</view>
+                <view class="table-cell">{{item.y2021}}</view>
+                <view class="table-cell">{{item.y2022}}</view>
+                <view class="table-cell">{{item.y2023}}</view>
+              </view>
+            </block>
+            
+            <block wx:elif="{{selectedCategoryIndex == 3}}">
+              <view class="table-row" wx:for="{{economicData.income}}" wx:key="index">
+                <view class="table-cell table-cell-name">{{item.name}}</view>
+                <view class="table-cell">{{item.y2021}}</view>
+                <view class="table-cell">{{item.y2022}}</view>
+                <view class="table-cell">{{item.y2023}}</view>
+              </view>
+            </block>
+          </view>
+        </view>
       </view>
     </view>
 
-    <!-- 数据可视化图表 -->
-    <view class="card fade-in {{showCharts ? '' : 'hidden'}}">
+    <!-- 数据可视化图表 - 移动端优化 -->
+    <view class="glass-effect card fade-in mb-card {{showCharts ? '' : 'hidden'}}">
       <view class="card-header" bindtap="toggleCharts">
         <view class="icon-circle">
           <text class="iconfont icon-chart-pie"></text>
         </view>
         <text class="card-title">数据可视化分析</text>
+        <view class="toggle-icon {{chartsExpanded ? 'rotate-180' : ''}}">
+          <text class="iconfont icon-arrow"></text>
+        </view>
       </view>
       
-      <view class="card-body" wx:if="{{showCharts}}">
-        <view class="chart-tabs">
-          <view class="chart-tab {{currentChart === 'gdp' ? 'active' : ''}}" bindtap="switchChart" data-chart="gdp">地区生产总值分析</view>
-          <view class="chart-tab {{currentChart === 'income' ? 'active' : ''}}" bindtap="switchChart" data-chart="income">居民收入分析</view>
-          <view class="chart-tab {{currentChart === 'industry' ? 'active' : ''}}" bindtap="switchChart" data-chart="industry">产业结构分析</view>
-          <view class="chart-tab {{currentChart === 'growth' ? 'active' : ''}}" bindtap="switchChart" data-chart="growth">增速对比分析</view>
-        </view>
+      <view class="card-body" wx:if="{{chartsExpanded}}">
+        <scroll-view scroll-x="true" class="chart-tabs-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="chart-tabs">
+            <view class="chart-tab {{currentChart === 'gdp' ? 'active' : ''}}" bindtap="switchChart" data-chart="gdp">GDP分析</view>
+            <view class="chart-tab {{currentChart === 'income' ? 'active' : ''}}" bindtap="switchChart" data-chart="income">收入分析</view>
+            <view class="chart-tab {{currentChart === 'industry' ? 'active' : ''}}" bindtap="switchChart" data-chart="industry">产业结构</view>
+            <view class="chart-tab {{currentChart === 'growth' ? 'active' : ''}}" bindtap="switchChart" data-chart="growth">增速对比</view>
+          </view>
+        </scroll-view>
         
         <view class="chart-panels">
+          <!-- GDP分析图表 -->
           <view class="chart-panel {{currentChart === 'gdp' ? '' : 'hidden'}}">
             <view class="chart-grid">
               <view class="dashboard-card">
                 <text class="chart-title">地区生产总值趋势(亿元)</text>
-                <ec-canvas id="gdpTrendChart" canvas-id="gdpTrendChart" ec="{{ gdpTrendEc }}"></ec-canvas>
+                
+                <!-- 静态折线图 - GDP趋势 -->
+                <view class="static-chart bar-chart">
+                  <view class="bar-container">
+                    <view class="bar" style="height: {{240*42.8/50}}rpx">
+                      <view class="bar-value">42.8</view>
+                      <view class="bar-label">2021</view>
+                    </view>
+                    <view class="bar" style="height: {{240*45.6/50}}rpx">
+                      <view class="bar-value">45.6</view>
+                      <view class="bar-label">2022</view>
+                    </view>
+                    <view class="bar" style="height: {{240*49.7/50}}rpx">
+                      <view class="bar-value">49.7</view>
+                      <view class="bar-label">2023</view>
+                    </view>
+                  </view>
+                </view>
+                <view class="chart-subtitle">单位：亿元</view>
               </view>
+              
               <view class="dashboard-card">
                 <text class="chart-title">地区生产总值构成(2023年)</text>
-                <ec-canvas id="gdpCompositionChart" canvas-id="gdpCompositionChart" ec="{{ gdpCompositionEc }}"></ec-canvas>
+                
+                <!-- 静态饼图 - GDP构成 -->
+                <view class="static-chart pie-chart">
+                  <view class="pie-container">
+                    <!-- 第一产业 - 36% -->
+                    <view class="pie-slice" style="background-color: #4bc0c0; clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%, 50% 50%)"></view>
+                    <!-- 第二产业 - 21% -->
+                    <view class="pie-slice" style="background-color: #ff6384; clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 60% 100%, 50% 50%)"></view>
+                    <!-- 第三产业 - 43% -->
+                    <view class="pie-slice" style="background-color: #36a2eb; clip-path: polygon(50% 50%, 60% 100%, 0% 100%, 0% 0%, 50% 0%, 50% 50%)"></view>
+                  </view>
+                  
+                  <view class="pie-legend">
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #4bc0c0"></view>
+                      <text class="legend-text">第一产业: 17.8亿元(36%)</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #ff6384"></view>
+                      <text class="legend-text">第二产业: 10.7亿元(21%)</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #36a2eb"></view>
+                      <text class="legend-text">第三产业: 21.2亿元(43%)</text>
+                    </view>
+                  </view>
+                </view>
               </view>
             </view>
           </view>
           
+          <!-- 收入分析图表 -->
           <view class="chart-panel {{currentChart === 'income' ? '' : 'hidden'}}">
             <view class="chart-grid">
               <view class="dashboard-card">
                 <text class="chart-title">城乡收入对比(元)</text>
-                <ec-canvas id="incomeComparisonChart" canvas-id="incomeComparisonChart" ec="{{ incomeComparisonEc }}"></ec-canvas>
+                
+                <!-- 静态条形图 - 收入对比 -->
+                <view class="static-chart bar-chart">
+                  <view class="bar-container">
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{240*18450/46000}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">18450</view>
+                      </view>
+                      <view class="bar" style="height: {{240*38750/46000}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">38750</view>
+                      </view>
+                      <view class="bar-label">2021</view>
+                    </view>
+                    
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{240*20018/46000}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">20018</view>
+                      </view>
+                      <view class="bar" style="height: {{240*41850/46000}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">41850</view>
+                      </view>
+                      <view class="bar-label">2022</view>
+                    </view>
+                    
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{240*21780/46000}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">21780</view>
+                      </view>
+                      <view class="bar" style="height: {{240*45320/46000}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">45320</view>
+                      </view>
+                      <view class="bar-label">2023</view>
+                    </view>
+                  </view>
+                  
+                  <view class="bar-legend">
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #4bc0c0"></view>
+                      <text class="legend-text">农村居民人均可支配收入</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #36a2eb"></view>
+                      <text class="legend-text">城镇居民人均可支配收入</text>
+                    </view>
+                  </view>
+                </view>
               </view>
+              
               <view class="dashboard-card">
                 <text class="chart-title">居民收入增长率(%)</text>
-                <ec-canvas id="incomeGrowthChart" canvas-id="incomeGrowthChart" ec="{{ incomeGrowthEc }}"></ec-canvas>
+                
+                <!-- 静态折线图 - 收入增长率 -->
+                <view class="static-chart line-chart">
+                  <view class="line-chart-container" style="height: 240rpx;">
+                    <!-- 农村居民收入增速 -->
+                    <view class="line-point" style="left: 16.67%; bottom: {{240*8.2/10}}rpx; background-color: #4bc0c0"></view>
+                    <view class="line-point" style="left: 50%; bottom: {{240*8.5/10}}rpx; background-color: #4bc0c0"></view>
+                    <view class="line-point" style="left: 83.33%; bottom: {{240*8.8/10}}rpx; background-color: #4bc0c0"></view>
+                    
+                    <view class="line-segment" style="left: 16.67%; bottom: {{240*8.2/10+7}}rpx; width: 33.33%; transform: rotate(0.5deg); background-color: #4bc0c0;"></view>
+                    <view class="line-segment" style="left: 50%; bottom: {{240*8.5/10+7}}rpx; width: 33.33%; transform: rotate(0.5deg); background-color: #4bc0c0;"></view>
+                    
+                    <!-- 城镇居民收入增速 -->
+                    <view class="line-point" style="left: 16.67%; bottom: {{240*7.5/10}}rpx; background-color: #36a2eb"></view>
+                    <view class="line-point" style="left: 50%; bottom: {{240*8.0/10}}rpx; background-color: #36a2eb"></view>
+                    <view class="line-point" style="left: 83.33%; bottom: {{240*8.3/10}}rpx; background-color: #36a2eb"></view>
+                    
+                    <view class="line-segment" style="left: 16.67%; bottom: {{240*7.5/10+7}}rpx; width: 33.33%; transform: rotate(0.8deg); background-color: #36a2eb;"></view>
+                    <view class="line-segment" style="left: 50%; bottom: {{240*8.0/10+7}}rpx; width: 33.33%; transform: rotate(0.5deg); background-color: #36a2eb;"></view>
+                  </view>
+                  
+                  <view class="line-x-axis">
+                    <view class="line-x-item">2021</view>
+                    <view class="line-x-item">2022</view>
+                    <view class="line-x-item">2023</view>
+                  </view>
+                  
+                  <view class="bar-legend">
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #4bc0c0"></view>
+                      <text class="legend-text">农村居民收入增速</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #36a2eb"></view>
+                      <text class="legend-text">城镇居民收入增速</text>
+                    </view>
+                  </view>
+                </view>
               </view>
             </view>
           </view>
           
+          <!-- 产业结构分析图表 -->
           <view class="chart-panel {{currentChart === 'industry' ? '' : 'hidden'}}">
             <view class="chart-grid">
+              <!-- 产业结构变化图 -->
               <view class="dashboard-card">
                 <text class="chart-title">产业结构变化(%)</text>
-                <ec-canvas id="industryStructureChart" canvas-id="industryStructureChart" ec="{{ industryStructureEc }}"></ec-canvas>
+                
+                <!-- 简化的静态条形图表示产业结构变化 -->
+                <view class="static-chart bar-chart" style="height: 400rpx;">
+                  <view class="bar-container" style="height: 320rpx;">
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{320*35.5/100}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">35.5%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*25.2/100}}rpx; background-image: linear-gradient(to top, rgba(255, 99, 132, 0.7), rgba(255, 99, 132, 0.9))">
+                        <view class="bar-value">25.2%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*39.3/100}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">39.3%</view>
+                      </view>
+                      <view class="bar-label">2021</view>
+                    </view>
+                    
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{320*35.9/100}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">35.9%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*23.5/100}}rpx; background-image: linear-gradient(to top, rgba(255, 99, 132, 0.7), rgba(255, 99, 132, 0.9))">
+                        <view class="bar-value">23.5%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*40.6/100}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">40.6%</view>
+                      </view>
+                      <view class="bar-label">2022</view>
+                    </view>
+                    
+                    <view class="bar-group">
+                      <view class="bar" style="height: {{320*35.8/100}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                        <view class="bar-value">35.8%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*21.5/100}}rpx; background-image: linear-gradient(to top, rgba(255, 99, 132, 0.7), rgba(255, 99, 132, 0.9))">
+                        <view class="bar-value">21.5%</view>
+                      </view>
+                      <view class="bar" style="height: {{320*42.7/100}}rpx; background-image: linear-gradient(to top, rgba(54, 162, 235, 0.7), rgba(54, 162, 235, 0.9))">
+                        <view class="bar-value">42.7%</view>
+                      </view>
+                      <view class="bar-label">2023</view>
+                    </view>
+                  </view>
+                  
+                  <view class="bar-legend">
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #4bc0c0"></view>
+                      <text class="legend-text">第一产业占比</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #ff6384"></view>
+                      <text class="legend-text">第二产业占比</text>
+                    </view>
+                    <view class="legend-item">
+                      <view class="legend-color" style="background-color: #36a2eb"></view>
+                      <text class="legend-text">第三产业占比</text>
+                    </view>
+                  </view>
+                </view>
               </view>
+              
+              <!-- 农业产业化经营率变化图 -->
               <view class="dashboard-card">
                 <text class="chart-title">农业产业化经营率变化(%)</text>
-                <ec-canvas id="agricultureRateChart" canvas-id="agricultureRateChart" ec="{{ agricultureRateEc }}"></ec-canvas>
+                
+                <!-- 静态条形图 - 农业产业化经营率 -->
+                <view class="static-chart bar-chart">
+                  <view class="bar-container">
+                    <view class="bar" style="height: {{240*52.5/60}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                      <view class="bar-value">52.5%</view>
+                      <view class="bar-label">2021</view>
+                    </view>
+                    <view class="bar" style="height: {{240*55.8/60}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                      <view class="bar-value">55.8%</view>
+                      <view class="bar-label">2022</view>
+                    </view>
+                    <view class="bar" style="height: {{240*58.3/60}}rpx; background-image: linear-gradient(to top, rgba(75, 192, 192, 0.7), rgba(75, 192, 192, 0.9))">
+                      <view class="bar-value">58.3%</view>
+                      <view class="bar-label">2023</view>
+                    </view>
+                  </view>
+                </view>
               </view>
             </view>
           </view>
           
+          <!-- 增速对比分析图表 -->
           <view class="chart-panel {{currentChart === 'growth' ? '' : 'hidden'}}">
             <view class="chart-grid">
+              <!-- 各项增速对比图 - 使用简化的雷达图 -->
               <view class="dashboard-card">
                 <text class="chart-title">各项增速对比(2023年)</text>
-                <ec-canvas id="growthComparisonChart" canvas-id="growthComparisonChart" ec="{{ growthComparisonEc }}"></ec-canvas>
+                
+                <view class="static-chart radar-chart">
+                  <view class="radar-container">
+                    <!-- 背景网格 -->
+                    <view class="radar-grid">
+                      <view class="radar-grid-polygon"></view>
+                      <view class="radar-grid-polygon-inner"></view>
+                      <view class="radar-grid-polygon-innermost"></view>
+                    </view>
+                    
+                    <!-- 数据多边形 -->
+                    <view class="radar-polygon"></view>
+                    
+                    <!-- 标签 -->
+                    <view class="radar-labels">
+                      <view class="radar-label label-top">GDP增速: 7.2%</view>
+                      <view class="radar-label label-right-top">投资增速: 6.5%</view>
+                      <view class="radar-label label-right-bottom">工业增速: 7.2%</view>
+                      <view class="radar-label label-left-bottom">城镇收入: 8.3%</view>
+                      <view class="radar-label label-left-top">农村收入: 8.8%</view>
+                    </view>
+                  </view>
+                </view>
               </view>
+              
+              <!-- 固定资产投资与GDP增速关系图 -->
               <view class="dashboard-card">
                 <text class="chart-title">固定资产投资与GDP增速关系</text>
-                <ec-canvas id="investmentGdpChart" canvas-id="investmentGdpChart" ec="{{ investmentGdpEc }}"></ec-canvas>
+                
+                <view class="static-chart scatter-chart">
+                  <view class="scatter-container">
+                    <!-- 散点 -->
+                    <view class="scatter-point" style="left: {{100*(5.8-5.5)/(7-5.5)}}%; bottom: {{100*(6.5-6)/(7.5-6)}}%"></view>
+                    <view class="scatter-point" style="left: {{100*(6.2-5.5)/(7-5.5)}}%; bottom: {{100*(6.8-6)/(7.5-6)}}%"></view>
+                    <view class="scatter-point" style="left: {{100*(6.5-5.5)/(7-5.5)}}%; bottom: {{100*(7.2-6)/(7.5-6)}}%"></view>
+                    
+                    <!-- 网格线 -->
+                    <view class="grid-line" style="bottom: 33%"></view>
+                    <view class="grid-line" style="bottom: 67%"></view>
+                  </view>
+                  
+                  <view class="scatter-x-axis">
+                    <text class="scatter-label scatter-x-label">5.5%</text>
+                    <text class="scatter-label scatter-x-label">6.0%</text>
+                    <text class="scatter-label scatter-x-label">6.5%</text>
+                    <text class="scatter-label scatter-x-label">7.0%</text>
+                  </view>
+                  
+                  <view class="chart-subtitle">横轴: 固定资产投资增速(%) 纵轴: GDP增速(%)</view>
+                </view>
               </view>
             </view>
           </view>
@@ -173,37 +449,42 @@
       </view>
     </view>
 
-    <!-- 聊天交互区域 -->
-    <view class="chat-container fade-in">
-      <view class="chat-header">
+    <!-- 聊天交互区域 - 移动端优化 -->
+    <view class="glass-effect chat-container fade-in">
+      <view class="chat-header" bindtap="toggleChat">
         <view class="icon-circle">
           <text class="iconfont icon-comments"></text>
         </view>
         <text class="chat-title">智能助手对话</text>
+        <view class="toggle-icon {{chatExpanded ? 'rotate-180' : ''}}">
+          <text class="iconfont icon-arrow"></text>
+        </view>
       </view>
       
-      <scroll-view scroll-y="true" class="chat-history" scroll-top="{{scrollTop}}">
-        <view class="message-list">
-          <view class="message-item" wx:for="{{chatHistory}}" wx:key="index">
-            <view class="avatar {{item.isUser ? 'user-avatar' : 'ai-avatar'}}">
-              <text class="iconfont {{item.isUser ? 'icon-user' : 'icon-robot'}}"></text>
-            </view>
-            <view class="message-bubble {{item.isUser ? 'user-message' : 'ai-message'}}">
-              <text>{{item.message}}</text>
-              <view class="thinking-indicator" wx:if="{{item.thinking}}">
-                <view class="loader-small"></view>
-                <text class="thinking-text">正在分析数据...</text>
+      <view class="{{chatExpanded ? '' : 'hidden'}}">
+        <scroll-view scroll-y="true" class="chat-history" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}">
+          <view class="message-list">
+            <view class="message-item fade-in" wx:for="{{chatHistory}}" wx:key="index">
+              <view class="avatar {{item.isUser ? 'user-avatar' : 'ai-avatar'}}">
+                <text class="iconfont {{item.isUser ? 'icon-user' : 'icon-robot'}}"></text>
+              </view>
+              <view class="message-bubble {{item.isUser ? 'user-message' : 'ai-message'}}">
+                <text>{{item.message}}</text>
+                <view class="thinking-indicator" wx:if="{{item.thinking}}">
+                  <view class="loader-small"></view>
+                  <text class="thinking-text">正在分析数据...</text>
+                </view>
               </view>
             </view>
           </view>
+        </scroll-view>
+        
+        <view class="chat-input-area">
+          <input type="text" class="chat-input" value="{{inputMessage}}" bindinput="onInputChange" placeholder="请输入您的问题..." confirm-type="send" bindconfirm="sendMessage"/>
+          <button class="send-btn pulse-btn" bindtap="sendMessage">
+            <text class="iconfont icon-send"></text>
+          </button>
         </view>
-      </scroll-view>
-      
-      <view class="chat-input-area">
-        <input type="text" class="chat-input" value="{{inputMessage}}" bindinput="onInputChange" placeholder="请输入您的问题..." confirm-type="send" bindconfirm="sendMessage"/>
-        <button class="send-btn" bindtap="sendMessage">
-          <text class="iconfont icon-send"></text>
-        </button>
       </view>
     </view>
   </view>

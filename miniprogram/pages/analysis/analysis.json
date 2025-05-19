@@ -1,7 +1,5 @@
 {
-  "usingComponents": {
-    "ec-canvas": "../../ec-canvas/ec-canvas"
-  },
+  "usingComponents": {},
   "navigationBarTitleText": "农产品数据分析平台",
   "navigationBarBackgroundColor": "#0a1929",
   "navigationBarTextStyle": "white",

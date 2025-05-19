@@ -109,10 +109,52 @@
       <text class="section-subtitle">基于大数据分析的乡村经济发展态势</text>
       
       <view class="chart-cards">
+        <!-- 乡村GDP增长趋势图 -->
         <view class="chart-card">
           <text class="chart-title">乡村GDP增长趋势</text>
-          <view class="chart-placeholder">
-            <image class="chart-image" src="https://i.imgur.com/mZJf1Ba.png" mode="aspectFit"></image>
+          <view class="chart-placeholder chart-with-legend">
+            <view class="chart-description">2020-2025年智慧农业与传统农业GDP对比</view>
+            
+            <!-- 改进后的乡村GDP增长趋势图表 -->
+            <view class="gdp-chart-container">
+              <view class="gdp-chart-lines">
+                <!-- 背景网格线 -->
+                <view class="gdp-axis-line"></view>
+                <view class="gdp-axis-line"></view>
+                <view class="gdp-axis-line"></view>
+                
+                <!-- Y轴标签 -->
+                <text class="gdp-axis-label">200亿</text>
+                <text class="gdp-axis-label">500亿</text>
+                <text class="gdp-axis-label">800亿</text>
+                
+                <!-- 数据线 - 传统农业 -->
+                <view class="gdp-data-line gdp-data-traditional">
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 8.33%;" data-value="542"></view>
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 25%;" data-value="568"></view>
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 41.66%;" data-value="587"></view>
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 58.33%;" data-value="603"></view>
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 75%;" data-value="618"></view>
+                  <view class="gdp-data-point gdp-data-point-traditional" style="left: 91.66%;" data-value="634"></view>
+                </view>
+                
+                <!-- 数据线 - 智慧农业 -->
+                <view class="gdp-data-line gdp-data-smart">
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 8.33%; bottom: 15.6%;" data-value="125"></view>
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 25%; bottom: 23.1%;" data-value="185"></view>
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 41.66%; bottom: 34.8%;" data-value="278"></view>
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 58.33%; bottom: 53.1%;" data-value="425"></view>
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 75%; bottom: 76.5%;" data-value="612"></view>
+                  <view class="gdp-data-point gdp-data-point-smart" style="left: 91.66%; bottom: 105.9%;" data-value="847"></view>
+                </view>
+              </view>
+              
+              <!-- X轴标签 -->
+              <view class="gdp-labels">
+                <text class="gdp-year-label" wx:for="{{['2020', '2021', '2022', '2023', '2024', '2025']}}" wx:key="*this">{{item}}</text>
+              </view>
+            </view>
+            
             <view class="chart-legend">
               <view class="legend-item">
                 <view class="legend-color legend-blue"></view>
@@ -123,9 +165,11 @@
                 <text class="legend-text">智慧农业GDP</text>
               </view>
             </view>
+            <view class="chart-note">智慧农业GDP增速明显快于传统农业，预计2025年将超过传统农业</view>
           </view>
         </view>
 
+        <!-- 产业结构分布饼图 -->
         <view class="chart-card">
           <text class="chart-title">产业结构分布</text>
           <view class="chart-placeholder">
@@ -134,6 +178,7 @@
               <view class="pie-segment segment2"></view>
               <view class="pie-segment segment3"></view>
               <view class="pie-segment segment4"></view>
+              <view class="pie-segment segment5"></view>
               <view class="pie-center"></view>
             </view>
             <view class="chart-legend">
@@ -151,32 +196,131 @@
               </view>
               <view class="legend-item">
                 <view class="legend-color legend-green"></view>
-                <text class="legend-text">乡村电商 14%</text>
+                <text class="legend-text">农村电商 14%</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-purple"></view>
+                <text class="legend-text">乡村旅游 10%</text>
               </view>
             </view>
           </view>
         </view>
-      </view>
 
-      <view class="data-insights">
-        <text class="insights-title">关键洞察</text>
-        <view class="insight-item">
-          <text class="insight-number">38%</text>
-          <text class="insight-desc">智慧农业较传统农业产出效率提升</text>
+        <!-- 智慧农业投资回报率表格已经正常显示，不需要修改 -->
+        
+        <!-- 数字技术普及率图 -->
+        <view class="chart-card">
+          <text class="chart-title">数字技术普及率</text>
+          <view class="chart-placeholder chart-with-legend">
+            <view class="chart-description">当前技术普及率与2027年目标对比</view>
+            
+            <!-- 改进后的数字技术普及率雷达图 -->
+            <view class="tech-radar-container">
+              <view class="tech-radar-chart">
+                <!-- 雷达图背景 -->
+                <view class="tech-radar-bg"></view>
+                <view class="tech-polygon"></view>
+                <view class="tech-polygon-inner"></view>
+                <view class="tech-polygon-core"></view>
+                
+                <!-- 雷达图线条 -->
+                <view class="tech-line" style="transform: rotate(0deg);"></view>
+                <view class="tech-line" style="transform: rotate(60deg);"></view>
+                <view class="tech-line" style="transform: rotate(120deg);"></view>
+                <view class="tech-line" style="transform: rotate(180deg);"></view>
+                <view class="tech-line" style="transform: rotate(240deg);"></view>
+                <view class="tech-line" style="transform: rotate(300deg);"></view>
+                
+                <!-- 雷达图标签 -->
+                <view class="tech-label" style="top: 0; left: 50%; transform: translate(-50%, -100%);">大数据</view>
+                <view class="tech-label" style="top: 25%; right: 0; transform: translateX(120%);">AI应用</view>
+                <view class="tech-label" style="bottom: 25%; right: 0; transform: translateX(120%);">物联网</view>
+                <view class="tech-label" style="bottom: 0; left: 50%; transform: translate(-50%, 100%);">5G覆盖</view>
+                <view class="tech-label" style="bottom: 25%; left: 0; transform: translateX(-120%);">区块链</view>
+                <view class="tech-label" style="top: 25%; left: 0; transform: translateX(-120%);">数字孪生</view>
+                
+                <!-- 当前技术普及率多边形 -->
+                <view class="tech-data-polygon"></view>
+                
+                <!-- 目标技术普及率多边形 -->
+                <view class="tech-data-polygon-target"></view>
+                
+                <!-- 数据点 - 当前值 -->
+                <view class="tech-point tech-point-current" 
+                      style="top: 15%; left: 50%; transform: translate(-50%, -50%);" 
+                      data-value="85"></view>
+                <view class="tech-point tech-point-current"
+                      style="top: 30%; right: 18%; transform: translate(50%, -50%);"
+                      data-value="65"></view>
+                <view class="tech-point tech-point-current"
+                      style="bottom: 30%; right: 18%; transform: translate(50%, 50%);"
+                      data-value="78"></view>
+                <view class="tech-point tech-point-current"
+                      style="bottom: 15%; left: 50%; transform: translate(-50%, 50%);"
+                      data-value="92"></view>
+                <view class="tech-point tech-point-current"
+                      style="bottom: 30%; left: 18%; transform: translate(-50%, 50%);"
+                      data-value="42"></view>
+                <view class="tech-point tech-point-current"
+                      style="top: 30%; left: 18%; transform: translate(-50%, -50%);"
+                      data-value="38"></view>
+                
+                <!-- 数据点 - 目标值 -->
+                <view class="tech-point tech-point-target"
+                      style="top: 5%; left: 50%; transform: translate(-50%, -50%);"
+                      data-value="95"></view>
+                <view class="tech-point tech-point-target"
+                      style="top: 25%; right: 10%; transform: translate(50%, -50%);"
+                      data-value="88"></view>
+                <view class="tech-point tech-point-target"
+                      style="bottom: 25%; right: 10%; transform: translate(50%, 50%);"
+                      data-value="90"></view>
+                <view class="tech-point tech-point-target"
+                      style="bottom: 5%; left: 50%; transform: translate(-50%, 50%);"
+                      data-value="98"></view>
+                <view class="tech-point tech-point-target"
+                      style="bottom: 25%; left: 10%; transform: translate(-50%, 50%);"
+                      data-value="75"></view>
+                <view class="tech-point tech-point-target"
+                      style="top: 25%; left: 10%; transform: translate(-50%, -50%);"
+                      data-value="72"></view>
+              </view>
+            </view>
+            
+            <view class="chart-legend">
+              <view class="legend-item">
+                <view class="legend-color legend-green"></view>
+                <text class="legend-text">当前普及率</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color legend-cyan"></view>
+                <text class="legend-text">2027年目标</text>
+              </view>
+            </view>
+            <view class="chart-note">区块链和数字孪生技术是未来重点发展方向</view>
+          </view>
         </view>
-        <view class="insight-item">
-          <text class="insight-number">56%</text>
-          <text class="insight-desc">数据驱动后农产品品质提升率</text>
-        </view>
-        <view class="insight-item">
-          <text class="insight-number">2.7倍</text>
-          <text class="insight-desc">AI技术投资回报率较传统农业</text>
+
+        <view class="data-insights">
+          <text class="insights-title">关键洞察</text>
+          <view class="insight-item">
+            <text class="insight-number">38%</text>
+            <text class="insight-desc">智慧农业较传统农业产出效率提升</text>
+          </view>
+          <view class="insight-item">
+            <text class="insight-number">56%</text>
+            <text class="insight-desc">数据驱动后农产品品质提升率</text>
+          </view>
+          <view class="insight-item">
+            <text class="insight-number">2.7倍</text>
+            <text class="insight-desc">AI技术投资回报率较传统农业</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- AI赋能乡村 Section -->
+  <!-- AI赋能乡村 -->
   <view class="section ai-empower-section">
     <view class="container">
       <text class="section-title">AI赋能乡村</text>
@@ -232,6 +376,60 @@
             <view class="stat-item">
               <text class="iconfont icon-target"></text>
               <text class="stat-text">预测准确率 89%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-card">
+          <view class="ai-card-icon yellow-bg">
+            <text class="iconfont icon-tractor"></text>
+          </view>
+          <text class="ai-card-title">智能农机协同</text>
+          <text class="ai-card-desc">通过5G和物联网技术，实现农机智能协同和远程操控，解决劳动力短缺问题，提升作业精度和效率</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-user-clock"></text>
+              <text class="stat-text">劳力减少 62%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-tools"></text>
+              <text class="stat-text">操作精度 95%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-card">
+          <view class="ai-card-icon red-bg">
+            <text class="iconfont icon-cloud"></text>
+          </view>
+          <text class="ai-card-title">气候风险预警</text>
+          <text class="ai-card-desc">利用机器学习分析气象数据和历史灾害记录，建立精准气候预警系统，提前应对自然灾害和极端天气</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-shield"></text>
+              <text class="stat-text">灾害损失降低 56%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-clock"></text>
+              <text class="stat-text">预警提前 72小时</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-card">
+          <view class="ai-card-icon indigo-bg">
+            <text class="iconfont icon-money"></text>
+          </view>
+          <text class="ai-card-title">普惠金融服务</text>
+          <text class="ai-card-desc">基于农户生产数据和信用评分模型，提供精准的普惠金融服务，解决小农户融资难题，促进产业升级</text>
+          <view class="ai-card-stats">
+            <view class="stat-item">
+              <text class="iconfont icon-bank"></text>
+              <text class="stat-text">融资可得性提升 78%</text>
+            </view>
+            <view class="stat-item">
+              <text class="iconfont icon-percentage"></text>
+              <text class="stat-text">贷款利率降低 2.7%</text>
             </view>
           </view>
         </view>

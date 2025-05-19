@@ -3,16 +3,22 @@
   <!-- 顶部导航 -->
   <view class="header">
     <view class="header-title">智慧收入</view>
+    <view class="progress-bar" style="width: {{scrollProgress}}%"></view>
   </view>
 
   <!-- Hero Section -->
   <view class="hero-section">
     <view class="hero-pattern"></view>
     <view class="hero-content">
-      <view class="hero-title">智慧收入</view>
-      <view class="hero-subtitle">数据驱动的乡村振兴 · 智能分析平台</view>
-      <view class="btn-container">
-        <view class="apple-button" bindtap="scrollToOverview">探索数据</view>
+      <view class="hero-title fade-in">智慧收入</view>
+      <view class="hero-subtitle fade-in delay-1">数据驱动的乡村振兴 · 智能分析平台</view>
+      <view class="btn-container fade-in delay-2">
+        <view class="apple-button" bindtap="scrollToOverview">
+          <text>探索数据</text>
+          <view class="btn-arrow">
+            <view class="arrow-down"></view>
+          </view>
+        </view>
       </view>
     </view>
   </view>
@@ -22,7 +28,7 @@
     <view class="section-title">总体概览</view>
     
     <view class="stat-cards">
-      <view class="stat-card">
+      <view class="stat-card fade-in">
         <view class="stat-label">农村居民人均可支配收入</view>
         <view class="stat-value-container">
           <text class="stat-value">23,119</text>
@@ -34,7 +40,7 @@
         </view>
       </view>
       
-      <view class="stat-card">
+      <view class="stat-card fade-in delay-1">
         <view class="stat-label">人均可支配收入中位数</view>
         <view class="stat-value-container">
           <text class="stat-value">19,605</text>
@@ -46,7 +52,7 @@
         </view>
       </view>
       
-      <view class="stat-card">
+      <view class="stat-card fade-in delay-2">
         <view class="stat-label">工资性收入占比</view>
         <view class="stat-value-container">
           <text class="stat-value">42</text>
@@ -58,7 +64,7 @@
         </view>
       </view>
       
-      <view class="stat-card">
+      <view class="stat-card fade-in delay-3">
         <view class="stat-label">经营性收入占比</view>
         <view class="stat-value-container">
           <text class="stat-value">34.7</text>
@@ -71,32 +77,93 @@
       </view>
     </view>
 
-    <!-- 收入增长趋势图表 -->
-    <view class="data-card">
+    <!-- 收入增长趋势图表 - 改为直接数据展示 -->
+    <view class="data-card fade-in">
       <view class="card-title">收入增长趋势</view>
-      <view class="chart-container">
-        <ec-canvas id="incomeChart" canvas-id="incomeChart" ec="{{ incomeChartEc }}"></ec-canvas>
+      <view class="direct-chart-container">
+        <!-- 年份指示器 -->
+        <view class="year-indicator">
+          <text wx:for="{{incomeYears}}" wx:key="index" class="year-label">{{item}}</text>
+        </view>
+        <!-- 直接展示数据柱状图 -->
+        <view class="bar-chart">
+          <view wx:for="{{incomeData}}" wx:key="index" class="bar-item">
+            <view class="bar-value" style="height: {{item.height}}rpx">
+              <text class="bar-tip">{{item.value}}元</text>
+            </view>
+          </view>
+        </view>
+        <!-- 增长率折线 -->
+        <view class="growth-line">
+          <view wx:for="{{growthData}}" wx:key="index" class="growth-point" style="left: {{item.position}}%; bottom: {{item.height}}%">
+            <text class="growth-tip">{{item.value}}%</text>
+          </view>
+        </view>
+      </view>
+      <view class="chart-legend">
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #3b82f6;"></view>
+          <text>农村居民人均可支配收入</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #34d399;"></view>
+          <text>同比增长率</text>
+        </view>
       </view>
       <view class="data-source">数据来源：国家统计局 (2015-2024)</view>
     </view>
     
-    <!-- 收入结构和城乡比较 -->
-    <view class="chart-grid">
-      <view class="data-card">
-        <view class="card-title">收入结构分布</view>
-        <view class="chart-container">
-          <ec-canvas id="incomeStructureChart" canvas-id="incomeStructureChart" ec="{{ incomeStructureChartEc }}"></ec-canvas>
+    <!-- 收入结构图表 - 使用新的饼图实现 -->
+    <view class="data-card fade-in">
+      <view class="card-title">收入结构分布</view>
+      <view class="pie-chart-container">
+        <view class="pie-chart">
+          <view class="pie-segment segment-1"></view>
+          <view class="pie-segment segment-2"></view>
+          <view class="pie-segment segment-3"></view>
+          <view class="pie-segment segment-4"></view>
+          <view class="pie-center">2024年</view>
         </view>
-        <view class="data-source">数据来源：国家统计局 (2024年)</view>
       </view>
-      
-      <view class="data-card">
-        <view class="card-title">城乡收入比较</view>
-        <view class="chart-container">
-          <ec-canvas id="urbanRuralChart" canvas-id="urbanRuralChart" ec="{{ urbanRuralChartEc }}"></ec-canvas>
+      <view class="chart-legend">
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #3b82f6;"></view>
+          <text>工资性收入 (42.0%)</text>
         </view>
-        <view class="data-source">数据来源：国家统计局 (2015-2024)</view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #34d399;"></view>
+          <text>经营净收入 (34.7%)</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #fbbf24;"></view>
+          <text>财产净收入 (2.5%)</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #f472b6;"></view>
+          <text>转移净收入 (20.8%)</text>
+        </view>
       </view>
+      <view class="data-source">数据来源：国家统计局 (2024年)</view>
+    </view>
+    
+    <!-- 城乡收入比较 - 改为直接数据表格 -->
+    <view class="data-card fade-in delay-1">
+      <view class="card-title">城乡收入比较</view>
+      <view class="simple-table">
+        <view class="simple-table-header">
+          <view class="simple-table-cell">年份</view>
+          <view class="simple-table-cell">城镇居民收入(元)</view>
+          <view class="simple-table-cell">农村居民收入(元)</view>
+          <view class="simple-table-cell">城乡收入比</view>
+        </view>
+        <view class="simple-table-row" wx:for="{{urbanRuralData}}" wx:key="index">
+          <view class="simple-table-cell">{{item.year}}</view>
+          <view class="simple-table-cell">{{item.urban}}</view>
+          <view class="simple-table-cell">{{item.rural}}</view>
+          <view class="simple-table-cell">{{item.ratio}}</view>
+        </view>
+      </view>
+      <view class="data-source">数据来源：国家统计局 (2015-2024)</view>
     </view>
   </view>
 
@@ -104,25 +171,34 @@
   <view class="section bg-dark">
     <view class="section-title">区域收入数据</view>
     
-    <view class="data-card">
+    <view class="data-card fade-in">
       <view class="card-title">省份农村居民人均可支配收入排名</view>
-      <view class="chart-container chart-large">
-        <ec-canvas id="regionalRankingChart" canvas-id="regionalRankingChart" ec="{{ regionalRankingChartEc }}"></ec-canvas>
+      <view class="horizontal-bar-chart">
+        <view wx:for="{{top10Provinces}}" wx:key="index" class="h-bar-item">
+          <view class="h-bar-label">{{item.province}}</view>
+          <view class="h-bar-value-bg">
+            <view class="h-bar-value" style="width: {{item.percentage}}%; background: {{item.color}}">
+              <text class="h-bar-number">{{item.income}}元</text>
+            </view>
+          </view>
+        </view>
       </view>
+      <view class="chart-note">显示全国前10个省份的农村居民人均可支配收入数据</view>
       <view class="data-source">数据来源：国家统计局 (2024年)</view>
     </view>
     
-    <view class="data-card">
+    <!-- 区域收入数据部分 - 修复表格显示 -->
+    <view class="data-card fade-in delay-1">
       <view class="card-title">区域收入详细数据</view>
       <scroll-view scroll-x="true" class="table-wrapper">
         <view class="table">
           <view class="tr header">
             <view class="th">排名</view>
             <view class="th">省份</view>
-            <view class="th">人均可支配收入(元)</view>
-            <view class="th">同比增长(%)</view>
-            <view class="th">工资性收入占比(%)</view>
-            <view class="th">经营性收入占比(%)</view>
+            <view class="th">人均收入(元)</view>
+            <view class="th">增长(%)</view>
+            <view class="th">工资占比(%)</view>
+            <view class="th">经营占比(%)</view>
           </view>
           <view class="tr" wx:for="{{regionalData}}" wx:key="index">
             <view class="td">{{item.rank}}</view>
@@ -139,57 +215,69 @@
   </view>
 
   <!-- AI 智能分析部分 -->
-  <view class="section ai-bg">
-    <view class="section-title">AI 智能分析</view>
-    
-    <view class="insight-grid">
-      <view class="ai-insight-card">
-        <view class="insight-header">
-          <view class="insight-icon robot"></view>
-          <view class="insight-title">收入趋势分析</view>
-        </view>
-        <view class="insight-content">
-          基于深度学习算法分析，农村居民人均可支配收入持续保持较快增长，年均增速6.6%，高于城镇居民收入增速2.2个百分点。预计未来5年，这一趋势将持续，农村居民收入有望保持6%-7%的增长速度。
-        </view>
-      </view>
+  <view class="section smart-agriculture-bg">
+    <view class="smart-agriculture-content">
+      <view class="section-title">AI 智能分析</view>
       
-      <view class="ai-insight-card">
-        <view class="insight-header">
-          <view class="insight-icon chart"></view>
-          <view class="insight-title">收入结构优化</view>
+      <view class="insight-grid">
+        <view class="ai-insight-card fade-in">
+          <view class="insight-header">
+            <view class="insight-icon robot pulse">
+              <image src="/images/robot.png" mode="aspectFit"></image>
+            </view>
+            <view class="insight-title">收入趋势分析</view>
+          </view>
+          <view class="insight-content">
+            基于深度学习算法分析，农村居民人均可支配收入持续保持较快增长，年均增速6.6%，高于城镇居民收入增速2.2个百分点。预计未来5年，这一趋势将持续，农村居民收入有望保持6%-7%的增长速度。
+          </view>
         </view>
-        <view class="insight-content">
-          AI分析显示，农村居民收入结构正在优化，工资性收入占比逐年提高，从2015年的38.6%上升到2024年的42%。同时，经营性收入质量提升，特色农产品和乡村旅游等新型业态贡献明显增加。
+        
+        <view class="ai-insight-card fade-in delay-1">
+          <view class="insight-header">
+            <view class="insight-icon chart pulse">
+              <image src="/images/chart.png" mode="aspectFit"></image>
+            </view>
+            <view class="insight-title">收入结构优化</view>
+          </view>
+          <view class="insight-content">
+            AI分析显示，农村居民收入结构正在优化，工资性收入占比逐年提高，从2015年的38.6%上升到2024年的42%。同时，经营性收入质量提升，特色农产品和乡村旅游等新型业态贡献明显增加。
+          </view>
         </view>
-      </view>
-      
-      <view class="ai-insight-card">
-        <view class="insight-header">
-          <view class="insight-icon map"></view>
-          <view class="insight-title">区域差异分析</view>
+        
+        <view class="ai-insight-card fade-in">
+          <view class="insight-header">
+            <view class="insight-icon map">
+              <image src="/images/map.png" mode="aspectFit"></image>
+            </view>
+            <view class="insight-title">区域差异分析</view>
+          </view>
+          <view class="insight-content">
+            东部沿海地区农村收入显著高于中西部地区，但增速差距在缩小。AI预测显示，未来5年中西部地区农村收入增速将继续快于东部地区，区域收入差距将逐步缩小。
+          </view>
         </view>
-        <view class="insight-content">
-          东部沿海地区农村收入显著高于中西部地区，但增速差距在缩小。AI预测显示，未来5年中西部地区农村收入增速将继续快于东部地区，区域收入差距将逐步缩小。
+        
+        <view class="ai-insight-card fade-in delay-1">
+          <view class="insight-header">
+            <view class="insight-icon bulb">
+              <image src="/images/bulb.png" mode="aspectFit"></image>
+            </view>
+            <view class="insight-title">政策建议</view>
+          </view>
+          <view class="insight-content">
+            基于机器学习模型，针对不同区域特点，推荐差异化发展策略：东部地区提升产业链价值；中部地区发展特色农业和加工业；西部地区结合生态优势发展乡村旅游和特色产业。
+          </view>
         </view>
-      </view>
-      
-      <view class="ai-insight-card">
-        <view class="insight-header">
-          <view class="insight-icon bulb"></view>
-          <view class="insight-title">政策建议</view>
-        </view>
-        <view class="insight-content">
-          基于机器学习模型，针对不同区域特点，推荐差异化发展策略：东部地区提升产业链价值；中部地区发展特色农业和加工业；西部地区结合生态优势发展乡村旅游和特色产业。
-        </view>
-      </view>
-      
-      <view class="ai-insight-card">
-        <view class="insight-header">
-          <view class="insight-icon warning"></view>
-          <view class="insight-title">风险预警</view>
-        </view>
-        <view class="insight-content">
-          AI系统识别出几个影响农村收入增长的潜在风险因素：农业生产成本上升、农产品价格波动、农村人口老龄化加速等。建议加强政策支持和技术创新，降低这些因素的负面影响。
+        
+        <view class="ai-insight-card fade-in delay-2">
+          <view class="insight-header">
+            <view class="insight-icon warning">
+              <image src="/images/warning.png" mode="aspectFit"></image>
+            </view>
+            <view class="insight-title">风险预警</view>
+          </view>
+          <view class="insight-content">
+            AI系统识别出几个影响农村收入增长的潜在风险因素：农业生产成本上升、农产品价格波动、农村人口老龄化加速等。建议加强政策支持和技术创新，降低这些因素的负面影响。
+          </view>
         </view>
       </view>
     </view>
@@ -199,15 +287,92 @@
   <view class="section future-bg">
     <view class="section-title">未来展望</view>
     
-    <view class="data-card">
+    <!-- 修改农村人均可支配收入预测部分 -->
+    <view class="data-card fade-in">
       <view class="card-title">农村人均可支配收入预测</view>
-      <view class="chart-container">
-        <ec-canvas id="forecastChart" canvas-id="forecastChart" ec="{{ forecastChartEc }}"></ec-canvas>
+      <view class="forecast-chart">
+        <view class="forecast-line">
+          <!-- 添加竖线作为参考线 - 修复格式错误 -->
+          <view wx:for="{{forecastYears}}" wx:key="index" style="position: absolute; height: calc(100% - 60rpx); width: 1rpx; background-color: rgba(255,255,255,0.05); bottom: 60rpx; left: {{item.position}}%;"></view>
+          
+          <!-- 历史数据 -->
+          <view class="forecast-segment history">
+            <view wx:for="{{forecastHistory}}" wx:key="index" class="forecast-point" style="bottom: {{item.height}}rpx; left: {{item.position}}%;">
+              <text class="forecast-value">{{item.value}}元</text>
+            </view>
+            <view class="forecast-path"></view>
+          </view>
+          
+          <!-- 预测数据 - 乐观 -->
+          <view class="forecast-segment optimistic">
+            <view wx:for="{{forecastOptimistic}}" wx:key="index" class="forecast-point" style="bottom: {{item.height}}rpx; left: {{item.position}}%;">
+              <text class="forecast-value">{{item.value}}元</text>
+            </view>
+            <view class="forecast-path"></view>
+          </view>
+          
+          <!-- 预测数据 - 中性 -->
+          <view class="forecast-segment neutral">
+            <view wx:for="{{forecastNeutral}}" wx:key="index" class="forecast-point" style="bottom: {{item.height}}rpx; left: {{item.position}}%;">
+              <text class="forecast-value">{{item.value}}元</text>
+            </view>
+            <view class="forecast-path"></view>
+          </view>
+          
+          <!-- 预测数据 - 保守 -->
+          <view class="forecast-segment conservative">
+            <view wx:for="{{forecastConservative}}" wx:key="index" class="forecast-point" style="bottom: {{item.height}}rpx; left: {{item.position}}%;">
+              <text class="forecast-value">{{item.value}}元</text>
+            </view>
+            <view class="forecast-path"></view>
+          </view>
+          
+          <!-- 基准线 -->
+          <view class="forecast-baseline"></view>
+          
+          <!-- 年份指示器 -->
+          <view class="forecast-years">
+            <text wx:for="{{forecastYears}}" wx:key="index" class="year-mark" style="left: {{item.position}}%">{{item.year}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="chart-legend">
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #3b82f6;"></view>
+          <text>历史数据</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #34d399;"></view>
+          <text>乐观预测</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #fbbf24;"></view>
+          <text>中性预测</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #f472b6;"></view>
+          <text>保守预测</text>
+        </view>
+      </view>
+      <view class="prediction-note">
+        <view class="note-title">预测说明：</view>
+        <view class="note-item">
+          <view class="note-dot green"></view>
+          <text>乐观预测：年均增长率 7.0-7.5%</text>
+        </view>
+        <view class="note-item">
+          <view class="note-dot yellow"></view>
+          <text>中性预测：年均增长率 6.0-6.5%</text>
+        </view>
+        <view class="note-item">
+          <view class="note-dot pink"></view>
+          <text>保守预测：年均增长率 5.0-5.5%</text>
+        </view>
       </view>
       <view class="data-source">数据来源：AI预测模型基于国家统计局历史数据</view>
     </view>
     
-    <view class="data-card">
+    <view class="data-card fade-in delay-1">
       <view class="card-title">乡村振兴重点任务</view>
       <view class="task-list">
         <view class="task-item">
@@ -256,6 +421,17 @@
   <!-- 页脚 -->
   <view class="footer">
     <view class="footer-title">智慧收入 · 数据可视化平台</view>
+    <view class="footer-links">
+      <view class="footer-link-item">
+        <image src="/images/weixin.png" mode="aspectFit" class="footer-icon"></image>
+      </view>
+      <view class="footer-link-item">
+        <image src="/images/weibo.png" mode="aspectFit" class="footer-icon"></image>
+      </view>
+      <view class="footer-link-item">
+        <image src="/images/email.png" mode="aspectFit" class="footer-icon"></image>
+      </view>
+    </view>
     <view class="footer-source">数据来源：国家统计局、农业农村部等官方数据</view>
     <view class="footer-copyright">© 2025 智慧收入数据可视化平台 · 版权所有</view>
   </view>
